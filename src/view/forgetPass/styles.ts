@@ -11,6 +11,10 @@ const styles = StyleSheet.create({
     form: {
       margin: 20
     },
+    input: {
+      backgroundColor: '#EDF5E1',
+      fontSize: 20,
+    },
     button: {
       backgroundColor: '#8EE4AF',
       padding: 5,

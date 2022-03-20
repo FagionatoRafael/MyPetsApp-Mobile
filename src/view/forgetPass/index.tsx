@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import InputCustom from '../../components/Input';
 
-const Home = () => {
+const ForgetPass = () => {
     const navigation = useNavigation();
 
     let [fontsLoaded] = useFonts({
@@ -25,32 +25,22 @@ const Home = () => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.logoContainer}>
-                <Text style={styles.logoText}>IPetsApp</Text>
+                <Text style={styles.logoText}>Esqueci minha senha</Text>
             </View>
             <View style={styles.form}>
                 <InputCustom label='Email' text={text} hasErros={hasErrors} onChangeText={onChangeText}/>
-                <InputCustom label='Password' text={text} hasErros={hasErrors} onChangeText={onChangeText}/>
 
                 <Button style={styles.button} mode="contained" onPress={() => console.log('Pressed')}>
-                    Entrar
+                    Enviar
                 </Button>
 
                 <Button 
                     style={styles.buttonText} 
                     color='#05386B' 
                     mode="text" 
-                    onPress={() => navigation.navigate('Signin')}
+                    onPress={() => navigation.navigate('Home')}
                 >
-                    cadastre-se
-                </Button>
-
-                <Button 
-                    style={styles.buttonText} 
-                    color='#05386B' 
-                    mode="text" 
-                    onPress={() => navigation.navigate('ForgetPass')}
-                >
-                    esqueci a senha
+                    Voltar
                 </Button>
 
             </View>
@@ -59,4 +49,4 @@ const Home = () => {
     );
 }
 
-export default Home;
+export default ForgetPass;
