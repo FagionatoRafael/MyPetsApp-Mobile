@@ -1,11 +1,12 @@
-import { SafeAreaView, Text, View, Image } from 'react-native';
+import { Text, View } from 'react-native';
 import styles from './styles';
-import { HelperText, TextInput, Button } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import { SetStateAction, useState } from 'react';
 import { useFonts, Dosis_400Regular } from '@expo-google-fonts/dosis';
 import { useNavigation } from '@react-navigation/native';
 
 import InputCustom from '../../components/Input';
+import Container from '../../components/Container';
 
 const ForgetPass = () => {
     const navigation = useNavigation();
@@ -23,7 +24,7 @@ const ForgetPass = () => {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
+        <Container>
             <View style={styles.logoContainer}>
                 <Text style={styles.logoText}>Esqueci minha senha</Text>
             </View>
@@ -44,8 +45,7 @@ const ForgetPass = () => {
                 </Button>
 
             </View>
-
-        </SafeAreaView>
+        </Container>
     );
 }
 

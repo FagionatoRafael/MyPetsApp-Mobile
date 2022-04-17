@@ -3,9 +3,9 @@ import styles from './styles';
 import { HelperText, TextInput } from 'react-native-paper';
 import IInputProp from '../../../interfaces/IInputProps.interface';
 
-const InputCustom = ({label, text, onChangeText, hasErros}: IInputProp) => {
+const InputCustom = ({hasTouch, label, text, onChangeText, hasErros}: IInputProp) => {
     return (
-        <View>
+        <View onTouchStart={hasTouch}>
             <TextInput 
                 autoComplete={false}
                 style={styles.input}

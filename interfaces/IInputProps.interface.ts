@@ -5,4 +5,5 @@ export default interface IInputProp {
     text: string
     onChangeText: (value: SetStateAction<string>) => void
     hasErros: () => boolean
+    hasTouch?: () => void
 }

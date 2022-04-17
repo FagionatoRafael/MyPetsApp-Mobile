@@ -4,13 +4,17 @@ import { Button } from 'react-native-paper';
 import React, { SetStateAction, useCallback, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import InputCustom from '../../components/Input';
+import moment from 'moment'
 
-import { DateTimePickerModal } from 'react-native-paper-datetimepicker';
+import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import Container from '../../components/Container';
 
 const Signin = () => {
     const navigation = useNavigation();
 
     const [text, setText] = useState('');
+    const [dateText, setDateText] = useState('')
+    const [hasDate, setDate] = useState<DateTimePickerEvent>();
 
     const onChangeText = (text: SetStateAction<string>) => setText(text);
  
@@ -19,19 +23,20 @@ const Signin = () => {
     };
 
     const [visible, setVisible] = useState(false);
-    const onDismiss = useCallback(() => {
-        setVisible(false);
-    }, [setVisible]);
-    
-    const onChange = useCallback(({ date }) => {
-        setVisible(false);
-        console.log({ date });
-    }, []);
+
+    const onChangeDateTime = (value: DateTimePickerEvent) => {
+        if(value.nativeEvent.timestamp) {
+            let novo = moment(new Date(value.nativeEvent.timestamp || 1 * 1000)).format('DD/MM/YYYY');
+            setDate(value)
+            setDateText(novo)
+            setVisible(false)
+        }
+    }
 
     const date = new Date();
 
     return (
-        <SafeAreaView style={styles.container}>
+        <Container>
             <View style={styles.logoContainer}>
                 <Text style={styles.logoText}>Cadastre-se</Text>
             </View>
@@ -40,19 +45,19 @@ const Signin = () => {
                <InputCustom hasErros={hasErrors} label={'Email'} onChangeText={onChangeText} text={text}/>
                <InputCustom hasErros={hasErrors} label={'Password'} onChangeText={onChangeText} text={text}/>
                
-                <>
-                    <DateTimePickerModal
-                        visible={visible}
-                        onDismiss={onDismiss}
-                        date={date}
-                        onConfirm={onChange}
-                        label="Pick A Date"
-                    />
-                    <TextInput value={date.toLocaleString()} />
-                    <Button onPress={() => setVisible(true)}>Pick date</Button>
-                </>
-               
-               <InputCustom hasErros={hasErrors} label={'Data de nascimento'} onChangeText={onChangeText} text={text}/>
+               {visible ? 
+                <DateTimePicker 
+                    onChange={(value) => onChangeDateTime(value)}
+                    value={date}
+                />: <></>}
+
+                <InputCustom 
+                    hasTouch={() => setVisible(true)}
+                    hasErros={hasErrors}
+                    label={'Data de nascimento'}
+                    onChangeText={() => onChangeText(text)} 
+                    text={dateText}
+                />
 
                 <Button style={styles.button} mode="contained" onPress={() => console.log('Pressed')}>
                     Cadastrar
@@ -67,7 +72,7 @@ const Signin = () => {
                     Voltar
                 </Button>
             </View>
-        </SafeAreaView>
+        </Container>
     );
 }
 

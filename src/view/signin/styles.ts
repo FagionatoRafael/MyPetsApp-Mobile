@@ -3,11 +3,6 @@ import { StyleSheet, Dimensions } from 'react-native';
 const windowWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#5CDB95',
-      justifyContent: 'center',
-    },
     form: {
       margin: 20
     },

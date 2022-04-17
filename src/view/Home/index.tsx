@@ -6,6 +6,7 @@ import { useFonts, Dosis_400Regular } from '@expo-google-fonts/dosis';
 import { useNavigation } from '@react-navigation/native';
 
 import InputCustom from '../../components/Input';
+import Container from '../../components/Container';
 
 const Home = () => {
     const navigation = useNavigation();
@@ -23,7 +24,7 @@ const Home = () => {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
+        <Container>
             <View style={styles.logoContainer}>
                 <Text style={styles.logoText}>IPetsApp</Text>
             </View>
@@ -31,7 +32,11 @@ const Home = () => {
                 <InputCustom label='Email' text={text} hasErros={hasErrors} onChangeText={onChangeText}/>
                 <InputCustom label='Password' text={text} hasErros={hasErrors} onChangeText={onChangeText}/>
 
-                <Button style={styles.button} mode="contained" onPress={() => console.log('Pressed')}>
+                <Button 
+                    style={styles.button} 
+                    mode="contained" 
+                    onPress={() => navigation.navigate('NavegationOne')}
+                >
                     Entrar
                 </Button>
 
@@ -54,8 +59,7 @@ const Home = () => {
                 </Button>
 
             </View>
-
-        </SafeAreaView>
+        </Container>
     );
 }
 
