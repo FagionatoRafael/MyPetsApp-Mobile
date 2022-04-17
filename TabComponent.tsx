@@ -10,12 +10,12 @@ const Tab = createBottomTabNavigator();
 function TabsComponent() {
   return (
       <Tab.Navigator screenOptions={{
-        headerTitle: props => <Text>Aloo</Text>,
+        headerTitle: props => <Text style={{color: '#05386B', fontSize: 20, fontWeight: 'bold'}}>Aloo</Text>,
         headerLeft: () => (
-          <Ionicons name="menu" style={{marginLeft: 20}} size={30} color="black" onPress={() => alert('This is a button!')}/>
+          <Ionicons name="menu" style={{marginLeft: 20}} size={30} color="#05386B" onPress={() => alert('This is a button!')}/>
         ),
         headerRight: () => (
-          <Image source={require('./assets/logo-icon.png')} style={{width: 30, height: 30, marginRight: 20}}/>
+          <Image source={require('./assets/logo-icon.png')} style={{width: '10%', height: '50%', marginRight: '5%'}}/>
         ),
         headerStyle: {
           backgroundColor: '#5CDB95'

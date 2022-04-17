@@ -10,7 +10,8 @@ const styles = StyleSheet.create({
     cardContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingBottom: 10
+        paddingBottom: 10,
+        textAlignVertical: 'center'
     },
     description: {
         flexDirection: 'row',

@@ -1,11 +1,17 @@
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, ScrollView } from 'react-native';
 import styles from './styles';
 import React from 'react';
 
-const Container: React.FC = ({children}) => {
+interface IContainer {
+    margin?: boolean
+}
+
+const Container: React.FC<IContainer> = ({children, margin = true}) => {
     return (
         <SafeAreaView style={[styles.container]}>
-            {children}
+            <ScrollView style={margin ? {marginTop: '20%'} : {}}>
+                {children}
+            </ScrollView>
         </SafeAreaView>
     );
 }
