@@ -10,7 +10,7 @@ const InputCustom = ({hasTouch, label, text, onChangeText, hasErros}: IInputProp
                 autoComplete={false}
                 style={styles.input}
                 mode='outlined' 
-                activeOutlineColor='#000'
+                activeOutlineColor='#05386B'
                 label={label} 
                 value={text} 
                 onChangeText={(value) => onChangeText(value)} 

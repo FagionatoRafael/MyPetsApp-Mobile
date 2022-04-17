@@ -9,6 +9,7 @@ import Home from './src/view/Home';
 import Signin from './src/view/signin';
 import ForgetPass from './src/view/forgetPass';
 import NavegationOne from './src/view/NavegationHelper';
+import AddPet from './src/view/Pets/add';
 
 import TabsComponent from './TabComponent'
 
@@ -36,6 +37,21 @@ export default function App() {
             headerShown: false, 
           }}>
           {props => <TabsComponent />}
+        </Stack.Screen>
+        <Stack.Screen 
+          name="AddPets" 
+          options={{
+            headerStyle: {
+              backgroundColor: '#5CDB95'
+            },
+            headerTitle: '',
+            headerShadowVisible: false,
+            statusBarHidden: true,
+            headerBackButtonMenuEnabled: true,
+            headerTintColor: '#05386B'
+            // headerShown: false
+          }}>
+          {props => <AddPet />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>      
