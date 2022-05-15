@@ -62,14 +62,14 @@ const NavegationOne = () => {
                     : <Button 
                         mode="text" 
                         color='#EDF5E1' 
-                        onPress={() => navigation.navigate('TabsScreen')}>
+                        onPress={() => navigation.navigate('drawer')}>
                         pular
                     </Button>}
 
                     {step === 3? <Button 
                         mode="text" 
                         color='#EDF5E1' 
-                        onPress={() => navigation.navigate('TabsScreen')}>
+                        onPress={() => navigation.navigate('drawer')}>
                         Começar
                     </Button>
                     : <Button 

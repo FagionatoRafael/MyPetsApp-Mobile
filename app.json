@@ -23,7 +23,12 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo-icon.png",
         "backgroundColor": "#5CDB95"
-      }
+      },
+      "package": "com.rafaelfagio.mypetsapp"
+    },
+    "androidStatusBar": {
+      "backgroundColor": "#5CDB95",
+      "translucent": false
     },
     "web": {
       "favicon": "./assets/favicon.png"
