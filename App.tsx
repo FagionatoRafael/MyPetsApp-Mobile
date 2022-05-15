@@ -4,6 +4,7 @@ import React from 'react';
 import { expo } from './app.json';
 import { NavigationContainer,  } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import 'react-native-gesture-handler';
 
 import Home from './src/view/Home';
 import Signin from './src/view/signin';
@@ -12,8 +13,19 @@ import NavegationOne from './src/view/NavegationHelper';
 import AddPet from './src/view/Pets/add';
 
 import TabsComponent from './TabComponent'
+import MyDrawer from './drawerComponent';
 
-const Stack = createNativeStackNavigator();
+type RootStackParamList = {
+  Home: object;
+  Signin: object;
+  ForgetPass: object;
+  NavegationOne: object;
+  TabsScreen: object;
+  AddPets: undefined;
+  drawer: object
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (
@@ -31,14 +43,21 @@ export default function App() {
         <Stack.Screen name="NavegationOne" options={{headerShown: false}}>
           {props => <NavegationOne />}
         </Stack.Screen>
-        <Stack.Screen 
+        {/* <Stack.Screen 
           name='TabsScreen' 
-          options={{
-            headerShown: false, 
+          options={{ 
+            headerShown: false,
           }}>
-          {props => <TabsComponent />}
-        </Stack.Screen>
+          {props => <TabsComponent navigation={props.navigation}/>}
+        </Stack.Screen> */}
         <Stack.Screen 
+          name='drawer' 
+          options={{ 
+            headerShown: false,
+          }}>
+          {props => <MyDrawer/>}
+        </Stack.Screen>
+        <Stack.Screen  
           name="AddPets" 
           options={{
             headerStyle: {
