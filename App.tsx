@@ -12,7 +12,6 @@ import ForgetPass from './src/view/forgetPass';
 import NavegationOne from './src/view/NavegationHelper';
 import AddPet from './src/view/Pets/add';
 
-import TabsComponent from './TabComponent'
 import MyDrawer from './drawerComponent';
 
 type RootStackParamList = {
@@ -43,13 +42,6 @@ export default function App() {
         <Stack.Screen name="NavegationOne" options={{headerShown: false}}>
           {props => <NavegationOne />}
         </Stack.Screen>
-        {/* <Stack.Screen 
-          name='TabsScreen' 
-          options={{ 
-            headerShown: false,
-          }}>
-          {props => <TabsComponent navigation={props.navigation}/>}
-        </Stack.Screen> */}
         <Stack.Screen 
           name='drawer' 
           options={{ 

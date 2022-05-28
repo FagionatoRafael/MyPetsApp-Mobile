@@ -1,28 +1,12 @@
-import { AppRegistry, Button, Image, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons'; 
 import { FontAwesome } from '@expo/vector-icons';
 import Pets from './src/view/Pets';
 import Agenda from './src/view/Agenda';
-import { DrawerActions, ParamListBase, RouteProp, useNavigation } from '@react-navigation/native';
-import drawerComponent from './drawerComponent';
-
-import CustomDrawerContent from './customDrawer'
-import {
-  DrawerNavigationProp
-} from '@react-navigation/drawer';
 
 const Tab = createBottomTabNavigator();
 
-interface INavigation {
-  openDrawer: () => void
-}
-
-// type Props = DrawerNavigationProp<any>;
-
-function TabsComponent(props: any) {
-  const navigation = useNavigation();
-
+function TabsComponent() {
   return (
     <Tab.Navigator screenOptions={{headerShown: false}}>
       <Tab.Screen 
