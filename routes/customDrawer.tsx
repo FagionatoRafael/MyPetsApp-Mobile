@@ -29,7 +29,7 @@ function CustomDrawerContent(props: any) {
         label="Pets"
         labelStyle={{color: '#EDF5E1'}}
         style={{backgroundColor: '#8EE4AF'}}
-        onPress={() => {navigation.navigate('Pets') }}
+        onPress={() => {navigation.navigate('PetsTab') }}
       />
       <DrawerItem
         label="Configurações"
@@ -50,12 +50,9 @@ function CustomDrawerContent(props: any) {
           paddingTop: '10%',
           textAlign: 'center',
           marginTop: '160%', 
-          // marginLeft: '15%', 
           color: '#EDF5E1',
           borderColor: '#EDF5E1',
-          
           borderTopWidth: 2
-          
         }} 
         onPress={() => alert('versão 1.0.0')}>Versão 1.0.0</Text>
     </DrawerContentScrollView>

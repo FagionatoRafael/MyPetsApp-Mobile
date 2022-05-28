@@ -20,7 +20,7 @@ function MyDrawer() {
         options={{ 
           drawerLabel: 'Pets', 
           headerRight: () => (
-            <Image source={require('./assets/logo-icon.png')} style={{width: '10%', height: '50%', marginRight: '5%'}}/>
+            <Image source={require('../assets/logo-icon.png')} style={{width: '10%', height: '50%', marginRight: '5%'}}/>
           ),
           headerStyle: {
             backgroundColor: '#5CDB95'
@@ -33,7 +33,7 @@ function MyDrawer() {
         options={{ 
           drawerLabel: 'Configurações',
           headerRight: () => (
-            <Image source={require('./assets/logo-icon.png')} style={{width: '10%', height: '50%', marginRight: '5%'}}/>
+            <Image source={require('../assets/logo-icon.png')} style={{width: '10%', height: '50%', marginRight: '5%'}}/>
           ),
           headerStyle: {
             backgroundColor: '#5CDB95'
