@@ -2,10 +2,7 @@ import { SafeAreaView, ScrollView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import styles from './styles';
 import React from 'react';
-
-interface IContainer {
-    margin?: boolean
-}
+import { IContainer } from '../../../interfaces/_interface.interface';
 
 const Container: React.FC<IContainer> = ({children, margin = true}) => {
     return (

@@ -1,7 +1,7 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Image } from 'react-native';
 import CustomDrawerContent from './customDrawer';
-import Config from './src/view/config';
+import Config from '../src/view/config';
 import TabsComponent from './TabComponent'
 
 const Drawer = createDrawerNavigator();

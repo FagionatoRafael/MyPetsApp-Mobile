@@ -12,7 +12,7 @@ import ForgetPass from './src/view/forgetPass';
 import NavegationOne from './src/view/NavegationHelper';
 import AddPet from './src/view/Pets/add';
 
-import MyDrawer from './drawerComponent';
+import MyDrawer from './routes/drawerComponent';
 
 type RootStackParamList = {
   Home: object;

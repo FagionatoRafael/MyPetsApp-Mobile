@@ -3,7 +3,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 const styles = StyleSheet.create({
     card: {
-        top: 10,
+        top: 10, 
         margin: 20,
     },
     fab: {

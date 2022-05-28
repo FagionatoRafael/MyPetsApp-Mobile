@@ -1,8 +1,8 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons'; 
 import { FontAwesome } from '@expo/vector-icons';
-import Pets from './src/view/Pets';
-import Agenda from './src/view/Agenda';
+import Pets from '../src/view/Pets';
+import Agenda from '../src/view/Agenda';
 
 const Tab = createBottomTabNavigator();
 

@@ -4,14 +4,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Button, Card, Title, Paragraph } from 'react-native-paper';
 import styles from "./styles"
-import { IconProps } from "react-native-paper/lib/typescript/components/MaterialCommunityIcon";
-
-interface ICardPet {
-    icon: any
-    namePet: string
-    birthDay: string
-    description: string
-}
+import { ICardPet } from '../../../interfaces/_interface.interface';
 
 const CardPet: React.FC<ICardPet> = ({icon, namePet, birthDay, description}) => {
     return (
