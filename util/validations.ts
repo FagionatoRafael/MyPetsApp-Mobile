@@ -13,6 +13,6 @@ export const emailValidation = (email: string) => {
         !email.includes('@')
 }
 
-export const passwordValidation = (password) => {
+export const passwordValidation = (password: string | any[]) => {
     return password.length < 6;
 }
