@@ -10,7 +10,7 @@ function MyDrawer() {
   return (
     <Drawer.Navigator 
       useLegacyImplementation 
-      initialRouteName="Home"
+      initialRouteName="Pets"
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{title: 'alo'}}
     >
