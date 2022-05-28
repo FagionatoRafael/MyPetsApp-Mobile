@@ -9,77 +9,29 @@ import Container from '../../components/Container';
 const NavegationOne = () => {
     const navigation = useNavigation();
 
-    let [step, setStep] = useState(0);
-    
-    const [texts, setTexts] = useState([
-        {
-            title: 'Como usar?',
-            text: 'Aqui entra o como usar o app de maneira correta. Use o + para adicionar mais um pet',
-            progress: 0
-        },
-        {
-            title: 'Descrição',
-            text: 'Este App foi feito para organizar e ajudar na criação de seus pets',
-            progress: 0.5
-        },
-        {
-            title: 'Vamos começar',
-            text: 'Espero que te ajude a cuidar :)',
-            progress: 1
-        }
-    ])
-
-    useEffect(() => {
-        setTexts(texts)
-    }, [texts])
-
-    const nextStep = () => {
-        if(texts.length < 4)
-            setStep(step++)
-
-        console.log(step)
-    }
-
-    const previousStep = () => {
-        if(texts.length > 0)
-            setStep(step--)
-    }
-
     return (
         <Container>
             <View style={styles.logoContainer}>
-                <Text style={styles.logoText}>{texts[step].title}</Text>
+                <Text style={styles.logoText}>Como usar?</Text>
             </View>
             <View style={styles.navigationContainer}>
-                <Text style={styles.navegationText}>{texts[step].text}</Text>
+                <Text style={styles.navegationText}>Aqui entra o como usar o app de maneira correta. Use o + para adicionar mais um pet</Text>
                 <View style={styles.groupButton}>
-                    {step >= 1? <Button 
-                        mode="text" 
-                        color='#EDF5E1' 
-                        onPress={() => setStep(step--)}>
-                        voltar
-                    </Button>
-                    : <Button 
+                    <Button 
                         mode="text" 
                         color='#EDF5E1' 
                         onPress={() => navigation.navigate('drawer')}>
                         pular
-                    </Button>}
-
-                    {step === 3? <Button 
-                        mode="text" 
-                        color='#EDF5E1' 
-                        onPress={() => navigation.navigate('drawer')}>
-                        Começar
                     </Button>
-                    : <Button 
+
+                    <Button 
                         mode="text" 
                         color='#EDF5E1' 
-                        onPress={() => nextStep()}>
+                        onPress={() => navigation.navigate('NavegationSecond')}>
                         Proximo
-                    </Button>}
+                    </Button>
                 </View>
-                <ProgressBar style={styles.progress} progress={texts[step].progress} color={'#05386B'} />
+                <ProgressBar style={styles.progress} progress={0} color={'#05386B'} />
             </View>
            
         </Container>
