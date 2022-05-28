@@ -9,7 +9,9 @@ import 'react-native-gesture-handler';
 import Home from './src/view/Home';
 import Signin from './src/view/signin';
 import ForgetPass from './src/view/forgetPass';
-import NavegationOne from './src/view/NavegationHelper';
+import NavegationOne from './src/view/NavegationHelper/firstHelp';
+import NavegationSecond from './src/view/NavegationHelper/secondHelp';
+import NavegationThird from './src/view/NavegationHelper/thirdHelp';
 import AddPet from './src/view/Pets/add';
 
 import MyDrawer from './routes/drawerComponent';
@@ -19,6 +21,8 @@ type RootStackParamList = {
   Signin: object;
   ForgetPass: object;
   NavegationOne: object;
+  NavegationSecond: object
+  NavegationThird: object
   TabsScreen: object;
   AddPets: undefined;
   drawer: object
@@ -41,6 +45,12 @@ export default function App() {
         </Stack.Screen>
         <Stack.Screen name="NavegationOne" options={{headerShown: false}}>
           {props => <NavegationOne />}
+        </Stack.Screen>
+        <Stack.Screen name="NavegationSecond" options={{headerShown: false}}>
+          {props => <NavegationSecond />}
+        </Stack.Screen>
+        <Stack.Screen name="NavegationThird" options={{headerShown: false}}>
+          {props => <NavegationThird />}
         </Stack.Screen>
         <Stack.Screen 
           name='drawer' 

@@ -1,9 +1,9 @@
 import { View } from 'react-native';
 import styles from './styles';
 import { HelperText, TextInput } from 'react-native-paper';
-import IInputProp from '../../../interfaces/IInputProps.interface';
+import { IInputProp } from '../../../interfaces/_interface.interface';
 
-const InputCustom = ({hasTouch, label, text, onChangeText, hasErros}: IInputProp) => {
+const InputCustom = ({hasTouch, label, text, onChangeText, hasErros, invalidText}: IInputProp) => {
     return (
         <View onTouchStart={hasTouch}>
             <TextInput 
@@ -13,10 +13,10 @@ const InputCustom = ({hasTouch, label, text, onChangeText, hasErros}: IInputProp
                 activeOutlineColor='#05386B'
                 label={label} 
                 value={text} 
-                onChangeText={(value) => onChangeText(value)} 
+                onChangeText={(value) => onChangeText(value)}
             />
-            <HelperText type="error" visible={hasErros()}>
-                Email address is invalid!
+            <HelperText type="error" visible={hasErros}>
+                {invalidText}
             </HelperText>
         </View>
     );

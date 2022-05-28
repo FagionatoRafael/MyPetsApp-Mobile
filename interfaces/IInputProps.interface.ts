@@ -3,8 +3,9 @@ import { SetStateAction } from "react"
 export interface IInputProp {
     label: string
     text: string
+    invalidText: string
     onChangeText: (value: SetStateAction<string>) => void
-    hasErros: () => boolean
+    hasErros: boolean
     hasTouch?: () => void
 }
 

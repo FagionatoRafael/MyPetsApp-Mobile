@@ -8,19 +8,28 @@ import { useNavigation } from '@react-navigation/native';
 import InputCustom from '../../components/Input';
 import Container from '../../components/Container';
 
+import { emailValidation, passwordValidation } from '../../../util/validations';
+
 const Home = () => {
     const navigation = useNavigation();
 
     let [fontsLoaded] = useFonts({
         Dosis_400Regular,
     });
+    const [emailError, setEmailError] = useState(false)
+    const [email, setEmail] = useState('');
+    const [passError, setPassError] = useState(false)
+    const [password, setPassword] = useState('');
 
-    const [text, setText] = useState('');
-
-    const onChangeText = (text: SetStateAction<string>) => setText(text);
+    const onChangeEmail = (text: SetStateAction<string>) => setEmail(text);
+    const onChangePassword = (text: SetStateAction<string>) => setPassword(text);
  
-    const hasErrors = () => {
-        return !text.includes('@');
+    const hasErrorsEmail = () => {
+        return emailValidation(email);
+        
+    };
+    const hasErrorsPassword = () => {
+        return passwordValidation(password)
     };
 
     return (
@@ -29,13 +38,31 @@ const Home = () => {
                 <Text style={styles.logoText}>IPetsApp</Text>
             </View>
             <View style={styles.form}>
-                <InputCustom label='Email' text={text} hasErros={hasErrors} onChangeText={onChangeText}/>
-                <InputCustom label='Password' text={text} hasErros={hasErrors} onChangeText={onChangeText}/>
+                <InputCustom 
+                    label='Email' 
+                    invalidText='Email address is invalid!'
+                    text={email} 
+                    hasErros={emailError} 
+                    onChangeText={onChangeEmail}
+                />
+                <InputCustom 
+                    label='Password'
+                    invalidText='Password is invalid!' 
+                    text={password} 
+                    hasErros={passError} 
+                    onChangeText={onChangePassword}
+                />
 
                 <Button 
                     style={styles.button} 
                     mode="contained" 
-                    onPress={() => navigation.navigate('NavegationOne')}
+                    onPress={() => {
+                        setEmailError(hasErrorsEmail()); 
+                        setPassError(hasErrorsPassword())
+                        if(!hasErrorsEmail() && !hasErrorsPassword()) {
+                            navigation.navigate('NavegationOne')
+                        }
+                    }}
                 >
                     Entrar
                 </Button>
