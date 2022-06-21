@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import InputCustom from '../../components/Input';
 import Container from '../../components/Container';
+import { emailValidation } from '../../../util/validations';
 
 const ForgetPass = () => {
     const navigation = useNavigation();
@@ -15,12 +16,13 @@ const ForgetPass = () => {
         Dosis_400Regular,
     });
 
-    const [text, setText] = useState('');
+    const [email, setEmail] = useState('');
+    const [emailErr, setEmailErr] = useState(false)
 
-    const onChangeText = (text: SetStateAction<string>) => setText(text);
+    const onChangeEmail = (text: SetStateAction<string>) => setEmail(text);
  
     const hasErrors = () => {
-        return !text.includes('@');
+        return emailValidation(email)
     };
 
     return (
@@ -29,9 +31,18 @@ const ForgetPass = () => {
                 <Text style={styles.logoText}>Esqueci minha senha</Text>
             </View>
             <View style={styles.form}>
-                <InputCustom label='Email' text={text} hasErros={hasErrors} onChangeText={onChangeText}/>
+                <InputCustom label='Email' text={email} hasErros={emailErr} onChangeText={onChangeEmail} invalidText={'Email não cadastrado'}/>
 
-                <Button style={styles.button} mode="contained" onPress={() => console.log('Pressed')}>
+                <Button 
+                    style={styles.button} 
+                    mode="contained" 
+                    onPress={() => {
+                        setEmailErr(hasErrors())
+                        if(!hasErrors()) {
+                            navigation.navigate('Confirmation')
+                        }
+                    }}
+                >
                     Enviar
                 </Button>
 
