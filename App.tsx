@@ -8,6 +8,7 @@ import 'react-native-gesture-handler';
 
 import Home from './src/view/Home';
 import Signin from './src/view/signin';
+import Confirmation from './src/view/Confirmation';
 import ForgetPass from './src/view/forgetPass';
 import NavegationOne from './src/view/NavegationHelper/firstHelp';
 import NavegationSecond from './src/view/NavegationHelper/secondHelp';
@@ -26,6 +27,7 @@ type RootStackParamList = {
   TabsScreen: object;
   AddPets: undefined;
   drawer: object
+  Confirmation: object
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -39,6 +41,9 @@ export default function App() {
         </Stack.Screen>
         <Stack.Screen name="Signin" options={{headerShown: false}}>
           {props => <Signin />}
+        </Stack.Screen>
+        <Stack.Screen name="Confirmation" options={{headerShown: false}}>
+          {props => <Confirmation />}
         </Stack.Screen>
         <Stack.Screen name="ForgetPass" options={{headerShown: false}}>
           {props => <ForgetPass />}

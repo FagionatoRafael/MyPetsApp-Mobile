@@ -1,5 +1,7 @@
-export const nameValidation = () => {
+import moment from 'moment'
 
+export const nameValidation = (name: string) => {
+    return name.length <= 3 || name.length >= 20; 
 }
 
 export const emailValidation = (email: string) => {
@@ -14,5 +16,9 @@ export const emailValidation = (email: string) => {
 }
 
 export const passwordValidation = (password: string | any[]) => {
-    return password.length < 6;
+    return password.length < 6 || password.length > 20;
+}
+
+export const dateValidation = (date: string) => {
+    return moment().format('DD/MM/YYYY') < date
 }
