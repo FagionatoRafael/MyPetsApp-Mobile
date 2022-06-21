@@ -35,7 +35,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Home" screenOptions={{orientation: 'portrait'}}>
         <Stack.Screen name="Home" options={{headerShown: false}}>
           {props => <Home/>}
         </Stack.Screen>

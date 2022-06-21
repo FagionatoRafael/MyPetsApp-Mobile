@@ -1,10 +1,12 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
+const windowWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
     card: {
         top: 10, 
         margin: 20,
+        width: windowWidth - 30
     },
     fab: {
         position: 'absolute',
