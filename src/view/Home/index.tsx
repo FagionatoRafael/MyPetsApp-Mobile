@@ -40,14 +40,14 @@ const Home = () => {
             <View style={styles.form}>
                 <InputCustom 
                     label='Email' 
-                    invalidText='Email address is invalid!'
+                    invalidText='Email invalido!'
                     text={email} 
                     hasErros={emailError} 
                     onChangeText={onChangeEmail}
                 />
                 <InputCustom 
                     label='Password'
-                    invalidText='Password is invalid!' 
+                    invalidText='Senha invalida!' 
                     text={password} 
                     hasErros={passError} 
                     onChangeText={onChangePassword}

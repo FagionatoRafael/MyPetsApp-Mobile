@@ -8,21 +8,25 @@ import moment from 'moment'
 
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import Container from '../../components/Container';
+import { nameValidation, passwordValidation, emailValidation, dateValidation } from '../../../util/validations';
 
 const Signin = () => {
     const navigation = useNavigation();
 
-    const [text, setText] = useState('');
+    const [name, setName] = useState('');
+    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
     const [dateText, setDateText] = useState('')
     const [hasDate, setDate] = useState<DateTimePickerEvent>();
 
-    const onChangeText = (text: SetStateAction<string>) => setText(text);
- 
-    const hasErrors = () => {
-        return !text.includes('@');
-    };
+    const [nameErr, setNameErr] = useState(false);
+    const [passwordErr, setPasswordErr] = useState(false);
+    const [emailErr, setEmailErr] = useState(false);
+    const [dateErr, setDateErr] = useState(false);
 
-    const [visible, setVisible] = useState(false);
+    const onChangeName = (text: SetStateAction<string>) => setName(text);
+    const onChangePassword = (text: SetStateAction<string>) => setPassword(text);
+    const onChangeEmail = (text: SetStateAction<string>) => setEmail(text);
 
     const onChangeDateTime = (value: DateTimePickerEvent) => {
         if(value.nativeEvent.timestamp) {
@@ -32,7 +36,21 @@ const Signin = () => {
             setVisible(false)
         }
     }
+ 
+    const hasErrorsName = () => {
+        return nameValidation(name)
+    };
+    const hasErrorsPassword = () => {
+        return passwordValidation(password)
+    };
+    const hasErrorsEmail = () => {
+        return emailValidation(email)
+    };
+    const hasErrorsDate = () => {
+        return dateValidation(dateText)
+    };
 
+    const [visible, setVisible] = useState(false);
     const date = new Date();
 
     return (
@@ -41,25 +59,37 @@ const Signin = () => {
                 <Text style={styles.logoText}>Cadastre-se</Text>
             </View>
             <View style={styles.form}>
-               <InputCustom hasErros={hasErrors} label={'Nome'} onChangeText={onChangeText} text={text}/>
-               <InputCustom hasErros={hasErrors} label={'Email'} onChangeText={onChangeText} text={text}/>
-               <InputCustom hasErros={hasErrors} label={'Password'} onChangeText={onChangeText} text={text}/>
+               <InputCustom hasErros={nameErr} label={'Nome'} onChangeText={onChangeName} text={name} invalidText={'Nome deve ser maior de 2 letras!'}/>
+               <InputCustom hasErros={emailErr} label={'Email'} onChangeText={onChangeEmail} text={email} invalidText={'Email Invalido!'}/>
+               <InputCustom hasErros={passwordErr} label={'Password'} onChangeText={onChangePassword} text={password} invalidText={'Senha deve ser maior que 6 letras ou numeros!'}/>
                
                {visible ? 
                 <DateTimePicker 
-                    onChange={(value) => onChangeDateTime(value)}
+                    onChange={(value: any) => onChangeDateTime(value)}
                     value={date}
                 />: <></>}
 
                 <InputCustom 
                     hasTouch={() => setVisible(true)}
-                    hasErros={hasErrors}
-                    label={'Data de nascimento'}
-                    onChangeText={() => onChangeText(text)} 
-                    text={dateText}
-                />
+                    hasErros={dateErr}
+                    label={'Data de aniversario'}
+                    text={dateText} 
+                    invalidText={'A data deve ser anterior a de hoje!'} 
+                    onChangeText={() => console.log('alo')} />
 
-                <Button style={styles.button} mode="contained" onPress={() => console.log('Pressed')}>
+                <Button 
+                    style={styles.button} 
+                    mode="contained" 
+                    onPress={() => {
+                        setNameErr(hasErrorsName())
+                        setPasswordErr(hasErrorsPassword())
+                        setEmailErr(hasErrorsEmail())
+                        setDateErr(hasErrorsDate())
+                        if(!hasErrorsName() && !hasErrorsPassword() && !hasErrorsEmail() && !hasErrorsDate()) {
+                            navigation.navigate('Confirmation')
+                        }
+                    }}
+                >
                     Cadastrar
                 </Button>
 
