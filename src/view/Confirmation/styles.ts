@@ -10,7 +10,8 @@ const styles = StyleSheet.create({
     },
     confirmationText: {
         color: '#05386B', 
-        fontSize: 20
+        fontSize: 20,
+        fontWeight: 'bold'
     }
 });
 
