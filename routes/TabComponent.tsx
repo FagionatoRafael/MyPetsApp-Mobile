@@ -3,6 +3,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import Pets from '../src/view/Pets';
 import Agenda from '../src/view/Agenda';
+import Health from '../src/view/Health';
 
 const Tab = createBottomTabNavigator();
 
@@ -47,7 +48,7 @@ function TabsComponent() {
           tabBarInactiveBackgroundColor: '#5CDB95',
           tabBarInactiveTintColor: '#05386B',
           }} >
-        {propsAgenda => <Agenda />}
+        {propsAgenda => <Health />}
       </Tab.Screen>
     </Tab.Navigator>
   );
