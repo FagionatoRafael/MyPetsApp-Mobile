@@ -7,5 +7,6 @@ export interface IInputProp {
     onChangeText: (value: SetStateAction<string>) => void
     hasErros: boolean
     hasTouch?: () => void
+    hasMask?: boolean
 }
 
