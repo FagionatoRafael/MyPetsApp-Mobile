@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from "react"
+import { IItens } from "./IItens.interface"
 
 export interface IModal {
     title: string
@@ -8,9 +9,3 @@ export interface IModal {
     Itens: Array<IItens>
 }
 
-export interface IItens {
-    id: number | string
-    name?: string
-    ShowedName?: string
-    img?: string
-}

@@ -12,8 +12,7 @@ import moment from 'moment'
 import InputCustom from '../../../components/Input';
 import Container from '../../../components/Container';
 import ModalCustom from '../../../components/Modal';
-import { dateValidation, descriptionValidation, nameValidation, weigthValidadtion } from '../../../../util/validations';
-import { IItens } from '../../../../interfaces/IModal.interface';
+import { dateValidation, descriptionValidation, nameValidation, weigthValidadtion, IItens } from '../../../../util/validations';
 
 const AddPet = () => {
     const navigation = useNavigation();
