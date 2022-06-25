@@ -5,7 +5,7 @@ import styles from "./styles"
 import { IModal } from '../../../interfaces/_interface.interface'; 
 import { useState } from "react";
 
-const ModalCustom: React.FC<IModal> = ({title, showModal, hideModal, setText}) => {
+const ModalCustom: React.FC<IModal> = ({title, showModal, hideModal, setText, Itens}) => {
     // const [text, setText] = useState('');
    
     const containerStyle = {backgroundColor: 'white', padding: 20};
@@ -13,14 +13,17 @@ const ModalCustom: React.FC<IModal> = ({title, showModal, hideModal, setText}) =
     return (
         <Modal visible={showModal} onDismiss={hideModal} contentContainerStyle={containerStyle}>
             <Title>{title}</Title>
-            <Button style={styles.button} mode="contained" onPress={() => {setText('Cachorro')}}>
-                <MaterialCommunityIcons name={'dog'} size={24} color="#05386B" />
-                <Title>Cachorro</Title>
-            </Button>
-            <Button style={styles.button} mode="contained" onPress={() => setText('Gato')}>
+            {Itens.map((value) => {
+                return <Button key={value.id} style={styles.button} mode="contained" onPress={() => {setText(value.ShowedName || '')}}>
+                            <MaterialCommunityIcons name={value.name || 'dog'} size={24} color="#05386B" />
+                            <Title>{value.ShowedName}</Title>
+                        </Button>
+            })}
+            
+            {/* <Button style={styles.button} mode="contained" onPress={() => setText('Gato')}>
                 <MaterialCommunityIcons name={'cat'} size={24} color="#05386B" />
                 <Title>Gato</Title>
-            </Button>
+            </Button> */}
         </Modal>
     )
 }
