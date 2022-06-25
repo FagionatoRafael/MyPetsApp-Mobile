@@ -12,7 +12,8 @@ import moment from 'moment'
 import InputCustom from '../../../components/Input';
 import Container from '../../../components/Container';
 import ModalCustom from '../../../components/Modal';
-import { dateValidation, nameValidation } from '../../../../util/validations';
+import { dateValidation, descriptionValidation, nameValidation, weigthValidadtion } from '../../../../util/validations';
+import { IItens } from '../../../../interfaces/IModal.interface';
 
 const AddPet = () => {
     const navigation = useNavigation();
@@ -64,20 +65,47 @@ const AddPet = () => {
         return nameValidation(breed)
     };
     const hasErrorsWeight = () => {
-        return !name.includes('@');
+        return weigthValidadtion(weight);
     };
     const hasErrorsDescription = () => {
-        return !name.includes('@');
+        return descriptionValidation(description);
     };
 
     const [text, setText] = useState('')
 
     const [visibleModal, setVisibleModal] = useState(false);
+    const [visibleModalBreed, setVisibleModalBreed] = useState(false);
     const [visible, setVisible] = useState(false);
 
     const showModal = () => setVisibleModal(true);
     const hideModal = () => setVisibleModal(false);
-    // const containerStyle = {backgroundColor: 'white', padding: 20};
+
+    const showModalBreed = () => setVisibleModalBreed(true);
+    const hideModalBreed = () => setVisibleModalBreed(false);
+
+    const [itens, setItens] = useState<IItens[]>([{
+        id: 0,
+        name: 'dog',
+        ShowedName: 'cachorro',
+    }, {
+        id: 1,
+        name: 'cat',
+        ShowedName: 'Gato',
+    }])
+
+    const [itensBreedDog, setItensBreed] = useState<IItens[]>([{
+        id: 0,
+        ShowedName: 'pug'
+    }, {
+        id: 1,
+        ShowedName: 'Poddle',
+    }, {
+        id: 2,
+        ShowedName: 'Boxer',
+    }, {
+        id: 3,
+        ShowedName: 'Pincher',
+    }])
 
     return (
         <>
@@ -92,25 +120,35 @@ const AddPet = () => {
                         value={date}
                     />: <></>}
 
-                    <InputCustom label='Nome do Pet' text={name} hasErros={nameErr} onChangeText={onChangeName} invalidText={''}/>
-                    <InputCustom label='Data de nascimento' text={dateText} hasErros={birthdayErr} onChangeText={onChangeBirthday} invalidText={''} hasTouch={() => setVisible(true)}/>
-                    <InputCustom label='Pet' text={pet} hasErros={petErr} onChangeText={onChangePet} hasTouch={showModal} invalidText={''}/>
-                    <InputCustom label='Raça' text={breed} hasErros={breedErr} onChangeText={onChangeBreed} invalidText={''}/>
-                    <InputCustom label='Peso(KG)' text={weight} hasErros={weightErr} onChangeText={onChangeWeight} invalidText={''} hasMask={true}/>    
-                    <InputCustom label='Descrição' text={description} hasErros={descriptionErr} onChangeText={onChangeDescription} invalidText={''}/>    
+                    <InputCustom label='Nome do Pet' text={name} hasErros={nameErr} onChangeText={onChangeName} invalidText={'O nome precisa se acima de 3 letras!'}/>
+                    <InputCustom label='Data de nascimento' text={dateText} hasErros={birthdayErr} onChangeText={() => {}} invalidText={'A data deve ser anterior a de hoje!'} hasTouch={() => setVisible(true)}/>
+                    <InputCustom label='Pet' text={pet} hasErros={petErr} onChangeText={onChangePet} hasTouch={showModal} invalidText={'Um Pet deve ser selecionado!'}/>
+                    <InputCustom label='Raça' text={breed} hasErros={breedErr} onChangeText={onChangeBreed} invalidText={'Uma raça precisa ser selecionada!'} hasTouch={showModalBreed}/>
+                    <InputCustom label='Peso(KG)' text={weight} hasErros={weightErr} onChangeText={onChangeWeight} invalidText={'É necessário colocar um peso!'} hasMask={true}/>    
+                    <InputCustom label='Descrição' text={description} hasErros={descriptionErr} onChangeText={onChangeDescription} invalidText={'A descrição não pode ser vazia e nem maior que 200 letras!'}/>    
 
                     <Button 
                         style={styles.button} 
                         mode="contained" 
                         onPress={() => {
                             setNameErr(hasErrorsName())
+                            setBirthdayErr(hasErrorsBirthday())
+                            setPetErr(hasErrorsPet())
+                            setBreedErr(hasErrorsBreed())
+                            setWeightErr(hasErrorsWeight())
+                            setDescriptionErr(hasErrorsDescription())
+                            console.log(weightErr)
+                            if(!hasErrorsName() && !hasErrorsBirthday() && !hasErrorsPet() && !hasErrorsBreed() && !hasErrorsWeight() && !hasErrorsDescription()) {
+                                navigation.goBack()
+                            }
                         }}
                     >
                         Adicionar
                     </Button>
                 </View>
             </Container>
-            <ModalCustom title='Escolha o pet:' showModal={pet != '' ? false : visibleModal} hideModal={hideModal} setText={setPet}/>
+            <ModalCustom title='Escolha o pet:' showModal={pet != '' ? false : visibleModal} hideModal={hideModal} setText={setPet} Itens={itens}/>
+            <ModalCustom title='Escolha a raça:' showModal={breed != '' ? false : visibleModalBreed} hideModal={hideModalBreed} setText={setBreed} Itens={itensBreedDog}/>
         </>
     );
 }

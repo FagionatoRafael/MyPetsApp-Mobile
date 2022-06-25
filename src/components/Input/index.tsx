@@ -20,6 +20,7 @@ const InputCustom: React.FC<IInputProp> = ({hasTouch, label, text, onChangeText,
                             style={{marginLeft: 10, marginTop: 10,fontSize: 20}}
                             onChangeText={(value) => onChangeText(value)}
                             type='custom'
+                            placeholder='00.00'
                             options={{mask: '99.99'}}
                         />)
                     }

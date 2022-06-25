@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import InputCustom from '../../components/Input';
 import moment from 'moment'
 
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import DateTimePicker, { DateTimePickerResult } from '@react-native-community/datetimepicker';
 import Container from '../../components/Container';
 import { nameValidation, passwordValidation, emailValidation, dateValidation } from '../../../util/validations';
 
@@ -17,7 +17,7 @@ const Signin = () => {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [dateText, setDateText] = useState('')
-    const [hasDate, setDate] = useState<DateTimePickerEvent>();
+    const [hasDate, setDate] = useState<DateTimePickerResult>();
 
     const [nameErr, setNameErr] = useState(false);
     const [passwordErr, setPasswordErr] = useState(false);
@@ -28,12 +28,14 @@ const Signin = () => {
     const onChangePassword = (text: SetStateAction<string>) => setPassword(text);
     const onChangeEmail = (text: SetStateAction<string>) => setEmail(text);
 
-    const onChangeDateTime = (value: DateTimePickerEvent) => {
+    const onChangeDateTime = (value: DateTimePickerResult) => {
+        // console.log(value.day)
         if(value.nativeEvent.timestamp) {
             let novo = moment(new Date(value.nativeEvent.timestamp || 1 * 1000)).format('DD/MM/YYYY');
             setDate(value)
             setDateText(novo)
             setVisible(false)
+            console.log(dateText)
         }
     }
  
@@ -67,6 +69,7 @@ const Signin = () => {
                 <DateTimePicker 
                     onChange={(value: any) => onChangeDateTime(value)}
                     value={date}
+                    // onTouchCancel={(value: any) => setVisible(false)}
                 />: <></>}
 
                 <InputCustom 
@@ -85,6 +88,7 @@ const Signin = () => {
                         setPasswordErr(hasErrorsPassword())
                         setEmailErr(hasErrorsEmail())
                         setDateErr(hasErrorsDate())
+                        console.log(dateText.length)
                         if(!hasErrorsName() && !hasErrorsPassword() && !hasErrorsEmail() && !hasErrorsDate()) {
                             navigation.navigate('Confirmation')
                         }

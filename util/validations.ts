@@ -20,5 +20,13 @@ export const passwordValidation = (password: string | any[]) => {
 }
 
 export const dateValidation = (date: string) => {
-    return moment().format('DD/MM/YYYY') < date
+    return date.length == 0 || moment().format('DD/MM/YYYY') < date
+}
+
+export const weigthValidadtion = (value: string) => {
+    return value.length == 0
+}
+
+export const descriptionValidation = (name: string) => {
+    return name.length <= 3 || name.length >= 200; 
 }

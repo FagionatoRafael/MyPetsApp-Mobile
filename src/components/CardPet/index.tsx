@@ -1,4 +1,4 @@
-import { View, Text } from "react-native"
+import { View, Text, Dimensions } from "react-native"
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
@@ -7,6 +7,8 @@ import styles from "./styles"
 import { ICardPet } from '../../../interfaces/_interface.interface';
 
 const CardPet: React.FC<ICardPet> = ({icon, namePet, birthDay, description}) => {
+    const windowWidth = Dimensions.get('window').width;
+    
     return (
         <Card style={{marginBottom: 10}}>
             <View style={styles.cardContainer}>
@@ -21,7 +23,7 @@ const CardPet: React.FC<ICardPet> = ({icon, namePet, birthDay, description}) => 
             </View>
             <Card.Content style={styles.description}>
                 <Ionicons name="document-text" size={24} color="#05386B" />
-                <Paragraph>{description}</Paragraph>
+                <Paragraph style={{width: windowWidth - 100}}>{description}</Paragraph>
             </Card.Content>
             <Card.Actions style={styles.buttonCard}>
                 <Button color="#EDF5E1">Editar</Button>
