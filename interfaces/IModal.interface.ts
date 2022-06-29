@@ -6,6 +6,8 @@ export interface IModal {
     hideModal: () => void
     setText: Dispatch<SetStateAction<string>>
     Itens: Array<IItens>
+    idIten: number | undefined
+    getId: (value: any) => void
 }
 
 export interface IItens {

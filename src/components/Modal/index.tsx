@@ -5,7 +5,7 @@ import styles from "./styles"
 import { IModal } from '../../../interfaces/_interface.interface'; 
 import { useState } from "react";
 
-const ModalCustom: React.FC<IModal> = ({title, showModal, hideModal, setText, Itens}) => {
+const ModalCustom: React.FC<IModal> = ({title, showModal, hideModal, setText, Itens, idIten, getId}) => {
     // const [text, setText] = useState('');
    
     const containerStyle = {backgroundColor: 'white', padding: 20};
@@ -14,16 +14,20 @@ const ModalCustom: React.FC<IModal> = ({title, showModal, hideModal, setText, It
         <Modal visible={showModal} onDismiss={hideModal} contentContainerStyle={containerStyle}>
             <Title>{title}</Title>
             {Itens.map((value) => {
-                return <Button key={value.id} style={styles.button} mode="contained" onPress={() => {setText(value.ShowedName || '')}}>
-                            <MaterialCommunityIcons name={value.name || 'dog'} size={24} color="#05386B" />
-                            <Title>{value.ShowedName}</Title>
-                        </Button>
+                return (<Button 
+                            key={value.id} 
+                            style={idIten === value.id ? styles.buttonSelected : styles.button} 
+                            mode="contained" 
+                            onPress={() => {
+                                setText(value.ShowedName || '')
+                                getId(value.id)
+                                hideModal()
+                            }}
+                        >
+                            <MaterialCommunityIcons name={value.name || 'dog'} size={24} color={idIten === value.id ? "#8EE4AF" : "#05386B"} />
+                            <Title style={idIten === value.id ? styles.logoTextSelected : {}}>{value.ShowedName}</Title>
+                        </Button>)
             })}
-            
-            {/* <Button style={styles.button} mode="contained" onPress={() => setText('Gato')}>
-                <MaterialCommunityIcons name={'cat'} size={24} color="#05386B" />
-                <Title>Gato</Title>
-            </Button> */}
         </Modal>
     )
 }

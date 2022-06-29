@@ -9,7 +9,7 @@ import { ICardAgenda } from '../../../interfaces/_interface.interface'
 
 const CardAgenda: React.FC<ICardAgenda> = ({icon, namePet, day, hoursOf, hoursTill, itens, editFunc}) => {
     return (
-        <Card style={{marginBottom: 10}}>
+        <Card style={{marginBottom: 10}} key={namePet}>
             <View style={styles.cardContainer}>
                 <Card.Content style={styles.nameIcon}>
                     <MaterialCommunityIcons name={icon} size={24} color="#05386B" />
