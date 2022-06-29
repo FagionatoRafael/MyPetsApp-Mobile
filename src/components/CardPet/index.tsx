@@ -6,7 +6,7 @@ import { Button, Card, Title, Paragraph } from 'react-native-paper';
 import styles from "./styles"
 import { ICardPet } from '../../../interfaces/_interface.interface';
 
-const CardPet: React.FC<ICardPet> = ({icon, namePet, birthDay, description}) => {
+const CardPet: React.FC<ICardPet> = ({icon, namePet, birthDay, description, funcUpdate}) => {
     const windowWidth = Dimensions.get('window').width;
     
     return (
@@ -25,7 +25,7 @@ const CardPet: React.FC<ICardPet> = ({icon, namePet, birthDay, description}) => 
                 <Ionicons name="document-text" size={24} color="#05386B" />
                 <Paragraph style={{width: windowWidth - 100}}>{description}</Paragraph>
             </Card.Content>
-            <Card.Actions style={styles.buttonCard}>
+            <Card.Actions style={styles.buttonCard} onTouchEnd={funcUpdate}>
                 <Button color="#EDF5E1">Editar</Button>
             </Card.Actions>
         </Card>

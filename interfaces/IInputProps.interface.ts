@@ -8,5 +8,6 @@ export interface IInputProp {
     hasErros: boolean
     hasTouch?: () => void
     hasMask?: boolean
+    editable?: boolean
 }
 

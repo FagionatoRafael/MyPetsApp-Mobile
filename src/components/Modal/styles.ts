@@ -11,6 +11,15 @@ const styles = StyleSheet.create({
       padding: 5,
       marginTop: 20
     },
+    buttonSelected: {
+      backgroundColor: '#05386B',
+      padding: 5,
+      marginTop: 20
+    },
+    logoTextSelected: {
+      color: '#8EE4AF',
+      // fontFamily: 'Dosis_400Regular'
+    },
     buttonText: {
       paddingTop: 10
     },

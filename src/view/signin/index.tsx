@@ -29,7 +29,6 @@ const Signin = () => {
     const onChangeEmail = (text: SetStateAction<string>) => setEmail(text);
 
     const onChangeDateTime = (value: DateTimePickerResult) => {
-        // console.log(value.day)
         if(value.nativeEvent.timestamp) {
             let novo = moment(new Date(value.nativeEvent.timestamp || 1 * 1000)).format('DD/MM/YYYY');
             setDate(value)
@@ -88,7 +87,6 @@ const Signin = () => {
                         setPasswordErr(hasErrorsPassword())
                         setEmailErr(hasErrorsEmail())
                         setDateErr(hasErrorsDate())
-                        console.log(dateText.length)
                         if(!hasErrorsName() && !hasErrorsPassword() && !hasErrorsEmail() && !hasErrorsDate()) {
                             navigation.navigate('Confirmation')
                         }

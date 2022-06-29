@@ -1,12 +1,12 @@
 import { View } from 'react-native';
 import styles from './styles';
-import { HelperText, TextInput } from 'react-native-paper';
+import { Button, HelperText, TextInput } from 'react-native-paper';
 import { TextInputMask } from 'react-native-masked-text'
 import { IInputProp } from '../../../interfaces/_interface.interface';
 
-const InputCustom: React.FC<IInputProp> = ({hasTouch, label, text, onChangeText, hasErros, invalidText, hasMask=false}) => {
+const InputCustom: React.FC<IInputProp> = ({hasTouch, label, text, onChangeText, hasErros, invalidText, hasMask=false, editable=true}) => {
     return (
-        <View onTouchStart={hasTouch}>
+        <View onTouchEnd={hasTouch} style={{zIndex: 9999}}>
             {hasMask ?
                 <TextInput 
                     autoComplete={false}
@@ -20,19 +20,22 @@ const InputCustom: React.FC<IInputProp> = ({hasTouch, label, text, onChangeText,
                             style={{marginLeft: 10, marginTop: 10,fontSize: 20}}
                             onChangeText={(value) => onChangeText(value)}
                             type='custom'
-                            placeholder='00.00'
+                            value={text}
                             options={{mask: '99.99'}}
                         />)
                     }
                 /> :
                 <TextInput 
+                    onPressIn={() => hasTouch}
+                    onPressOut={() => hasTouch}
                     autoComplete={false}
-                    style={styles.input}
+                    style={[styles.input, {zIndex: 1}]}
                     mode='outlined' 
                     activeOutlineColor='#05386B'
                     label={label} 
                     value={text} 
                     onChangeText={(value) => onChangeText(value)}
+                    editable={editable}
                 /> 
             }
             {/* <TextInput 

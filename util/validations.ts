@@ -1,7 +1,7 @@
 import moment from 'moment'
 
 export const nameValidation = (name: string) => {
-    return name.length <= 3 || name.length >= 20; 
+    return name.length < 3 || name.length >= 20; 
 }
 
 export const emailValidation = (email: string) => {
