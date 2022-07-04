@@ -153,12 +153,14 @@ const AddPet = () => {
                 <View style={styles.form}>
                     {visible ? 
                     <DateTimePicker 
+                    onTouchEnd={() => console.log('alooo')}
+                        onTouchCancel={(event) => {setVisible(false); console.log(event)}}
                         onChange={(value: any) => onChangeBirthday(value)}
                         value={date}
                     />: <></>}
 
                     <InputCustom label='Nome do Pet' text={name} hasErros={nameErr} onChangeText={onChangeName} invalidText={'O nome precisa se acima de 3 letras!'}/>
-                    <InputCustom label='Data de nascimento' text={dateText} hasErros={birthdayErr} onChangeText={() => {}} invalidText={'A data deve ser anterior a de hoje!'} hasTouch={() => setVisible(true)}/>
+                    <InputCustom label='Data de nascimento' text={dateText} hasErros={birthdayErr} onChangeText={() => {}} invalidText={'A data deve ser anterior a de hoje!'} hasTouch={() => setVisible(true)} editable={false}/>
                     <InputCustom label='Pet' text={pet} hasErros={petErr} onChangeText={onChangePet} hasTouch={showModal} invalidText={'Um Pet deve ser selecionado!'} editable={false}/>
                     <InputCustom label='Raça' text={breed} hasErros={breedErr} onChangeText={onChangeBreed} invalidText={'Uma raça precisa ser selecionada!'} hasTouch={showModalBreed} editable={false}/>
                     <InputCustom label='Peso(KG)' text={weight} hasErros={weightErr} onChangeText={onChangeWeight} invalidText={'É necessário colocar um peso!'} hasMask={true}/>    
