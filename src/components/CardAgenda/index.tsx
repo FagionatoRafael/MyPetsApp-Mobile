@@ -28,19 +28,19 @@ const CardAgenda: React.FC<ICardAgenda> = ({icon, namePet, day, hoursOf, hoursTi
                 <View style={styles.itensTodo}>
                     {itens.map((value) => {
                         if(value === 0) {
-                            return <FontAwesome5 name="volleyball-ball" size={30} color="#05386B" />
+                            return <FontAwesome5 key={value} name="volleyball-ball" size={30} color="#05386B" />
                         }
                         if(value === 1) {
-                            return <Image source={require('../../../assets/medication_icon.png')} style={{width: 30, height: 30}}/>
+                            return <Image key={value} source={require('../../../assets/medication_icon.png')} style={{width: 30, height: 30}}/>
                         }
                         if(value === 2) {
-                            return <Image source={require('../../../assets/dog-collar-icon.png')} style={{width: 30, height: 30}}/>
+                            return <Image key={value} source={require('../../../assets/dog-collar-icon.png')} style={{width: 30, height: 30}}/>
                         }
                         if(value === 3) {
-                            return <Image source={require('../../../assets/dog-dish-icon.png')} style={{width: 30, height: 30}}/>
+                            return <Image key={value} source={require('../../../assets/dog-dish-icon.png')} style={{width: 30, height: 30}}/>
                         }
                         if(value === 4) {
-                            return <Image source={require('../../../assets/shower-icon.png')} style={{width: 30, height: 30}}/>
+                            return <Image key={value} source={require('../../../assets/shower-icon.png')} style={{width: 30, height: 30}}/>
                         }
                     })}
                 </View>

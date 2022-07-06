@@ -11,7 +11,7 @@ function TabsComponent() {
   return (
     <Tab.Navigator screenOptions={{headerShown: false}}>
       <Tab.Screen 
-        name="PetsTab" 
+        name="Pets" 
         options={{
           tabBarIcon: () => {
             return <Ionicons name="paw" size={24} color='#05386B' />

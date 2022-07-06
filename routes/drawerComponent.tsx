@@ -10,12 +10,12 @@ function MyDrawer() {
   return (
     <Drawer.Navigator 
       useLegacyImplementation 
-      initialRouteName="Pets"
+      initialRouteName="PetsDraw"
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{title: 'alo'}}
     >
       <Drawer.Screen
-        name="Pets"
+        name="PetsDraw"
         component={TabsComponent}
         options={{ 
           drawerLabel: 'Pets', 

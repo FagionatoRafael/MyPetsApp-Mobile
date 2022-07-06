@@ -16,6 +16,7 @@ import NavegationThird from './src/view/NavegationHelper/thirdHelp';
 import AddPet from './src/view/Pets/add';
 
 import MyDrawer from './routes/drawerComponent';
+import AddAgenda from './src/view/Agenda/addOrEdit';
 
 type RootStackParamList = {
   Home: object;
@@ -25,7 +26,8 @@ type RootStackParamList = {
   NavegationSecond: object
   NavegationThird: object
   TabsScreen: object;
-  AddPets: undefined;
+  AddPets: object;
+  AddAgenda: object;
   drawer: object
   Confirmation: object
 };
@@ -78,6 +80,21 @@ export default function App() {
             // headerShown: false
           }}>
           {props => <AddPet />}
+        </Stack.Screen>
+        <Stack.Screen  
+          name="AddAgenda" 
+          options={{
+            headerStyle: {
+              backgroundColor: '#5CDB95'
+            },
+            headerTitle: '',
+            headerShadowVisible: false,
+            statusBarHidden: true,
+            headerBackButtonMenuEnabled: true,
+            headerTintColor: '#05386B'
+            // headerShown: false
+          }}>
+          {props => <AddAgenda />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>      

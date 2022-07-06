@@ -86,7 +86,7 @@ const Signin = () => {
                         setNameErr(hasErrorsName())
                         setPasswordErr(hasErrorsPassword())
                         setEmailErr(hasErrorsEmail())
-                        setDateErr(hasErrorsDate())
+                        setDateErr(hasErrorsDate()) 
                         if(!hasErrorsName() && !hasErrorsPassword() && !hasErrorsEmail() && !hasErrorsDate()) {
                             navigation.navigate('Confirmation')
                         }

@@ -20,7 +20,15 @@ export const passwordValidation = (password: string | any[]) => {
 }
 
 export const dateValidation = (date: string) => {
-    return date.length == 0 || moment().format('DD/MM/YYYY') < date
+    return moment(date, 'DD/MM/YYYY').fromNow().split(' ')[0] === 'in'
+}
+
+export const dateAgendaValidation = (date: string) => {
+    return moment(date, 'DD/MM/YYYY').fromNow().split(' ')[2] == 'ago'
+}
+
+export const timeValidation = (time: string) => {
+    return time.length === 0
 }
 
 export const weigthValidadtion = (value: string) => {
