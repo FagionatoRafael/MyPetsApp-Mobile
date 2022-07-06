@@ -43,6 +43,7 @@ const Home = () => {
                     invalidText='Email invalido!'
                     text={email} 
                     hasErros={emailError} 
+                    keyboardType={'email-address'}
                     onChangeText={onChangeEmail}
                 />
                 <InputCustom 
@@ -50,6 +51,7 @@ const Home = () => {
                     invalidText='Senha invalida!' 
                     text={password} 
                     hasErros={passError} 
+                    secureTextEntry={true}
                     onChangeText={onChangePassword}
                 />
 

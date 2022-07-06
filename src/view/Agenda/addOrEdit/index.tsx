@@ -1,6 +1,6 @@
 import { Dimensions, Text, View } from 'react-native';
 import styles from './styles';
-import { Button } from 'react-native-paper';
+import { Button, HelperText } from 'react-native-paper';
 import React, { SetStateAction, useState } from 'react';
 import { useFonts, Dosis_400Regular } from '@expo-google-fonts/dosis';
 import { useNavigation } from '@react-navigation/native';
@@ -10,7 +10,7 @@ import moment from 'moment'
 import InputCustom from '../../../components/Input';
 import Container from '../../../components/Container';
 import ModalCustom from '../../../components/Modal';
-import { dateAgendaValidation, dateValidation, nameValidation, timeValidation } from '../../../../util/validations';
+import { cardAgendaValidation, dateAgendaValidation, dateValidation, nameValidation, timeValidation } from '../../../../util/validations';
 import { IItens } from '../../../../interfaces/IModal.interface';
 import CardSelect from '../../../components/CardSelect';
 
@@ -53,6 +53,7 @@ const AddAgenda = () => {
     const [timeDasErr, setTimeDasErr] = useState(false);
     const [timeTillErr, setTimeTillErr] = useState(false);
     const [petErr, setPetErr] = useState(false);
+    const [cardErr, setCardErr] = useState(false);
 
     const onChangePet = (text: SetStateAction<string>) => setPet(text);
     const onChangeDate = (value: DateTimePickerEvent) => {
@@ -86,14 +87,17 @@ const AddAgenda = () => {
         return dateAgendaValidation(dateText)
     };
     const hasErrorsTimeDas = () => {
-        return timeValidation(dateText)
+        return timeValidation(timeTextDas, timeTextTill)
     };
     const hasErrorsTimeTill = () => {
-        return timeValidation(dateText)
+        return timeValidation(timeTextDas, timeTextTill)
     };
     const hasErrorsPet = () => {
         return nameValidation(pet)
     };
+    const hasCardSelectedErr = () => {
+        return cardAgendaValidation(idsCard.filter((value) => value !== undefined))
+    }
 
     const [visibleModal, setVisibleModal] = useState(false);
     const [visible, setVisible] = useState(false);
@@ -173,8 +177,8 @@ const AddAgenda = () => {
                     <InputCustom label='Escolha seu pet' text={pet} hasErros={petErr} onChangeText={onChangePet} hasTouch={showModal} invalidText={'Um Pet deve ser selecionado!'} editable={false}/>
                     <InputCustom label='Data da atividade' text={dateText} hasErros={DateErr} onChangeText={() => {}} invalidText={'A data deve ser posterior a de hoje!'} hasTouch={() => setVisible(true)} editable={false}/>
                     <View style={{display: 'flex', flexDirection: 'row', width: 200}}>
-                        <InputCustom  label='Das' text={timeTextDas} hasErros={timeDasErr} onChangeText={() => {}} invalidText={'O tempo não pode ser vazio!'} hasTouch={() => setVisibleDas(true)} editable={false} smallInput={true}/>
-                        <InputCustom label='Até' text={timeTextTill} hasErros={timeTillErr} onChangeText={() => {}} invalidText={'O tempo não pode ser vazio!'} hasTouch={() => setVisibleTill(true)} editable={false} smallInput={true}/>
+                        <InputCustom  label='Das' text={timeTextDas} hasErros={timeDasErr} onChangeText={() => {}} invalidText={'Tempo deve ser anterior o tempo até!'} hasTouch={() => setVisibleDas(true)} editable={false} smallInput={true}/>
+                        <InputCustom label='Até' text={timeTextTill} hasErros={timeTillErr} onChangeText={() => {}} invalidText={'Tempo deve ser Posterior o tempo Das!'} hasTouch={() => setVisibleTill(true)} editable={false} smallInput={true}/>
                     </View>
 
                     <View style={{display: 'flex', flexWrap: 'wrap',flexDirection: 'row', maxWidth: windowWidth -50}}>  
@@ -189,7 +193,7 @@ const AddAgenda = () => {
                                         idsCard.push(id)
                                         idsCard.sort()
                                     } else {
-                                        delete idsCard[id]
+                                        delete idsCard[idsCard.findIndex((value) => value === id)]
                                     }
                                     
                                 } 
@@ -209,7 +213,7 @@ const AddAgenda = () => {
                                         idsCard.push(id)
                                         idsCard.sort()
                                     } else {
-                                        delete idsCard[id]
+                                        delete idsCard[idsCard.findIndex((value) => value === id)]
                                     }
                                 } 
                             }}
@@ -228,7 +232,7 @@ const AddAgenda = () => {
                                         idsCard.push(id)
                                         idsCard.sort()
                                     } else {
-                                        delete idsCard[id]
+                                        delete idsCard[idsCard.findIndex((value) => value === id)]
                                     }
                                 } 
                             }}
@@ -247,7 +251,7 @@ const AddAgenda = () => {
                                         idsCard.push(id)
                                         idsCard.sort()
                                     } else {
-                                        delete idsCard[id]
+                                        delete idsCard[idsCard.findIndex((value) => value === id)]
                                     }
                                 } 
                             }}
@@ -266,13 +270,16 @@ const AddAgenda = () => {
                                         idsCard.push(id)
                                         idsCard.sort()
                                     } else {
-                                        delete idsCard[id]
+                                        delete idsCard[idsCard.findIndex((value) => value === id)]
                                     }
                                 } 
                             }}
                         >
                             <SVGBall width={'80%'} height={'50%'}/>
-                        </CardSelect>     
+                        </CardSelect>  
+                        <HelperText type="error" visible={cardErr}>
+                            Selecione pelo menos um card!
+                        </HelperText>  
                     </View>
 
                     <Button 
@@ -283,6 +290,7 @@ const AddAgenda = () => {
                             setTimeDasErr(hasErrorsTimeDas())
                             setTimeTillErr(hasErrorsTimeTill())
                             setPetErr(hasErrorsPet())
+                            setCardErr(hasCardSelectedErr())
                             console.log(idsCard.filter((value) => value !== undefined))
                             if(!hasErrorsDate() && !hasErrorsPet() && !hasErrorsTimeDas() && !hasErrorsTimeTill()) {
                                 navigation.goBack()
