@@ -4,7 +4,7 @@ import { Button, HelperText, TextInput } from 'react-native-paper';
 import { TextInputMask } from 'react-native-masked-text'
 import { IInputProp } from '../../../interfaces/_interface.interface';
 
-const InputCustom: React.FC<IInputProp> = ({hasTouch, label, text, onChangeText, hasErros, invalidText, hasMask=false, editable=true}) => {
+const InputCustom: React.FC<IInputProp> = ({hasTouch, label, text, onChangeText, hasErros, invalidText, hasMask=false, editable=true, smallInput=false}) => {
     return (
         <View onTouchEnd={hasTouch} style={{zIndex: 9999}}>
             {hasMask ?
@@ -29,7 +29,7 @@ const InputCustom: React.FC<IInputProp> = ({hasTouch, label, text, onChangeText,
                     onPressIn={() => hasTouch}
                     onPressOut={() => hasTouch}
                     autoComplete={false}
-                    style={[styles.input, {zIndex: 1}]}
+                    style={[styles.input, {zIndex: 1, maxWidth: smallInput ? 160 : undefined}]}
                     mode='outlined' 
                     activeOutlineColor='#05386B'
                     label={label} 

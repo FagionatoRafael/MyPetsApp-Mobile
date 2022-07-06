@@ -5,3 +5,4 @@ export * from './IContainer.interface';
 export * from './IContainerCards.interface';
 export * from './ICardHealth.interface';
 export * from './IModal.interface';
+export * from './ICardSelect.interface';

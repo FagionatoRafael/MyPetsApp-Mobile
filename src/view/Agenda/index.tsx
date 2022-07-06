@@ -3,10 +3,13 @@ import CardPet from "../../components/CardPet";
 import React from "react";
 import ContainerCards from "../../components/ContainerCards";
 import CardAgenda from "../../components/CardAgenda";
+import { useNavigation } from "@react-navigation/native";
 
 const Agenda = () => {
+    const navigation = useNavigation();
+    
     return (
-        <ContainerCards text="Agenda" funcNavi={() => alert('aloo')}>
+        <ContainerCards text="Agenda" funcNavi={() => navigation.navigate('AddAgenda')}>
             <CardAgenda 
                 icon={'dog'} 
                 namePet={"Frank"} 

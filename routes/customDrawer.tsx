@@ -29,7 +29,7 @@ function CustomDrawerContent(props: any) {
         label="Pets"
         labelStyle={{color: '#EDF5E1'}}
         style={{backgroundColor: '#8EE4AF'}}
-        onPress={() => {navigation.navigate('PetsTab') }}
+        onPress={() => {navigation.navigate('Pets') }}
       />
       <DrawerItem
         label="Configurações"
