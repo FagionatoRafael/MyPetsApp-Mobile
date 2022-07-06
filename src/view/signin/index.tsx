@@ -77,7 +77,8 @@ const Signin = () => {
                     label={'Data de aniversario'}
                     text={dateText} 
                     invalidText={'A data deve ser anterior a de hoje!'} 
-                    onChangeText={() => console.log('alo')} />
+                    onChangeText={() => console.log('alo')} 
+                    editable={false}/>
 
                 <Button 
                     style={styles.button} 

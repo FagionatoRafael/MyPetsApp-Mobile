@@ -10,5 +10,8 @@ export interface IInputProp {
     hasMask?: boolean
     editable?: boolean
     smallInput?: boolean
+    multiline?: boolean
+    keyboardType?: 'default' | 'email-address',
+    secureTextEntry?: boolean
 }
 

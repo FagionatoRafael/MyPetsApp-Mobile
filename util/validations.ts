@@ -20,15 +20,17 @@ export const passwordValidation = (password: string | any[]) => {
 }
 
 export const dateValidation = (date: string) => {
-    return moment(date, 'DD/MM/YYYY').fromNow().split(' ')[0] === 'in'
+    return date === '' || moment(date, 'DD/MM/YYYY').fromNow().split(' ')[0] === 'in'
 }
 
 export const dateAgendaValidation = (date: string) => {
-    return moment(date, 'DD/MM/YYYY').fromNow().split(' ')[2] == 'ago'
+    return date === '' || moment(date, 'DD/MM/YYYY').fromNow().split(' ')[2] == 'ago'
 }
 
-export const timeValidation = (time: string) => {
-    return time.length === 0
+export const timeValidation = (beginningTime: string, endTime: string) => {
+    return beginningTime.length === 0 
+        || endTime.length === 0 
+        || moment(beginningTime, 'HH:mm').isAfter(moment(endTime, 'HH:mm'))
 }
 
 export const weigthValidadtion = (value: string) => {
@@ -37,4 +39,8 @@ export const weigthValidadtion = (value: string) => {
 
 export const descriptionValidation = (name: string) => {
     return name.length <= 3 || name.length >= 200; 
+}
+
+export const cardAgendaValidation = (arr: number[]) => {
+    return arr.length === 0
 }
