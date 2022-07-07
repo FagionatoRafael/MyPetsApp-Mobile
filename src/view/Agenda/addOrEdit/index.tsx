@@ -21,14 +21,12 @@ import SVGMedication from '../../../../assets/medication_icon.svg';
 import SVGBall from '../../../../assets/ball-icon.svg';
 
 interface IParams {
-    pet: string,
-    petId: number,
-    namePet: string,
-    birthday: string,
-    description: string,
-    breed: string,
-    breedId: number,
-    weight: string
+    icon: string
+    namePet: string
+    day: string
+    hoursOf: string
+    hoursTill: string
+    itens: number[]
 }
 
 const AddAgenda = () => {
@@ -120,6 +118,7 @@ const AddAgenda = () => {
     const [title, setTitle] = useState('')
     const [button, setButton] = useState('')
     const [idsCard, setIdsCard] = useState<number[]>([])
+    const [itensCard, setItensCard] = useState<number[]>([])
     const [id, setId] = useState<number>()
 
     const [selected0, setSelected0] = useState<boolean>(false) 
@@ -133,8 +132,29 @@ const AddAgenda = () => {
         setTitle('Adicione uma agenda')
         setButton('Adicionar')
         if(params) {
-            setDateText(params.birthday)
-            setPet(params.pet)
+            setDateText(params.day)
+            setPet(params.namePet)
+            setTimeTextDas(params.hoursOf)
+            setTimeTextTill(params.hoursTill)
+            setIdsCard(params.itens)
+            params.itens.map((value) => {
+                if(value === 0) {
+                    setSelected0(true)
+                }
+                if(value === 1) {
+                    setSelected1(true)
+                }
+                if(value === 2) {
+                    setSelected2(true)
+                }
+                if(value === 3) {
+                    setSelected3(true)
+                }
+                if(value === 4) {
+                    setSelected4(true)
+                }
+            })
+            setItensCard(params.itens)
             setTitle('Altere a agenda')
             setButton('Alterar')
         }
@@ -291,8 +311,8 @@ const AddAgenda = () => {
                             setTimeTillErr(hasErrorsTimeTill())
                             setPetErr(hasErrorsPet())
                             setCardErr(hasCardSelectedErr())
-                            console.log(idsCard.filter((value) => value !== undefined))
-                            if(!hasErrorsDate() && !hasErrorsPet() && !hasErrorsTimeDas() && !hasErrorsTimeTill()) {
+                            console.log(idsCard)
+                            if(!hasErrorsDate() && !hasErrorsPet() && !hasErrorsTimeDas() && !hasErrorsTimeTill() && !hasCardSelectedErr()) {
                                 navigation.goBack()
                             }
                         }}
