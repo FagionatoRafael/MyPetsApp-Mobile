@@ -7,6 +7,12 @@ import styles from "./styles"
 import { AntDesign } from '@expo/vector-icons';
 import { ICardAgenda } from '../../../interfaces/_interface.interface'
 
+// import SVGBowl from '../../../../assets/dog-dish-icon.svg';
+// import SVGCollar from '../../../../assets/dog-collar-icon.svg';
+// import SVGShower from '../../../../assets/shower-icon.svg';
+// import SVGMedication from '../../../../assets/medication_icon.svg';
+// import SVGBall from '../../../../assets/ball-icon.svg';
+
 const CardAgenda: React.FC<ICardAgenda> = ({icon, namePet, day, hoursOf, hoursTill, itens, editFunc}) => {
     return (
         <Card style={{marginBottom: 10}} key={namePet}>
@@ -28,24 +34,24 @@ const CardAgenda: React.FC<ICardAgenda> = ({icon, namePet, day, hoursOf, hoursTi
                 <View style={styles.itensTodo}>
                     {itens.map((value) => {
                         if(value === 0) {
-                            return <FontAwesome5 key={value} name="volleyball-ball" size={30} color="#05386B" />
-                        }
-                        if(value === 1) {
-                            return <Image key={value} source={require('../../../assets/medication_icon.png')} style={{width: 30, height: 30}}/>
-                        }
-                        if(value === 2) {
-                            return <Image key={value} source={require('../../../assets/dog-collar-icon.png')} style={{width: 30, height: 30}}/>
-                        }
-                        if(value === 3) {
                             return <Image key={value} source={require('../../../assets/dog-dish-icon.png')} style={{width: 30, height: 30}}/>
                         }
-                        if(value === 4) {
+                        if(value === 1) {
+                            return <Image key={value} source={require('../../../assets/dog-collar-icon.png')} style={{width: 30, height: 30}}/>
+                        }
+                        if(value === 2) {
                             return <Image key={value} source={require('../../../assets/shower-icon.png')} style={{width: 30, height: 30}}/>
+                        }
+                        if(value === 3) {
+                            return <Image key={value} source={require('../../../assets/medication_icon.png')} style={{width: 30, height: 30}}/>
+                        }
+                        if(value === 4) {
+                            return <FontAwesome5 key={value} name="volleyball-ball" size={30} color="#05386B" />
                         }
                     })}
                 </View>
             </Card.Content>
-            <Card.Actions style={styles.buttonCard} onTouchStart={() => editFunc()}>
+            <Card.Actions style={styles.buttonCard} onTouchEnd={editFunc}>
                 <Button color="#EDF5E1">Editar</Button>
             </Card.Actions>
         </Card>
