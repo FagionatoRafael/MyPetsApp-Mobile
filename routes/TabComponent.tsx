@@ -1,9 +1,10 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons'; 
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import Pets from '../src/view/Pets';
 import Agenda from '../src/view/Agenda';
 import Health from '../src/view/Health';
+import Vaccine from '../src/view/Vaccine';
 
 const Tab = createBottomTabNavigator();
 
@@ -49,6 +50,19 @@ function TabsComponent() {
           tabBarInactiveTintColor: '#05386B',
           }} >
         {propsAgenda => <Health />}
+      </Tab.Screen>
+      <Tab.Screen 
+        name="Vaccine" 
+        options={{
+          tabBarIcon: () => {
+            return <FontAwesome5 name="syringe" size={24} color="#05386B" />
+          },
+          tabBarActiveTintColor: '#05386B',
+          tabBarActiveBackgroundColor: '#EDF5E1',
+          tabBarInactiveBackgroundColor: '#5CDB95',
+          tabBarInactiveTintColor: '#05386B',
+          }} >
+        {propsAgenda => <Vaccine />}
       </Tab.Screen>
     </Tab.Navigator>
   );

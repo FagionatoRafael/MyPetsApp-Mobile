@@ -5,6 +5,7 @@ import { TextInputMask } from 'react-native-masked-text'
 import React, { SetStateAction, useState } from 'react';
 import { useFonts, Dosis_400Regular } from '@expo-google-fonts/dosis';
 import { useNavigation } from '@react-navigation/native';
+import { Feather } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import moment from 'moment'
@@ -43,6 +44,7 @@ const AddPet = () => {
     const [idBreed, setIdBreed] = useState<number>()
     const [weight, setWeight] = useState('');
     const [description, setDescription] = useState('');
+    const [deleteBotton, setDeleteBotton] = useState(false)
 
     const [nameErr, setNameErr] = useState(false);
     const [birthdayErr, setBirthdayErr] = useState(false);
@@ -139,6 +141,7 @@ const AddPet = () => {
             setIdBreed(params.breedId)
             setTitle('Altere seu pet')
             setButton('Alterar')
+            setDeleteBotton(true)
         }
         setVisibleModal(false)
         setVisibleModalBreed(false)
@@ -165,24 +168,30 @@ const AddPet = () => {
                     <InputCustom label='Raça' text={breed} hasErros={breedErr} onChangeText={onChangeBreed} invalidText={'Uma raça precisa ser selecionada!'} hasTouch={showModalBreed} editable={false}/>
                     <InputCustom label='Peso(KG)' text={weight} hasErros={weightErr} onChangeText={onChangeWeight} invalidText={'É necessário colocar um peso!'} hasMask={true}/>    
                     <InputCustom label='Descrição' text={description} hasErros={descriptionErr} onChangeText={onChangeDescription} multiline={true} invalidText={'A descrição não pode ser vazia e nem maior que 200 letras!'}/>    
-
-                    <Button 
-                        style={styles.button} 
-                        mode="contained" 
-                        onPress={() => {
-                            setNameErr(hasErrorsName())
-                            setBirthdayErr(hasErrorsBirthday())
-                            setPetErr(hasErrorsPet())
-                            setBreedErr(hasErrorsBreed())
-                            setWeightErr(hasErrorsWeight())
-                            setDescriptionErr(hasErrorsDescription())
-                            if(!hasErrorsName() && !hasErrorsBirthday() && !hasErrorsPet() && !hasErrorsBreed() && !hasErrorsWeight() && !hasErrorsDescription()) {
-                                navigation.goBack()
-                            }
-                        }}
-                    >
-                        {button}
-                    </Button>
+                    
+                    <View style={styles.groupButtons}>
+                        <Button 
+                            style={[styles.button, !deleteBotton ? {width: '100%'} : {}]} 
+                            mode="contained" 
+                            onPress={() => {
+                                setNameErr(hasErrorsName())
+                                setBirthdayErr(hasErrorsBirthday())
+                                setPetErr(hasErrorsPet())
+                                setBreedErr(hasErrorsBreed())
+                                setWeightErr(hasErrorsWeight())
+                                setDescriptionErr(hasErrorsDescription())
+                                if(!hasErrorsName() && !hasErrorsBirthday() && !hasErrorsPet() && !hasErrorsBreed() && !hasErrorsWeight() && !hasErrorsDescription()) {
+                                    navigation.goBack()
+                                }
+                            }}
+                        >
+                            {button}
+                        </Button>
+                        {deleteBotton ? (<Button  mode="contained" style={styles.deleteButtom}>
+                            <Feather name="trash-2" size={22} color="white" />
+                        </Button>): <></>}
+                    </View>
+                    
                 </View>
             </Container>
             <ModalCustom 
