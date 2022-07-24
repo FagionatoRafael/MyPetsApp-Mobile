@@ -18,6 +18,7 @@ import AddPet from './src/view/Pets/add';
 import MyDrawer from './routes/drawerComponent';
 import AddAgenda from './src/view/Agenda/addOrEdit';
 import AddVaccine from './src/view/Vaccine/addOrEdit';
+import EditUser from './src/view/EditUser/inde';
 
 type RootStackParamList = {
   Home: object;
@@ -31,7 +32,8 @@ type RootStackParamList = {
   AddAgenda: object;
   AddVaccine: object;
   drawer: object;
-  Confirmation: object
+  Confirmation: object;
+  EditUser: object
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -112,6 +114,21 @@ export default function App() {
             // headerShown: false
           }}>
           {props => <AddVaccine />}
+        </Stack.Screen>
+        <Stack.Screen  
+          name="EditUser" 
+          options={{
+            headerStyle: {
+              backgroundColor: '#5CDB95'
+            },
+            headerTitle: '',
+            headerShadowVisible: false,
+            statusBarHidden: true,
+            headerBackButtonMenuEnabled: true,
+            headerTintColor: '#05386B'
+            // headerShown: false
+          }}>
+          {props => <EditUser />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>      
