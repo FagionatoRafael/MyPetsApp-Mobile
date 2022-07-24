@@ -1,16 +1,17 @@
 import { SafeAreaView, Text, View, Image, TextInput } from 'react-native';
 import styles from './styles';
 import { Button } from 'react-native-paper';
-import React, { SetStateAction, useCallback, useState } from 'react';
+import React, { SetStateAction, useCallback, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import InputCustom from '../../components/Input';
 import moment from 'moment'
+import { Feather } from '@expo/vector-icons';
 
 import DateTimePicker, { DateTimePickerResult } from '@react-native-community/datetimepicker';
 import Container from '../../components/Container';
 import { nameValidation, passwordValidation, emailValidation, dateValidation } from '../../../util/validations';
 
-const Signin = () => {
+const EditUser = () => {
     const navigation = useNavigation();
 
     const [name, setName] = useState('');
@@ -18,6 +19,7 @@ const Signin = () => {
     const [email, setEmail] = useState('');
     const [dateText, setDateText] = useState('')
     const [hasDate, setDate] = useState<DateTimePickerResult>();
+    const [deleteBotton, setDeleteBotton] = useState(true)
 
     const [nameErr, setNameErr] = useState(false);
     const [passwordErr, setPasswordErr] = useState(false);
@@ -54,15 +56,25 @@ const Signin = () => {
     const [visible, setVisible] = useState(false);
     const date = new Date();
 
+    useEffect(() => {
+        const params = navigation.getState().routes[3].params
+        if(params) {
+            setName('Rafael')
+            setEmail('Rafael@mail.com')
+            setPassword('jdsncjsdn')
+            setDateText('14/01/2000')
+        }
+    }, [])
+
     return (
-        <Container>
+        <Container margin={false}>
             <View style={styles.logoContainer}>
-                <Text style={styles.logoText}>Cadastre-se</Text>
+                <Text style={styles.logoText}>Altere seus dados</Text>
             </View>
             <View style={styles.form}>
                <InputCustom hasErros={nameErr} label={'Nome'} onChangeText={onChangeName} text={name} invalidText={'Nome deve ser maior de 2 letras!'}/>
-               <InputCustom hasErros={emailErr} label={'Email'} onChangeText={onChangeEmail} text={email} invalidText={'Email Invalido!'} keyboardType={'email-address'}/>
-               <InputCustom hasErros={passwordErr} label={'Password'} onChangeText={onChangePassword} text={password} invalidText={'Senha deve ser maior que 6 letras ou numeros!'} secureTextEntry={true}/>
+               <InputCustom hasErros={emailErr} label={'Email'} onChangeText={onChangeEmail} text={email} invalidText={'Email Invalido!'}/>
+               <InputCustom secureTextEntry={true} hasErros={passwordErr} label={'Password'} onChangeText={onChangePassword} text={password} invalidText={'Senha deve ser maior que 6 letras ou numeros!'}/>
                
                {visible ? 
                 <DateTimePicker 
@@ -80,33 +92,29 @@ const Signin = () => {
                     onChangeText={() => console.log('alo')} 
                     editable={false}/>
 
-                <Button 
-                    style={styles.button} 
-                    mode="contained" 
-                    onPress={() => {
-                        setNameErr(hasErrorsName())
-                        setPasswordErr(hasErrorsPassword())
-                        setEmailErr(hasErrorsEmail())
-                        setDateErr(hasErrorsDate()) 
-                        if(!hasErrorsName() && !hasErrorsPassword() && !hasErrorsEmail() && !hasErrorsDate()) {
-                            navigation.navigate('Confirmation')
-                        }
-                    }}
-                >
-                    Cadastrar
-                </Button>
-
-                <Button 
-                    style={styles.buttonText} 
-                    color='#05386B' 
-                    mode="text" 
-                    onPress={() => navigation.navigate('Home')}
-                >
-                    Voltar
-                </Button>
+                <View style={styles.groupButtons}>
+                    <Button 
+                        style={[styles.button, !deleteBotton ? {width: '100%'} : {}]} 
+                        mode="contained" 
+                        onPress={() => {
+                            setNameErr(hasErrorsName())
+                            setPasswordErr(hasErrorsPassword())
+                            setEmailErr(hasErrorsEmail())
+                            setDateErr(hasErrorsDate()) 
+                            if(!hasErrorsName() && !hasErrorsPassword() && !hasErrorsEmail() && !hasErrorsDate()) {
+                                navigation.goBack()
+                            }
+                        }}
+                    >
+                        Alterar
+                    </Button>
+                    {deleteBotton ? (<Button  mode="contained" style={styles.deleteButtom}>
+                        <Feather name="trash-2" size={22} color="white" />
+                    </Button>): <></>}
+                </View>
             </View>
         </Container>
     );
 }
 
-export default Signin;
+export default EditUser;

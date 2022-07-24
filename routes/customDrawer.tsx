@@ -6,9 +6,12 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView, Text, View, Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import { useState } from 'react';
 
 function CustomDrawerContent(props: any) {
   const navigation = useNavigation();
+
+  const [token, setToken] = useState({validation: 'jdsnvasndjvdfinjdfnjvdfnkmksd'});
 
   return (
     <DrawerContentScrollView {...props} style={{backgroundColor: '#5CDB95', height: '100%'}}>
@@ -32,6 +35,12 @@ function CustomDrawerContent(props: any) {
         onPress={() => {navigation.navigate('Pets') }}
       />
       <DrawerItem
+        label="Editar dados"
+        labelStyle={{color: '#EDF5E1'}}
+        style={{backgroundColor: '#8EE4AF'}}
+        onPress={() => {navigation.navigate('EditUser', token) }}
+      />
+      <DrawerItem
         label="Configurações"
         labelStyle={{color: '#EDF5E1'}}
         style={{backgroundColor: '#8EE4AF'}}
@@ -43,18 +52,6 @@ function CustomDrawerContent(props: any) {
         style={{backgroundColor: '#FF0000'}}
         onPress={() => navigation.navigate('Home')}
       />
-      <Text 
-        style={{
-          display: 'flex',
-          width: '100%',
-          paddingTop: '10%',
-          textAlign: 'center',
-          marginTop: '160%', 
-          color: '#EDF5E1',
-          borderColor: '#EDF5E1',
-          borderTopWidth: 2
-        }} 
-        onPress={() => alert('versão 1.0.0')}>Versão 1.0.0</Text>
     </DrawerContentScrollView>
   );
 }
