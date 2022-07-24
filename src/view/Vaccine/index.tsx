@@ -1,8 +1,6 @@
 import { View, ScrollView, Text} from "react-native"
-import CardPet from "../../components/CardPet";
 import React, { useState } from "react";
 import ContainerCards from "../../components/ContainerCards";
-import CardAgenda from "../../components/CardAgenda";
 import { useNavigation } from "@react-navigation/native";
 import CardVaccine from "../../components/CardVaccine";
 
