@@ -23,7 +23,7 @@ const Vaccine = () => {
     }])
     
     return (
-        <ContainerCards text="Vacinas" funcNavi={() => navigation.navigate('AddAgenda')}>
+        <ContainerCards text="Vacinas" funcNavi={() => navigation.navigate('AddVaccine')}>
             {vaccines.map((value, index) => {
                 return <CardVaccine 
                     key={index}
@@ -32,7 +32,7 @@ const Vaccine = () => {
                     day={value.day}
                     vaccine={value.vaccine} 
                     description={value.description}
-                    editFunc={() => navigation.navigate('AddAgenda', value)}                 
+                    editFunc={() => navigation.navigate('AddVaccine', value)}                 
                 />
             })}
         </ContainerCards>

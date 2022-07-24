@@ -7,9 +7,21 @@ const styles = StyleSheet.create({
       margin: 20
     },
     button: {
+      width: '80%',
       backgroundColor: '#8EE4AF',
       padding: 5,
       marginTop: 20
+    },
+    groupButtons: {
+        display: 'flex', 
+        flexDirection: 'row', 
+        justifyContent: 'space-around', 
+        alignItems: 'center'
+    },
+    deleteButtom: {
+        backgroundColor: 'red', 
+        height: 50, 
+        marginTop:'5%'
     },
     buttonText: {
       paddingTop: 10

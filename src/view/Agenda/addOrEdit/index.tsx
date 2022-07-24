@@ -4,6 +4,7 @@ import { Button, HelperText } from 'react-native-paper';
 import React, { SetStateAction, useState } from 'react';
 import { useFonts, Dosis_400Regular } from '@expo-google-fonts/dosis';
 import { useNavigation } from '@react-navigation/native';
+import { Feather } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import moment from 'moment'
 
@@ -46,6 +47,7 @@ const AddAgenda = () => {
     const [timeDas, setTimeDas] = useState<DateTimePickerEvent>();
     const [timeTill, setTimeTill] = useState<DateTimePickerEvent>();
     const [pet, setPet] = useState('');
+    const [deleteBotton, setDeleteBotton] = useState(false)
 
     const [DateErr, setDateErr] = useState(false);
     const [timeDasErr, setTimeDasErr] = useState(false);
@@ -157,6 +159,7 @@ const AddAgenda = () => {
             setItensCard(params.itens)
             setTitle('Altere a agenda')
             setButton('Alterar')
+            setDeleteBotton(true)
         }
         setVisibleModal(false)
     }, [])
@@ -301,24 +304,29 @@ const AddAgenda = () => {
                             Selecione pelo menos um card!
                         </HelperText>  
                     </View>
-
-                    <Button 
-                        style={styles.button} 
-                        mode="contained" 
-                        onPress={() => {
-                            setDateErr(hasErrorsDate())
-                            setTimeDasErr(hasErrorsTimeDas())
-                            setTimeTillErr(hasErrorsTimeTill())
-                            setPetErr(hasErrorsPet())
-                            setCardErr(hasCardSelectedErr())
-                            console.log(idsCard)
-                            if(!hasErrorsDate() && !hasErrorsPet() && !hasErrorsTimeDas() && !hasErrorsTimeTill() && !hasCardSelectedErr()) {
-                                navigation.goBack()
-                            }
-                        }}
-                    >
-                        {button}
-                    </Button>
+                    
+                    <View style={styles.groupButtons}>
+                        <Button 
+                            style={[styles.button, !deleteBotton ? {width: '100%'} : {}]} 
+                            mode="contained" 
+                            onPress={() => {
+                                setDateErr(hasErrorsDate())
+                                setTimeDasErr(hasErrorsTimeDas())
+                                setTimeTillErr(hasErrorsTimeTill())
+                                setPetErr(hasErrorsPet())
+                                setCardErr(hasCardSelectedErr())
+                                console.log(idsCard)
+                                if(!hasErrorsDate() && !hasErrorsPet() && !hasErrorsTimeDas() && !hasErrorsTimeTill() && !hasCardSelectedErr()) {
+                                    navigation.goBack()
+                                }
+                            }}
+                        >
+                            {button}
+                        </Button>
+                        {deleteBotton ? (<Button  mode="contained" style={styles.deleteButtom}>
+                            <Feather name="trash-2" size={22} color="white" />
+                        </Button>): <></>}
+                    </View>
                 </View>
             </Container>
             <ModalCustom 

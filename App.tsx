@@ -17,6 +17,7 @@ import AddPet from './src/view/Pets/add';
 
 import MyDrawer from './routes/drawerComponent';
 import AddAgenda from './src/view/Agenda/addOrEdit';
+import AddVaccine from './src/view/Vaccine/addOrEdit';
 
 type RootStackParamList = {
   Home: object;
@@ -28,7 +29,8 @@ type RootStackParamList = {
   TabsScreen: object;
   AddPets: object;
   AddAgenda: object;
-  drawer: object
+  AddVaccine: object;
+  drawer: object;
   Confirmation: object
 };
 
@@ -95,6 +97,21 @@ export default function App() {
             // headerShown: false
           }}>
           {props => <AddAgenda />}
+        </Stack.Screen>
+        <Stack.Screen  
+          name="AddVaccine" 
+          options={{
+            headerStyle: {
+              backgroundColor: '#5CDB95'
+            },
+            headerTitle: '',
+            headerShadowVisible: false,
+            statusBarHidden: true,
+            headerBackButtonMenuEnabled: true,
+            headerTintColor: '#05386B'
+            // headerShown: false
+          }}>
+          {props => <AddVaccine />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>      
