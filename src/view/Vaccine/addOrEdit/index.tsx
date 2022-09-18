@@ -13,6 +13,7 @@ import Container from '../../../components/Container';
 import ModalCustom from '../../../components/Modal';
 import { cardAgendaValidation, dateAgendaValidation, dateValidation, descriptionValidation, nameValidation, timeValidation } from '../../../../util/validations';
 import { IItens } from '../../../../interfaces/IModal.interface';
+import { apiCatsDogs } from '../../../../services/connction';
 
 interface IParams {
     icon: string
@@ -74,36 +75,84 @@ const AddVaccine = () => {
     const [visibleModalVaccine, setVisibleModalVaccine] = useState(false);
     const [visible, setVisible] = useState(false);
 
-    const showModal = () => setVisibleModal(true);
+    const showModal = () => {
+        setVisibleModal(true)
+        clearSelection()
+    };
     const hideModal = () => setVisibleModal(false);
-    const showModalVaccine = () => setVisibleModalVaccine(true);
+    const showModalVaccine = () => {
+        getVaccines()
+        setPetErr(hasErrorsPet())
+        if(!hasErrorsPet()) {
+            setVisibleModalVaccine(true)
+        }
+    };
     const hideModalVaccine = () => setVisibleModalVaccine(false);
 
     const [itens, setItens] = useState<IItens[]>([{
         id: 0,
-        name: 'dog',
-        ShowedName: 'Frank',
+        nameIcon: 'dog',
+        name: 'Frank',
     }, {
         id: 1,
-        name: 'cat',
-        ShowedName: 'Link',
+        nameIcon: 'cat',
+        name: 'Link',
     }])
 
     const [itensVaccines, setItensVaccines] = useState<IItens[]>([{
         id: 0,
-        ShowedName: 'Canine Distemper',
-    }, {
-        id: 1,
-        ShowedName: 'Feline Infectious Peritonitis',
+        name: '',
     }])
 
     const [title, setTitle] = useState('')
     const [button, setButton] = useState('')
     const [id, setId] = useState<number>()
-    const [idVAccine, setIdVaccine] = useState<number>()
+    const [idVaccine, setIdVaccine] = useState<number>()
 
+    const [vacDogsColec, setVacDogsColec] = useState<any[]>();
+    const [vacCatsColec, setVacCatsColec] = useState<any[]>();
 
+    const getVaccines = () => {
+
+        if(id === 0) {
+            if(vacDogsColec !== undefined) {
+                setItensVaccines(vacDogsColec)
+            }
+        } else if(id === 1) {
+            if(vacCatsColec !== undefined) {
+                setItensVaccines(vacCatsColec)
+            }
+        }
+    }
+
+    const clearSelection = () => {
+        setItensVaccines([])
+        setVaccines('')
+        setIdVaccine(undefined)
+    }
     useState(() => {
+        apiCatsDogs.get('/vaccines/dog').then((value) => {
+            value.data.forEach((v: any) => {
+                delete v._id
+                v.name = v.nome
+                delete v.nome
+            })
+            setVacDogsColec(value.data)
+        }).catch((err) => {
+            console.log(err)
+        })
+
+        apiCatsDogs.get('/vaccines/cats').then((value) => {
+            value.data.forEach((v: any) => {
+                delete v._id
+                v.name = v.nome
+                delete v.nome
+            })
+            setVacCatsColec(value.data)
+        }).catch((err) => {
+            console.log(err)
+        })
+
         const params: IParams = navigation.getState().routes[3].params
         setTitle('Adicione uma vacina')
         setButton('Adicionar')
@@ -179,7 +228,7 @@ const AddVaccine = () => {
                 hideModal={hideModalVaccine} 
                 setText={setVaccines} 
                 Itens={itensVaccines}
-                idIten={idVAccine}
+                idIten={idVaccine}
                 getId={(value) => {setIdVaccine(value)}}
             />
         </>

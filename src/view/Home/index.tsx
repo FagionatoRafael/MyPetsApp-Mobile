@@ -8,7 +8,9 @@ import { useNavigation } from '@react-navigation/native';
 import InputCustom from '../../components/Input';
 import Container from '../../components/Container';
 
-import { emailValidation, passwordValidation } from '../../../util/validations';
+import { emailValidation, passwordValidation, statusValidation } from '../../../util/validations';
+import asyncStorage from '../../../util/asyncStorage';
+import { apiMain } from '../../../services/connction';
 
 const Home = () => {
     const navigation = useNavigation();
@@ -20,6 +22,8 @@ const Home = () => {
     const [email, setEmail] = useState('');
     const [passError, setPassError] = useState(false)
     const [password, setPassword] = useState('');
+    const [status, setStatus] = useState<number>();
+    const [statusError, setStatusError] = useState(false)
 
     const onChangeEmail = (text: SetStateAction<string>) => setEmail(text);
     const onChangePassword = (text: SetStateAction<string>) => setPassword(text);
@@ -31,6 +35,24 @@ const Home = () => {
     const hasErrorsPassword = () => {
         return passwordValidation(password)
     };
+
+    const hasErrorsStatus = () => {
+        if(status !== undefined)
+            return statusValidation(status)
+    };
+
+    const getToken = () => {
+        apiMain.post("auth/login", {
+            "email": email, 
+            "password": password
+        }).then((ev) => {
+            setStatus(ev.status)
+            if(ev.status === 201)
+                asyncStorage.set('token', ev.data)
+        })
+    }
+
+    const token = asyncStorage.get('token')
 
     return (
         <Container>
@@ -58,10 +80,15 @@ const Home = () => {
                 <Button 
                     style={styles.button} 
                     mode="contained" 
-                    onPress={() => {
+                    onPress={async () => {
+                        if(hasErrorsStatus()) {
+                            setEmailError(true); 
+                            setPassError(true);
+                        }
                         setEmailError(hasErrorsEmail()); 
-                        setPassError(hasErrorsPassword())
-                        if((!hasErrorsEmail() && !hasErrorsPassword()) || ((email === 'admin' || email === 'Admin')  && (password === 'admin' || password === 'Admin'))) {
+                        setPassError(hasErrorsPassword());
+                        getToken();
+                        if((!hasErrorsStatus() && !hasErrorsPassword() && !hasErrorsEmail()) || ((email === 'admin' || email === 'Admin')  && (password === 'admin' || password === 'Admin'))) {
                             navigation.navigate('NavegationOne')
                         }
                     }}

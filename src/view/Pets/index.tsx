@@ -3,8 +3,9 @@ import styles from "./styles"
 import CardPet from "../../components/CardPet";
 import { FAB } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ContainerCards from "../../components/ContainerCards";
+import { apiCatsDogs, apiMain } from "../../../services/connction";
 
 const Pets = () => {
     const navigation = useNavigation();
@@ -34,7 +35,7 @@ const Pets = () => {
 
     return (
         <ContainerCards funcNavi={() => { navigation.navigate('AddPets'); } } text={"Pets"}>
-            {pets.map((value, index) => {
+            {pets ? pets.map((value, index) => {
                 return <CardPet
                     key={index} 
                     icon={value.icon} 
@@ -43,7 +44,9 @@ const Pets = () => {
                     description={value.description} 
                     funcUpdate={() => navigation.navigate('AddPets', value)}
                 />
-            })}
+            }) : <View>
+                    <Text>Adicione seu primeiro Pet no icone de mais</Text>
+                </View>}
             
         </ContainerCards>
     )

@@ -25,7 +25,8 @@
         "foregroundImage": "./assets/logo-icon.png",
         "backgroundColor": "#5CDB95"
       },
-      "package": "com.rafaelfagio.mypetsapp"
+      "googleServicesFile": "./google-services.json",
+      "package": "br.com.myPetsApp"
     },
     "androidStatusBar": {
       "backgroundColor": "#5CDB95",

@@ -15,6 +15,7 @@ import Container from '../../../components/Container';
 import ModalCustom from '../../../components/Modal';
 import { dateValidation, descriptionValidation, nameValidation, weigthValidadtion } from '../../../../util/validations';
 import { IItens } from '../../../../interfaces/IModal.interface';
+import { apiCatsDogs } from '../../../../services/connction';
 
 interface IParams {
     pet: string,
@@ -92,41 +93,86 @@ const AddPet = () => {
     const [visibleModalBreed, setVisibleModalBreed] = useState(false);
     const [visible, setVisible] = useState(false);
 
-    const showModal = () => setVisibleModal(true);
+    const showModal = () => {
+        clearSelection()
+        setVisibleModal(true)
+    };
     const hideModal = () => setVisibleModal(false);
 
-    const showModalBreed = () => setVisibleModalBreed(true);
+    const showModalBreed = () => {
+        setPetErr(hasErrorsPet())
+        if(!hasErrorsPet()) {
+            getName()
+            setTimeout(() => {
+                setVisibleModalBreed(true)
+            }, 200)
+        }
+    };
     const hideModalBreed = () => setVisibleModalBreed(false);
 
     const [itens, setItens] = useState<IItens[]>([{
         id: 0,
-        name: 'dog',
-        ShowedName: 'cachorro',
+        nameIcon: 'dog',
+        name: 'cachorro',
     }, {
         id: 1,
-        name: 'cat',
-        ShowedName: 'Gato',
+        nameIcon: 'cat',
+        name: 'Gato',
     }])
 
     const [itensBreedDog, setItensBreed] = useState<IItens[]>([{
         id: 0,
-        ShowedName: 'pug'
-    }, {
-        id: 1,
-        ShowedName: 'Poddle',
-    }, {
-        id: 2,
-        ShowedName: 'Boxer',
-    }, {
-        id: 3,
-        ShowedName: 'Pincher',
+        name: ''
     }])
+
+    const [dogsColec, setDogsColec] = useState<IItens[]>();
+    const [catsColec, setCatsColec] = useState<IItens[]>();
 
     const [title, setTitle] = useState('')
     const [button, setButton] = useState('')
     const [id, setId] = useState<number>()
 
+    const getName = () => {
+
+        if(idPet === 0) {
+            if(dogsColec !== undefined) {
+                setItensBreed(dogsColec)
+            }
+        } else if(idPet === 1) {
+            if(catsColec !== undefined) {
+                setItensBreed(catsColec)
+            }
+        }
+    }
+
+    const clearSelection = () => {
+        setItensBreed([])
+        setBreed('')
+        setIdBreed(undefined)
+    }
+
     useState(() => {
+        apiCatsDogs.get('/dogs').then((value) => {
+            value.data.forEach((v: any) => {
+                delete v.Weight;
+                delete v._id
+                v.nameIcon = 'dog'
+            })
+            setDogsColec(value.data)
+        }).catch((err) => {
+            console.log(err)
+        })
+
+        apiCatsDogs.get('/cats').then((value) => {
+            value.data.forEach((v: any) => {
+                delete v.Weight;
+                delete v._id
+                v.nameIcon = 'cat'
+            })
+            setCatsColec(value.data)
+        }).catch((err) => {
+            console.log(err)
+        })
         const params: IParams = navigation.getState().routes[3].params
         setTitle('Adicione seu pet')
         setButton('Adicionar')
@@ -180,8 +226,10 @@ const AddPet = () => {
                                 setBreedErr(hasErrorsBreed())
                                 setWeightErr(hasErrorsWeight())
                                 setDescriptionErr(hasErrorsDescription())
+                                console.log(idPet)
                                 if(!hasErrorsName() && !hasErrorsBirthday() && !hasErrorsPet() && !hasErrorsBreed() && !hasErrorsWeight() && !hasErrorsDescription()) {
                                     navigation.goBack()
+                                   
                                 }
                             }}
                         >

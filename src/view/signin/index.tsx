@@ -9,6 +9,7 @@ import moment from 'moment'
 import DateTimePicker, { DateTimePickerResult } from '@react-native-community/datetimepicker';
 import Container from '../../components/Container';
 import { nameValidation, passwordValidation, emailValidation, dateValidation } from '../../../util/validations';
+import { apiMain } from '../../../services/connction';
 
 const Signin = () => {
     const navigation = useNavigation();
@@ -54,6 +55,27 @@ const Signin = () => {
     const [visible, setVisible] = useState(false);
     const date = new Date();
 
+    const postUser = () => {
+        // console.log({
+        //     "name": name,
+        //     "password": password,
+        //     "dtBirthDay": dateText,
+        //     "dtSignin": moment().format('DD/MM/YYYY'),
+        //     "dtLastLogin": moment().format('DD/MM/YYYY'),
+        //     "email": email
+        // })
+        apiMain.post('user', {
+            "name": name,
+            "password": password,
+            "dtBirthDay": dateText,
+            "dtSignin": moment().format('DD/MM/YYYY'),
+            "dtLastLogin": moment().format('DD/MM/YYYY'),
+            "email": email
+        }).then((ev) => {
+            console.log(ev.status)
+        }).catch((err) => console.log(err))
+    }
+
     return (
         <Container>
             <View style={styles.logoContainer}>
@@ -89,6 +111,7 @@ const Signin = () => {
                         setEmailErr(hasErrorsEmail())
                         setDateErr(hasErrorsDate()) 
                         if(!hasErrorsName() && !hasErrorsPassword() && !hasErrorsEmail() && !hasErrorsDate()) {
+                            postUser();
                             navigation.navigate('Confirmation')
                         }
                     }}
@@ -100,7 +123,7 @@ const Signin = () => {
                     style={styles.buttonText} 
                     color='#05386B' 
                     mode="text" 
-                    onPress={() => navigation.navigate('Home')}
+                    onPress={() =>{navigation.navigate('Home')}}
                 >
                     Voltar
                 </Button>
