@@ -1,14 +1,16 @@
 import { SafeAreaView, Text, View, Image } from 'react-native';
 import styles from './styles';
 import { HelperText, TextInput, Button } from 'react-native-paper';
-import { SetStateAction, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { useFonts, Dosis_400Regular } from '@expo-google-fonts/dosis';
 import { useNavigation } from '@react-navigation/native';
 
 import InputCustom from '../../components/Input';
 import Container from '../../components/Container';
 
-import { emailValidation, passwordValidation } from '../../../util/validations';
+import { emailValidation, passwordValidation, statusValidation } from '../../../util/validations';
+import asyncStorage from '../../../util/asyncStorage';
+import { apiMain } from '../../../services/connction';
 
 const Home = () => {
     const navigation = useNavigation();
@@ -20,6 +22,8 @@ const Home = () => {
     const [email, setEmail] = useState('');
     const [passError, setPassError] = useState(false)
     const [password, setPassword] = useState('');
+    const [status, setStatus] = useState<number>();
+    const [statusError, setStatusError] = useState(false)
 
     const onChangeEmail = (text: SetStateAction<string>) => setEmail(text);
     const onChangePassword = (text: SetStateAction<string>) => setPassword(text);
@@ -31,6 +35,38 @@ const Home = () => {
     const hasErrorsPassword = () => {
         return passwordValidation(password)
     };
+
+    const hasErrorsStatus = () => {
+        if(status !== undefined)
+            return statusValidation(status)
+    };
+
+    const [token, setToken] = useState<object>()
+    const getToken = () => {
+        apiMain.post("/auth/login", {
+            "email": email, 
+            "password": password
+        }).then((ev) => {
+            if(ev) {
+                // console.log(ev)
+                setStatus(ev.status)
+                setToken(ev.data)
+                asyncStorage.set('token', ev.data)
+            }
+        }).catch((err: string) => {
+            console.log(401)
+            setStatus(401)
+        })
+    }
+
+    useEffect(() => {
+        asyncStorage.remove('token').then((value) => {
+            console.log("limpando tudo: " + value)
+        })
+
+        setEmail('rafael@gmail.com');
+        setPassword('123456')
+    }, [])
 
     return (
         <Container>
@@ -59,10 +95,22 @@ const Home = () => {
                     style={styles.button} 
                     mode="contained" 
                     onPress={() => {
+                        if(hasErrorsStatus()) {
+                            setEmailError(true); 
+                            setPassError(true);
+                        }
                         setEmailError(hasErrorsEmail()); 
-                        setPassError(hasErrorsPassword())
-                        if((!hasErrorsEmail() && !hasErrorsPassword()) || ((email === 'admin' || email === 'Admin')  && (password === 'admin' || password === 'Admin'))) {
-                            navigation.navigate('NavegationOne')
+                        setPassError(hasErrorsPassword());
+                        getToken();
+                        if((!hasErrorsStatus() && !hasErrorsPassword() && !hasErrorsEmail()) || ((email === 'admin' || email === 'Admin')  && (password === 'admin' || password === 'Admin'))) {
+                            setTimeout(() => {
+                                asyncStorage.get('token').then((value) => {
+                                    console.log(value)
+                                    if(value !== undefined) {
+                                        navigation.navigate('NavegationOne');
+                                    }
+                                })
+                            }, 1000)
                         }
                     }}
                 >

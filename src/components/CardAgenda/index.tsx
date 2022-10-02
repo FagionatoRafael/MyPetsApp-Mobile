@@ -15,11 +15,11 @@ import { ICardAgenda } from '../../../interfaces/_interface.interface'
 
 const CardAgenda: React.FC<ICardAgenda> = ({icon, namePet, day, hoursOf, hoursTill, itens, editFunc}) => {
     return (
-        <Card style={{marginBottom: 10}} key={namePet}>
+        <Card style={styles.card} key={namePet}>
             <View style={styles.cardContainer}>
                 <Card.Content style={styles.nameIcon}>
                     <MaterialCommunityIcons name={icon} size={24} color="#05386B" />
-                    <Title>{namePet}</Title>
+                    <Title numberOfLines={1} style={{width: 100}}>{namePet}</Title>
                 </Card.Content>
                 <Card.Content style={styles.nameIcon}>
                     <Ionicons name="calendar-sharp" size={24} color="#05386B" />
@@ -32,7 +32,7 @@ const CardAgenda: React.FC<ICardAgenda> = ({icon, namePet, day, hoursOf, hoursTi
             <Card.Content style={styles.description}>
                 <AntDesign name="menu-fold" size={24} color="#05386B" />
                 <View style={styles.itensTodo}>
-                    {itens.map((value) => {
+                    {JSON.parse(itens).map((value) => {
                         if(value === 0) {
                             return <Image key={value} source={require('../../../assets/dog-dish-icon.png')} style={{width: 30, height: 30}}/>
                         }

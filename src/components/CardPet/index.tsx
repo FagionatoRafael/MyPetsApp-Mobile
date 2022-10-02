@@ -10,11 +10,11 @@ const CardPet: React.FC<ICardPet> = ({icon, namePet, birthDay, description, func
     const windowWidth = Dimensions.get('window').width;
     
     return (
-        <Card style={{marginBottom: 10}}>
+        <Card style={styles.card}>
             <View style={styles.cardContainer}>
                 <Card.Content style={styles.nameIcon}>
                     <MaterialCommunityIcons name={icon} size={24} color="#05386B" />
-                    <Title>{namePet}</Title>
+                    <Title numberOfLines={1} style={{width: 100}}>{namePet}</Title>
                 </Card.Content>
                 <Card.Content style={styles.nameIcon}>
                     <FontAwesome5 name="gift" size={24} color="#05386B" />
@@ -23,7 +23,7 @@ const CardPet: React.FC<ICardPet> = ({icon, namePet, birthDay, description, func
             </View>
             <Card.Content style={styles.description}>
                 <Ionicons name="document-text" size={24} color="#05386B" />
-                <Paragraph style={{width: windowWidth - 100}}>{description}</Paragraph>
+                <Paragraph style={{width: windowWidth * 0.8}}>{description}</Paragraph>
             </Card.Content>
             <Card.Actions style={styles.buttonCard} onTouchEnd={funcUpdate}>
                 <Button color="#EDF5E1">Editar</Button>

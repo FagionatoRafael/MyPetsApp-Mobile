@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { AppRegistry, Platform } from 'react-native';
+import { AppRegistry, Platform, AsyncStorageStatic } from 'react-native';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import React, { useEffect, useRef, useState } from 'react';
@@ -17,10 +17,12 @@ import NavegationSecond from './src/view/NavegationHelper/secondHelp';
 import NavegationThird from './src/view/NavegationHelper/thirdHelp';
 import AddPet from './src/view/Pets/add';
 
+import asyncStorage from './util/asyncStorage';
 import MyDrawer from './routes/drawerComponent';
 import AddAgenda from './src/view/Agenda/addOrEdit';
 import AddVaccine from './src/view/Vaccine/addOrEdit';
 import EditUser from './src/view/EditUser/inde';
+import { apiMain } from './services/connction';
 
 type RootStackParamList = {
   Home: object;
@@ -50,8 +52,10 @@ Notifications.setNotificationHandler({
 
 
 export default function App() {
+  const [message, setMessage] = useState({});
   const [expoPushToken, setExpoPushToken] = useState<any>('');
   const [notification, setNotification] = useState(false);
+  const [token, setToken] = useState<any>('');
   const notificationListener = useRef<any>();
   const responseListener = useRef<any>();
   
@@ -68,21 +72,12 @@ export default function App() {
       console.log(response);
     });
 
-    
-
-    return () => {
+    return  () => {
       Notifications.removeNotificationSubscription(notificationListener.current);
       Notifications.removeNotificationSubscription(responseListener.current);
-
-      setTimeout(async () => {
-        await schedulePushNotification();
-        console.log('entrei aqui')
-      }, 1000)
     };
-
-    
   }, []);
-  
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home" screenOptions={{orientation: 'portrait'}}>
@@ -179,18 +174,6 @@ export default function App() {
   );
 }
 
-// Can use this function below, OR use Expo's Push Notification Tool-> https://expo.dev/notifications
-async function schedulePushNotification() {
-  await Notifications.scheduleNotificationAsync({
-    content: {
-      title: "You've got mail! 📬",
-      body: 'Here is the notification body',
-      data: { data: 'goes here' },
-    },
-    trigger: { seconds: 60 },
-  });
-}
-
 async function registerForPushNotificationsAsync() {
   let token;
   if (Device.isDevice) {
@@ -216,7 +199,6 @@ async function registerForPushNotificationsAsync() {
       importance: Notifications.AndroidImportance.MAX,
       vibrationPattern: [0, 250, 250, 250],
       lightColor: '#FF231F7C',
-
     });
   }
 

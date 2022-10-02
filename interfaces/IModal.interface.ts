@@ -12,7 +12,7 @@ export interface IModal {
 
 export interface IItens {
     id: number | string
+    nameIcon?: 'dog' | 'cat'
     name?: string
-    ShowedName?: string
     img?: string
 }

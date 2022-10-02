@@ -1,18 +1,20 @@
 import { View, ScrollView, Text } from "react-native"
 import CardPet from "../../components/CardPet";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "../../components/Container";
 import { Divider,Switch } from "react-native-paper";
 import styles from "./styles";
+import { apiMain } from "../../../services/connction";
+import asyncStorage from "../../../util/asyncStorage";
 
 const Config = () => {
-    const [isNoteOne, setIsNoteOne] = useState(false);
-    const [isNoteTwo, setIsNoteTwo] = useState(false);
-    const [isNoteThree, setIsNoteThree] = useState(false);
+    const [isNoteOne, setIsNoteOne] = useState<boolean>();
+    const [isNoteTwo, setIsNoteTwo] = useState<boolean>();
+    const [isNoteThree, setIsNoteThree] = useState<boolean>();
 
-    const [isMailOne, setIsMailOne] = useState(false);
-    const [isMailTwo, setIsMailTwo] = useState(false);
-    const [isMailThree, setIsMailThree] = useState(false);
+    const [isMailOne, setIsMailOne] = useState<boolean>();
+    const [isMailTwo, setIsMailTwo] = useState<boolean>();
+    const [isMailThree, setIsMailThree] = useState<boolean>();
 
     const onToggleNoteOne = () => setIsNoteOne(!isNoteOne);
     const onToggleNoteTwo = () => setIsNoteTwo(!isNoteTwo);
@@ -21,6 +23,47 @@ const Config = () => {
     const onToggleMailOne = () => setIsMailOne(!isMailOne);
     const onToggleMailTwo = () => setIsMailTwo(!isMailTwo);
     const onToggleMailThree = () => setIsMailThree(!isMailThree);
+
+    useEffect(() => {
+        const getToken = asyncStorage.get('token')
+        getToken.then((value) => {
+            apiMain.get('config', {
+                headers: { Authorization: `Bearer ${value.access_token}` }
+            }).then((v) => {
+                setIsNoteOne(v.data.config_isNoteOne == 1 ? true : false);
+                setIsNoteTwo(v.data.config_isNoteTwo == 1 ? true : false);
+                setIsNoteThree(v.data.config_isNoteThree == 1 ? true : false);
+                setIsMailOne(v.data.config_isMailOne == 1 ? true : false);
+                setIsMailTwo(v.data.config_isMailTwo == 1 ? true : false);
+                setIsMailThree(v.data.config_isMailThree == 1 ? true : false);
+                console.log(v.status)
+            }).catch((err) => {
+                console.log(401);
+            })
+        
+        })
+    }, [])
+
+    useEffect(() => {
+        const getToken = asyncStorage.get('token')
+        getToken.then((value) => {
+            apiMain.patch('config', {
+                isNoteOne: isNoteOne,
+                isNoteTwo: isNoteTwo,
+                isNoteThree: isNoteThree,
+                isMailOne: isMailOne,
+                isMailTwo: isMailTwo,
+                isMailThree: isMailThree
+            }, {
+                headers: { Authorization: `Bearer ${value.access_token}` }
+            }).then((v) => {
+                console.log(v.status + "alooo")
+            }).catch((err) => {
+                console.log(401);
+            })
+        
+        })
+    }, [isNoteOne, isNoteTwo, isNoteThree, isMailOne, isMailTwo, isMailThree])
     
     return (
         <Container margin={false}>

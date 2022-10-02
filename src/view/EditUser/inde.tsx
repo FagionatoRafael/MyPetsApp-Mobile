@@ -10,6 +10,8 @@ import { Feather } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerResult } from '@react-native-community/datetimepicker';
 import Container from '../../components/Container';
 import { nameValidation, passwordValidation, emailValidation, dateValidation } from '../../../util/validations';
+import { apiMain } from '../../../services/connction';
+import asyncStorage from '../../../util/asyncStorage';
 
 const EditUser = () => {
     const navigation = useNavigation();
@@ -56,13 +58,43 @@ const EditUser = () => {
     const [visible, setVisible] = useState(false);
     const date = new Date();
 
+    const editUser = () => {
+        const getToken = asyncStorage.get('token')
+        getToken.then((value) => {
+            apiMain.patch('user', {
+                name: name,
+                password: password,
+                dtBirthDay: dateText,
+                email: email
+            }, {
+                headers: { Authorization: `Bearer ${value.access_token}` }
+            }).then((valueData) => {
+                console.log('foi')
+            }).catch((err) => {
+                console.log(401)
+            })
+        })
+    }
+
+    const deleteUser = () => {
+        const getToken = asyncStorage.get('token')
+        getToken.then((value) => {
+            apiMain.delete('user', {
+                headers: { Authorization: `Bearer ${value.access_token}` }
+            }).then((valueData) => {
+                console.log('foi')
+            }).catch((err) => {
+                console.log(401)
+            })
+        })
+    }
+
     useEffect(() => {
-        const params = navigation.getState().routes[3].params
-        if(params) {
-            setName('Rafael')
-            setEmail('Rafael@mail.com')
-            setPassword('jdsncjsdn')
-            setDateText('14/01/2000')
+        if(navigation.getState().routes[3].params) {
+            setName(navigation.getState().routes[3].params.name)
+            setEmail(navigation.getState().routes[3].params.email)
+            setPassword(navigation.getState().routes[3].params.password)
+            setDateText(navigation.getState().routes[3].params.dtBirthDay)
         }
     }, [])
 
@@ -102,13 +134,24 @@ const EditUser = () => {
                             setEmailErr(hasErrorsEmail())
                             setDateErr(hasErrorsDate()) 
                             if(!hasErrorsName() && !hasErrorsPassword() && !hasErrorsEmail() && !hasErrorsDate()) {
+                                editUser();
                                 navigation.goBack()
                             }
                         }}
                     >
                         Alterar
                     </Button>
-                    {deleteBotton ? (<Button  mode="contained" style={styles.deleteButtom}>
+                    {deleteBotton ? (<Button  
+                        mode="contained" 
+                        style={styles.deleteButtom}
+                        onPress={() => {
+                            deleteUser()
+                            asyncStorage.remove('token').then((value) => {
+                                console.log("limpando tudo: " + value)
+                            })
+                            navigation.navigate('Home')
+                        }}
+                    >
                         <Feather name="trash-2" size={22} color="white" />
                     </Button>): <></>}
                 </View>
