@@ -4,6 +4,6 @@ export interface ICardAgenda {
     day: string
     hoursOf: string
     hoursTill: string
-    itens: Array<number>
+    itens: string
     editFunc: () => void
 }

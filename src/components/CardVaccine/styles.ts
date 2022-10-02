@@ -2,6 +2,10 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 
 const styles = StyleSheet.create({
+    card: {
+        maxWidth: Dimensions.get('window').width * 0.9,
+        marginBottom: 10
+    },
     nameIcon: {
         flexDirection: 'row',
         justifyContent: 'space-around',

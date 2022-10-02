@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ProgressBar, Button } from 'react-native-paper';
 
 import Container from '../../components/Container';
+import asyncStorage from '../../../util/asyncStorage';
 
 const NavegationOne = () => {
     const navigation = useNavigation();

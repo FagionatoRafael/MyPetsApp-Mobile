@@ -7,3 +7,4 @@ export * from './ICardHealth.interface';
 export * from './IModal.interface';
 export * from './ICardSelect.interface';
 export * from './ICardVaccine.interface';
+export * from './IContainerCardsSelect.interface';

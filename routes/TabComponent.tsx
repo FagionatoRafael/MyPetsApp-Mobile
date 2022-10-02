@@ -39,7 +39,7 @@ function TabsComponent() {
         {propsAgenda => <Agenda />}
       </Tab.Screen>
       <Tab.Screen 
-        name="Health" 
+        name="Saúde" 
         options={{
           tabBarIcon: () => {
             return <FontAwesome name="heartbeat" size={24} color="#05386B" />
@@ -52,7 +52,7 @@ function TabsComponent() {
         {propsAgenda => <Health />}
       </Tab.Screen>
       <Tab.Screen 
-        name="Vaccine" 
+        name="Vacinas" 
         options={{
           tabBarIcon: () => {
             return <FontAwesome5 name="syringe" size={24} color="#05386B" />

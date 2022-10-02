@@ -1,7 +1,7 @@
 import { Dimensions, Text, View } from 'react-native';
 import styles from './styles';
 import { Button, HelperText } from 'react-native-paper';
-import React, { SetStateAction, useState } from 'react';
+import React, { SetStateAction, useEffect, useState } from 'react';
 import { useFonts, Dosis_400Regular } from '@expo-google-fonts/dosis';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -13,7 +13,8 @@ import Container from '../../../components/Container';
 import ModalCustom from '../../../components/Modal';
 import { cardAgendaValidation, dateAgendaValidation, dateValidation, descriptionValidation, nameValidation, timeValidation } from '../../../../util/validations';
 import { IItens } from '../../../../interfaces/IModal.interface';
-import { apiCatsDogs } from '../../../../services/connction';
+import { apiCatsDogs, apiMain } from '../../../../services/connction';
+import asyncStorage from '../../../../util/asyncStorage';
 
 interface IParams {
     icon: string
@@ -38,6 +39,7 @@ const AddVaccine = () => {
     const [pet, setPet] = useState('');
     const [vaccines, setVaccines] = useState('');
     const [description, setDescription] = useState('');
+    const [idVaccinesData, setIdVaccinesData] = useState<number>()
     const [deleteBotton, setDeleteBotton] = useState(false)
 
     const [DateErr, setDateErr] = useState(false);
@@ -89,36 +91,27 @@ const AddVaccine = () => {
     };
     const hideModalVaccine = () => setVisibleModalVaccine(false);
 
-    const [itens, setItens] = useState<IItens[]>([{
-        id: 0,
-        nameIcon: 'dog',
-        name: 'Frank',
-    }, {
-        id: 1,
-        nameIcon: 'cat',
-        name: 'Link',
-    }])
+    const [itens, setItens] = useState<IItens[]>([])
 
-    const [itensVaccines, setItensVaccines] = useState<IItens[]>([{
-        id: 0,
-        name: '',
-    }])
+    const [itensVaccines, setItensVaccines] = useState<IItens[]>([])
 
     const [title, setTitle] = useState('')
     const [button, setButton] = useState('')
-    const [id, setId] = useState<number>()
+    const [id, setId] = useState<number>();
+    const [idSpecies, setIdSpecies] = useState<number>()
     const [idVaccine, setIdVaccine] = useState<number>()
 
     const [vacDogsColec, setVacDogsColec] = useState<any[]>();
     const [vacCatsColec, setVacCatsColec] = useState<any[]>();
 
-    const getVaccines = () => {
+    const [params, setParams] = useState();
 
-        if(id === 0) {
+    const getVaccines = () => {
+        if(idSpecies === 1) {
             if(vacDogsColec !== undefined) {
                 setItensVaccines(vacDogsColec)
             }
-        } else if(id === 1) {
+        } else if(idSpecies === 2) {
             if(vacCatsColec !== undefined) {
                 setItensVaccines(vacCatsColec)
             }
@@ -130,7 +123,98 @@ const AddVaccine = () => {
         setVaccines('')
         setIdVaccine(undefined)
     }
-    useState(() => {
+
+    const setPetsItens = () => {
+        asyncStorage.get('token').then((value) => {
+            // setToken(value.access_token)
+            apiMain.get('pet', {
+                headers: { Authorization: `Bearer ${value.access_token}` }
+            }).then((value) => {
+                value.data.forEach((v: any) => {
+                    delete v.Description;
+                    delete v.weight;
+                    delete v.dtBirthDay;
+                    delete v.iDBreed;
+                    delete v.nameBreed;
+                    delete v.iDUserId;
+                    delete v.nameSpecies;
+                    v.nameIcon = v.iDSpeciesId === 1 ? 'dog' : 'cat';
+                })
+                setItens(value.data)
+            }).catch((err) => {
+                console.log(401)
+            })
+        })
+    }
+
+    const getOnePetById = () => {
+        asyncStorage.get('token').then((value) => {
+            apiMain.get(`pet/${id}`, {
+                headers: { Authorization: `Bearer ${value.access_token}` }
+            }).then((value) => {
+                setIdSpecies(value.data.iDSpeciesId);
+            }).catch((err) => {
+                console.log(401)
+            })
+        })
+    }
+
+    useEffect(() => {
+        getOnePetById();
+    }, [id])
+
+    const postNewVaccines = () => {
+        asyncStorage.get('token').then((value) => {
+            apiMain.post('vaccines', {
+                DtVac: dateText,
+                idVaccine: idVaccine,
+                vaccine: vaccines,
+                description: description,
+                iDPet: id
+            }, {
+                headers: { Authorization: `Bearer ${value.access_token}` }
+            }).then((value) => {
+                console.log(value);
+            }).catch((err) => {
+                console.log(401);
+            })
+        })
+    }
+
+    const editVaccine = () => {
+        asyncStorage.get('token').then((value) => {
+            apiMain.patch(`vaccines/${idVaccinesData}`, {
+                DtVac: dateText,
+                idVaccine: idVaccine,
+                vaccine: vaccines,
+                description: description,
+                iDPet: id
+            }, {
+                headers: { Authorization: `Bearer ${value.access_token}` }
+            }).then((value) => {
+                console.log(value);
+            }).catch((err) => {
+                console.log(401);
+            })
+        })
+    }
+
+    const deleteVaccine = () => {
+        console.log()
+        asyncStorage.get('token').then((value) => {
+            apiMain.delete(`vaccines/${idVaccinesData}`, {
+                headers: { Authorization: `Bearer ${value.access_token}` }
+            }).then((value) => {
+                console.log(value);
+            }).catch((err) => {
+                console.log(401);
+            })
+        })
+    }
+
+    useEffect(() => {
+        setPetsItens();
+
         apiCatsDogs.get('/vaccines/dog').then((value) => {
             value.data.forEach((v: any) => {
                 delete v._id
@@ -153,14 +237,19 @@ const AddVaccine = () => {
             console.log(err)
         })
 
-        const params: IParams = navigation.getState().routes[3].params
         setTitle('Adicione uma vacina')
         setButton('Adicionar')
-        if(params) {
-            setDateText(params.day)
-            setPet(params.namePet)
-            setVaccines(params.vaccine)
-            setDescription(params.description)
+        console.log(navigation.getState().routes[navigation.getState().routes.length - 1].params)
+        setParams(navigation.getState().routes[navigation.getState().routes.length - 1].params)
+        if(navigation.getState().routes[navigation.getState().routes.length - 1].params) {
+            setIdVaccinesData(navigation.getState().routes[navigation.getState().routes.length - 1].params.id)
+            setDateText(navigation.getState().routes[navigation.getState().routes.length - 1].params.DtVac)
+            setId(navigation.getState().routes[navigation.getState().routes.length - 1].params.iDPetId)
+            setPet(navigation.getState().routes[navigation.getState().routes.length - 1].params.name)
+            setIdSpecies(navigation.getState().routes[navigation.getState().routes.length - 1].params.iDSpeciesId)
+            setVaccines(navigation.getState().routes[navigation.getState().routes.length - 1].params.vaccine)
+            setIdVaccine(navigation.getState().routes[navigation.getState().routes.length - 1].params.idVaccine)
+            setDescription(navigation.getState().routes[navigation.getState().routes.length - 1].params.description)
             setTitle('Altere a vacina')
             setButton('Alterar')
             setDeleteBotton(true)
@@ -199,13 +288,25 @@ const AddVaccine = () => {
                                 setVaccineErr(hasErrorsVAccine())
                                 setDescriptionErr(hasErrorsDescription())
                                 if(!hasErrorsDate() && !hasErrorsPet() && !hasErrorsVAccine()) {
+                                    if(params) {
+                                        editVaccine();
+                                    } else {
+                                        postNewVaccines();
+                                    }
                                     navigation.goBack()
                                 }
                             }}
                         >
                             {button}
                         </Button>
-                        {deleteBotton ? (<Button  mode="contained" style={styles.deleteButtom}>
+                        {deleteBotton ? (<Button 
+                                mode="contained" 
+                                style={styles.deleteButtom}
+                                onPress={() => {
+                                    deleteVaccine();
+                                    navigation.goBack();
+                                }}
+                            >
                             <Feather name="trash-2" size={22} color="white" />
                         </Button>): <></>}
                         
@@ -223,7 +324,7 @@ const AddVaccine = () => {
                 getId={(value) => {setId(value)}}
             />
             <ModalCustom 
-                title='Escolha o pet:' 
+                title='Escolha a vacina:' 
                 showModal={visibleModalVaccine} 
                 hideModal={hideModalVaccine} 
                 setText={setVaccines} 

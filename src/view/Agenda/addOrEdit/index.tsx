@@ -1,7 +1,7 @@
 import { Dimensions, Text, View } from 'react-native';
 import styles from './styles';
 import { Button, HelperText } from 'react-native-paper';
-import React, { SetStateAction, useState } from 'react';
+import React, { SetStateAction, useEffect, useState } from 'react';
 import { useFonts, Dosis_400Regular } from '@expo-google-fonts/dosis';
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
@@ -20,14 +20,20 @@ import SVGCollar from '../../../../assets/dog-collar-icon.svg';
 import SVGShower from '../../../../assets/shower-icon.svg';
 import SVGMedication from '../../../../assets/medication_icon.svg';
 import SVGBall from '../../../../assets/ball-icon.svg';
+import { apiMain } from '../../../../services/connction';
+import asyncStorage from '../../../../util/asyncStorage';
+import ContainerCardsSelect from '../../../components/ContainerCardsSelect';
 
 interface IParams {
+    id: number
     icon: string
-    namePet: string
-    day: string
-    hoursOf: string
-    hoursTill: string
-    itens: number[]
+    name: string
+    DtToDO: string
+    TimeStart: string
+    TimeEnd: string
+    iDitems: number[]
+    iDPetId: 1,
+    iDSpeciesId: 1,
 }
 
 const AddAgenda = () => {
@@ -109,19 +115,103 @@ const AddAgenda = () => {
 
     const [itens, setItens] = useState<IItens[]>([{
         id: 0,
-        name: 'dog',
-        ShowedName: 'Frank',
+        nameIcon: 'dog',
+        name: 'Frank',
     }, {
         id: 1,
-        name: 'cat',
-        ShowedName: 'Link',
+        nameIcon: 'cat',
+        name: 'Link',
     }])
+
+    const [token, setToken] = useState();
+    const [status, setStatus] = useState<number>();
+
+    const getToken = () => {
+        asyncStorage.get('token').then((value) => {
+            setToken(value.access_token)
+        })
+    }
+
+    const setPetsItens = () => {
+        getToken();
+        asyncStorage.get('token').then((value) => {
+            // setToken(value.access_token)
+            apiMain.get('pet', {
+                headers: { Authorization: `Bearer ${value.access_token}` }
+            }).then((value) => {
+                value.data.forEach((v: any) => {
+                    delete v.Description;
+                    delete v.weight;
+                    delete v.dtBirthDay;
+                    delete v.iDBreed;
+                    delete v.nameBreed;
+                    delete v.iDUserId;
+                    delete v.nameSpecies;
+                    v.nameIcon = v.iDSpeciesId === 1 ? 'dog' : 'cat';
+                    delete v.iDSpeciesId;
+                })
+                setItens(value.data)
+            }).catch((err) => {
+                console.log(401)
+            })
+        })
+    }
+
+    const postNewAgenda = () => {
+        console.log(idsCard)
+        asyncStorage.get('token').then((value) => {
+            apiMain.post('agenda', {
+                DtToDO: dateText, 
+                TimeStart: timeTextDas,
+                TimeEnd: timeTextTill, 
+                iDPet: id,
+                iDitems: idsCard
+            }, {
+                headers: { Authorization: `Bearer ${value.access_token}` }
+            }).then((value) => {
+                console.log(value)
+                setStatus(value.status);
+            }).catch((err) => {
+                setStatus(401)
+                console.log(401)
+            })
+        })
+    }
+
+    const editAgenda = () => {
+        asyncStorage.get('token').then((value) => {
+            apiMain.patch(`agenda/${idAgenda}`, {
+                DtToDO: dateText, 
+                TimeStart: timeTextDas,
+                TimeEnd: timeTextTill, 
+                iDPet: id,
+                iDitems: idsCard
+            }, {
+                headers: { Authorization: `Bearer ${value.access_token}` }
+            }).then((value) => {
+                setStatus(value.status);
+            }).catch((err) => {
+                console.log(err)
+            })
+        })
+    }
+
+    const deleteAgenda = () => {
+        asyncStorage.get('token').then((value) => {
+            apiMain.delete(`agenda/${idAgenda}`, {
+                headers: { Authorization: `Bearer ${value.access_token}` }
+            }).then((value) => {
+                setStatus(value.status);
+            })
+        })
+    }
 
     const [title, setTitle] = useState('')
     const [button, setButton] = useState('')
     const [idsCard, setIdsCard] = useState<number[]>([])
-    const [itensCard, setItensCard] = useState<number[]>([])
+    // const [itensCard, setItensCard] = useState<number[]>([])
     const [id, setId] = useState<number>()
+    const [idAgenda, setIdAgenda] = useState<number>();
 
     const [selected0, setSelected0] = useState<boolean>(false) 
     const [selected1, setSelected1] = useState<boolean>(false) 
@@ -129,17 +219,42 @@ const AddAgenda = () => {
     const [selected3, setSelected3] = useState<boolean>(false) 
     const [selected4, setSelected4] = useState<boolean>(false) 
 
-    useState(() => {
-        const params: IParams = navigation.getState().routes[3].params
+    const [params, setParams] = useState<IParams>();
+
+    useEffect(() => {
+        setPetsItens()
+        setParams(navigation.getState().routes[3].params)
         setTitle('Adicione uma agenda')
         setButton('Adicionar')
-        if(params) {
-            setDateText(params.day)
-            setPet(params.namePet)
-            setTimeTextDas(params.hoursOf)
-            setTimeTextTill(params.hoursTill)
-            setIdsCard(params.itens)
-            params.itens.map((value) => {
+        if(navigation.getState().routes[3].params) {
+            setDateText(navigation.getState().routes[3].params.DtToDO)
+            setPet(navigation.getState().routes[3].params.name)
+            setTimeTextDas(navigation.getState().routes[3].params.TimeStart)
+            setTimeTextTill(navigation.getState().routes[3].params.TimeEnd)
+            setIdAgenda(navigation.getState().routes[3].params.id)
+            setId(navigation.getState().routes[3].params.iDPetId)
+            setIdsCard(JSON.parse(navigation.getState().routes[3].params.iDitems))
+            if(idsCard) {
+                // let paramsIds: any = navigation.getState().routes[3].params;
+                setTimeout(() => {
+                    // console.log(idsCard)
+                }, 1000)
+                
+            }
+            setTitle('Altere a agenda')
+            setButton('Alterar')
+            setDeleteBotton(true)
+        }
+        setVisibleModal(false)
+    }, [])
+
+
+    useEffect(() => {
+        console.log('id de outro loop')
+        console.log(typeof idsCard);
+
+        if(typeof idsCard === 'object') {
+            idsCard.forEach((value: number) => {
                 if(value === 0) {
                     setSelected0(true)
                 }
@@ -156,14 +271,8 @@ const AddAgenda = () => {
                     setSelected4(true)
                 }
             })
-            setItensCard(params.itens)
-            setTitle('Altere a agenda')
-            setButton('Alterar')
-            setDeleteBotton(true)
         }
-        setVisibleModal(false)
-    }, [])
-
+    }, [idsCard])
     return (
         <>
             <Container margin={false}>
@@ -205,11 +314,36 @@ const AddAgenda = () => {
                     </View>
 
                     <View style={{display: 'flex', flexWrap: 'wrap',flexDirection: 'row', maxWidth: windowWidth -50}}>  
+                        
+                        {/* {idsCard.map((value) => {
+                        <CardSelect 
+                            text={'Comer'} 
+                            id={value} 
+                            selected={value } 
+                            funcId={(id) => {
+                                console.log(idsCard)
+                                if(id === 0) { 
+                                    setSelected0(!selected0)
+                                    if(selected0 === true) {
+                                        idsCard.push(id)
+                                        idsCard.sort()
+                                    } else {
+                                        delete idsCard[idsCard.findIndex((value) => value === id)]
+                                    }
+                                    
+                                } 
+                            }}
+                        >
+                            <SVGBowl width={'80%'} height={'50%'}/> 
+                        </CardSelect>
+
+                        })} */}
                         <CardSelect 
                             text={'Comer'} 
                             id={0} 
                             selected={selected0} 
                             funcId={(id) => {
+                                console.log(idsCard)
                                 if(id === 0) { 
                                     setSelected0(!selected0)
                                     if(selected0 === true) {
@@ -230,6 +364,7 @@ const AddAgenda = () => {
                             id={1} 
                             selected={selected1} 
                             funcId={(id) => {
+                                console.log(idsCard)
                                 if(id === 1) { 
                                     setSelected1(!selected1)
                                     if(!selected1) {
@@ -249,6 +384,7 @@ const AddAgenda = () => {
                             id={2} 
                             selected={selected2} 
                             funcId={(id) => {
+                                console.log(idsCard)
                                 if(id === 2) { 
                                     setSelected2(!selected2)
                                     if(!selected2) {
@@ -268,6 +404,7 @@ const AddAgenda = () => {
                             id={3} 
                             selected={selected3} 
                             funcId={(id) => {
+                                console.log(idsCard)
                                 if(id === 3) { 
                                     setSelected3(!selected3)
                                     if(!selected3) {
@@ -287,6 +424,7 @@ const AddAgenda = () => {
                             id={4} 
                             selected={selected4} 
                             funcId={(id) => {
+                                console.log(idsCard)
                                 if(id === 4) { 
                                     setSelected4(!selected4)
                                     if(!selected4) {
@@ -305,6 +443,8 @@ const AddAgenda = () => {
                         </HelperText>  
                     </View>
                     
+ 
+                    {/* <ContainerCardsSelect idsCard={idsCard} cardErr={cardErr}/> */}
                     <View style={styles.groupButtons}>
                         <Button 
                             style={[styles.button, !deleteBotton ? {width: '100%'} : {}]} 
@@ -315,15 +455,26 @@ const AddAgenda = () => {
                                 setTimeTillErr(hasErrorsTimeTill())
                                 setPetErr(hasErrorsPet())
                                 setCardErr(hasCardSelectedErr())
-                                console.log(idsCard)
+                                // console.log(idsCard)
                                 if(!hasErrorsDate() && !hasErrorsPet() && !hasErrorsTimeDas() && !hasErrorsTimeTill() && !hasCardSelectedErr()) {
-                                    navigation.goBack()
+                                    if(params) {
+                                        editAgenda();
+                                    } else {
+                                        postNewAgenda();
+                                    }
+                                    navigation.goBack();
                                 }
                             }}
                         >
                             {button}
                         </Button>
-                        {deleteBotton ? (<Button  mode="contained" style={styles.deleteButtom}>
+                        {deleteBotton ? (<Button  
+                            mode="contained" 
+                            style={styles.deleteButtom} 
+                            onPress={() => {
+                                deleteAgenda()
+                                navigation.goBack();
+                            }}>
                             <Feather name="trash-2" size={22} color="white" />
                         </Button>): <></>}
                     </View>

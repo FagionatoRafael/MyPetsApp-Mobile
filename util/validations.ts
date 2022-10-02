@@ -1,7 +1,7 @@
 import moment from 'moment'
 
 export const nameValidation = (name: string) => {
-    return name.length < 3 || name.length >= 20; 
+    return name.length < 3;
 }
 
 export const emailValidation = (email: string) => {
@@ -47,5 +47,5 @@ export const cardAgendaValidation = (arr: number[]) => {
 }
 
 export const statusValidation = (value: number) => {
-    return value >= 200 && value < 300
+    return value <= 200 || value > 300
 }

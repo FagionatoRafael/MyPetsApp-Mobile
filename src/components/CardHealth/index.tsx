@@ -9,19 +9,18 @@ import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons'; 
 
-const CardHealth: React.FC<ICardHealth> = ({icon, namePet, media, peso, port, description}) => {
+const CardHealth: React.FC<ICardHealth> = ({icon, namePet, media, peso, description}) => {
     return (
-        <Card style={{marginBottom: 10}}>
+        <Card style={styles.card}>
             <View style={styles.cardContainer}>
                 <Card.Content style={styles.nameIcon}>
                     <MaterialCommunityIcons name={icon} size={24} color="#05386B" />
-                    <Title>{namePet}</Title>
+                    <Title numberOfLines={1} style={{width: 100}}>{namePet}</Title>
                 </Card.Content>
                 <Card.Content style={styles.nameIcon}>
                     <FontAwesome name="asterisk" size={24} color="#05386B" />
                     <View style={styles.pesoAndPort}>
                         <Text>Peso: {peso} Kg</Text>
-                        <Text>Porte: {port}</Text>
                     </View>
                 </Card.Content>
             </View>

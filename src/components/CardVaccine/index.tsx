@@ -11,11 +11,11 @@ const CardVaccine: React.FC<ICardVaccine> = ({icon, namePet, day, vaccine, descr
     const windowWidth = Dimensions.get('window').width;
     
     return (
-        <Card style={{marginBottom: 10}} key={namePet}>
+        <Card style={styles.card} key={namePet}>
             <View style={styles.cardContainer}>
                 <Card.Content style={styles.nameIcon}>
                     <MaterialCommunityIcons name={icon} size={24} color="#05386B" />
-                    <Title>{namePet}</Title>
+                    <Title numberOfLines={1} style={{width: 100}}>{namePet}</Title>
                 </Card.Content>
                 <Card.Content style={styles.nameIcon}>
                     <Ionicons name="calendar-sharp" size={24} color="#05386B" />
@@ -26,11 +26,11 @@ const CardVaccine: React.FC<ICardVaccine> = ({icon, namePet, day, vaccine, descr
             </View>
             <Card.Content style={styles.description}>
                 <FontAwesome5 name="syringe" size={24} color="#05386B" />
-                <Paragraph style={{width: windowWidth - 100}}>{vaccine}</Paragraph>
+                <Paragraph style={{width: windowWidth * 0.8}}>{vaccine}</Paragraph>
             </Card.Content>
             <Card.Content style={styles.description}>
                 <Ionicons name="document-text" size={24} color="#05386B" />
-                <Paragraph style={{width: windowWidth - 100}}>{description}</Paragraph>
+                <Paragraph style={{width: windowWidth * 0.8}}>{description}</Paragraph>
             </Card.Content>
             <Card.Actions style={styles.buttonCard} onTouchEnd={editFunc}>
                 <Button color="#EDF5E1">Editar</Button>

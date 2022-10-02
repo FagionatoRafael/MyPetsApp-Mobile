@@ -13,7 +13,7 @@ const asyncStorage = {
             const value = await AsyncStorage.getItem(name)
             if(value !== null) {
                 // console.log(value)
-                return value;
+                return JSON.parse(value);
             }
         } catch(e) {
             console.log(e)
@@ -21,7 +21,11 @@ const asyncStorage = {
     },
     remove: async (name: string) => {
         try {
-            await AsyncStorage.removeItem(name)
+            const value = await AsyncStorage.removeItem(name)
+            if(value !== null) {
+                // console.log(value)
+                return value;
+            }
         } catch(e) {
             console.log(e)
         }

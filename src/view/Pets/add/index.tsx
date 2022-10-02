@@ -2,7 +2,7 @@ import { Text, View, TextInput } from 'react-native';
 import styles from './styles';
 import { Modal, Portal, Provider, Title, Button } from 'react-native-paper';
 import { TextInputMask } from 'react-native-masked-text'
-import React, { SetStateAction, useState } from 'react';
+import React, { SetStateAction, useEffect, useState } from 'react';
 import { useFonts, Dosis_400Regular } from '@expo-google-fonts/dosis';
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
@@ -15,16 +15,18 @@ import Container from '../../../components/Container';
 import ModalCustom from '../../../components/Modal';
 import { dateValidation, descriptionValidation, nameValidation, weigthValidadtion } from '../../../../util/validations';
 import { IItens } from '../../../../interfaces/IModal.interface';
-import { apiCatsDogs } from '../../../../services/connction';
+import { apiCatsDogs, apiMain } from '../../../../services/connction';
+import asyncStorage from '../../../../util/asyncStorage';
 
 interface IParams {
-    pet: string,
-    petId: number,
-    namePet: string,
-    birthday: string,
-    description: string,
-    breed: string,
-    breedId: number,
+    nameSpecies: string,
+    id: number,
+    iDSpeciesId: number,
+    name: string,
+    dtBirthDay: string,
+    Description: string,
+    nameBreed: string,
+    iDBreed: number,
     weight: string
 }
 
@@ -44,6 +46,7 @@ const AddPet = () => {
     const [breed, setBreed] = useState('');
     const [idBreed, setIdBreed] = useState<number>()
     const [weight, setWeight] = useState('');
+    const [media, setMedia] = useState<number>();
     const [description, setDescription] = useState('');
     const [deleteBotton, setDeleteBotton] = useState(false)
 
@@ -111,11 +114,11 @@ const AddPet = () => {
     const hideModalBreed = () => setVisibleModalBreed(false);
 
     const [itens, setItens] = useState<IItens[]>([{
-        id: 0,
+        id: 1,
         nameIcon: 'dog',
         name: 'cachorro',
     }, {
-        id: 1,
+        id: 2,
         nameIcon: 'cat',
         name: 'Gato',
     }])
@@ -133,12 +136,11 @@ const AddPet = () => {
     const [id, setId] = useState<number>()
 
     const getName = () => {
-
-        if(idPet === 0) {
+        if(idPet === 1) {
             if(dogsColec !== undefined) {
                 setItensBreed(dogsColec)
             }
-        } else if(idPet === 1) {
+        } else if(idPet === 2) {
             if(catsColec !== undefined) {
                 setItensBreed(catsColec)
             }
@@ -151,7 +153,19 @@ const AddPet = () => {
         setIdBreed(undefined)
     }
 
-    useState(() => {
+    const [params, setParams] = useState<IParams>();
+
+    const getSpeciesPets = () => {
+        apiMain.get('/species').then((value) => {
+            setStatus(value.status)
+            value.data.forEach((v: any) => {
+                v.nameIcon = v.id === 1 ? 'dog' : 'cat'
+            })
+            setItens(value.data)
+        })
+    }
+
+    const getSpecies = () => {
         apiCatsDogs.get('/dogs').then((value) => {
             value.data.forEach((v: any) => {
                 delete v.Weight;
@@ -173,25 +187,119 @@ const AddPet = () => {
         }).catch((err) => {
             console.log(err)
         })
-        const params: IParams = navigation.getState().routes[3].params
+    }
+
+    useEffect(() => {
+        // getToken();
+        getSpeciesPets();
+        getSpecies();
         setTitle('Adicione seu pet')
         setButton('Adicionar')
-        if(params) {
-            setName(params.namePet)
-            setDateText(params.birthday)
-            setPet(params.pet)
-            setBreed(params.breed)
-            setWeight(params.weight)
-            setDescription(params.description)
-            setIdPet(params.petId)
-            setIdBreed(params.breedId)
+        setParams(navigation.getState().routes[3].params)
+        // const params: IParams = navigation.getState().routes[3].params
+        setTitle('Adicione seu pet')
+        setButton('Adicionar')
+        console.log(navigation.getState().routes[navigation.getState().routes.length - 1])
+        if(navigation.getState().routes[navigation.getState().routes.length - 1].params) {
+            setId(navigation.getState().routes[3].params.id)
+            setName(navigation.getState().routes[3].params.name)
+            setDateText(navigation.getState().routes[3].params.dtBirthDay)
+            setPet(navigation.getState().routes[3].params.nameSpecies)
+            setBreed(navigation.getState().routes[3].params.nameBreed) 
+            console.log(navigation.getState().routes[3].params.weight.toFixed(2))
+            setWeight(navigation.getState().routes[3].params.weight.toFixed(2))
+            setMedia(navigation.getState().routes[3].params.media)
+            setDescription(navigation.getState().routes[3].params.Description)
+            setIdPet(navigation.getState().routes[3].params.iDSpeciesId)
+            setIdBreed(navigation.getState().routes[3].params.iDBreed)
             setTitle('Altere seu pet')
             setButton('Alterar')
             setDeleteBotton(true)
         }
         setVisibleModal(false)
         setVisibleModalBreed(false)
+        // getParams()
     }, [])
+
+    const [status, setStatus] = useState<number>();
+
+    const getMediaPet = () => {
+        if(idPet == 1) {
+            apiCatsDogs.get(`/dogs/${idBreed}`).then((value) => {
+                setMedia(Number(value.data[0].Weight))
+            }).catch((err) => {
+                console.log(err)
+            })
+        } else if(idPet == 2) {
+            apiCatsDogs.get(`/cats/${idBreed}`).then((value) => {
+                setMedia(Number(value.data[0].Weight))
+            }).catch((err) => {
+                console.log(err)
+            })
+        }
+    }
+    useEffect(() => {
+        getMediaPet();
+    }, [idBreed])
+    
+    const editPet = () => {
+        asyncStorage.get('token').then((value) => {
+            apiMain.patch(`pet/${id}`, {
+                name: name,
+                Description: description,
+                dtBirthDay: dateText,
+                weight: weight,
+                media: media,
+                iDBreed: idBreed,
+                iDSpecies: idPet,
+                nameBreed: breed,
+            }, {
+                headers: { Authorization: `Bearer ${value.access_token}` }
+            }).then((value) => {
+                console.log(value)
+                setStatus(value.status)
+            }).catch((err) => {
+                console.log(401)
+                setStatus(401)
+            })
+        })
+    }
+
+    const postNewPet = () => {
+        asyncStorage.get('token').then((value) => {
+            apiMain.post('pet', {
+                name: name,
+                Description: description,
+                dtBirthDay: dateText,
+                weight: weight,
+                media: media,
+                iDBreed: idBreed,
+                iDSpecies: idPet,
+                nameBreed: breed,
+            }, {
+                headers: { Authorization: `Bearer ${value.access_token}` }
+            }).then((value) => {
+                setStatus(value.status)
+            }).catch((err) => {
+                setStatus(401)
+            })
+        })
+    }
+
+    const deletePet = () => {
+        console.log(id);
+        asyncStorage.get('token').then((value) => {
+            console.log(value.access_token)
+            apiMain.delete(`pet/${id}`, {
+                headers: { Authorization: `Bearer ${value.access_token}` }
+            }).then((value) => {
+                setStatus(value.status)
+            }).catch((err) => {
+                console.log(401)
+                setStatus(401)
+            })
+        })
+    }
 
     return (
         <>
@@ -228,14 +336,26 @@ const AddPet = () => {
                                 setDescriptionErr(hasErrorsDescription())
                                 console.log(idPet)
                                 if(!hasErrorsName() && !hasErrorsBirthday() && !hasErrorsPet() && !hasErrorsBreed() && !hasErrorsWeight() && !hasErrorsDescription()) {
-                                    navigation.goBack()
-                                   
+                                    if(params) {
+                                        editPet();
+                                    } else {
+                                        postNewPet();
+                                    }
+                                    navigation.goBack();
                                 }
                             }}
                         >
                             {button}
                         </Button>
-                        {deleteBotton ? (<Button  mode="contained" style={styles.deleteButtom}>
+                        {deleteBotton ? (
+                        <Button  
+                            mode="contained" 
+                            style={styles.deleteButtom} 
+                            onPress={() => {
+                                deletePet();
+                                navigation.goBack();
+                            }
+                        }>
                             <Feather name="trash-2" size={22} color="white" />
                         </Button>): <></>}
                     </View>
