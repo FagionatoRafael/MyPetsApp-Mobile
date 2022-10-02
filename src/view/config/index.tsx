@@ -72,34 +72,34 @@ const Config = () => {
             </View>
 
             <View style={styles.containerConfig}>
-                <Text>Notificações</Text>
+                <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 18}}>Notificações</Text>
                 <Divider style={{height: 5}}/>
-                <View style={styles.containerToggle}>
-                    <Text>Pets criados/alterados</Text>
+                <View style={styles.containerToggle} onTouchEnd={onToggleNoteOne}>
+                    <Text style={{color: '#fff'}}>Pets criados/alterados</Text>
                     <Switch value={isNoteOne} color={'#05386B'} onValueChange={onToggleNoteOne} />
                 </View>
-                <View style={styles.containerToggle}>
-                    <Text>Atividade da agenda</Text>
+                <View style={styles.containerToggle} onTouchEnd={onToggleNoteTwo}>
+                    <Text style={{color: '#fff'}}>Atividade da agenda</Text>
                     <Switch value={isNoteTwo} color={'#05386B'} onValueChange={onToggleNoteTwo} />
                 </View>
-                <View style={styles.containerToggle}>
-                    <Text>Vacinas criados/alteradas</Text>
+                <View style={styles.containerToggle} onTouchEnd={onToggleNoteThree}>
+                    <Text style={{color: '#fff'}}>Vacinas criados/alteradas</Text>
                     <Switch value={isNoteThree} color={'#05386B'} onValueChange={onToggleNoteThree} />
                 </View>
             </View>
             <View style={styles.containerConfig}>
-                <Text>E-Mail</Text>
+                <Text style={{color: '#fff', fontWeight: 'bold' , fontSize: 18}}>E-Mail</Text>
                 <Divider style={{height: 5}}/>
-                <View style={styles.containerToggle}>
-                    <Text>Pets criados/alterados</Text>
+                <View style={styles.containerToggle} onTouchEnd={onToggleMailOne}>
+                    <Text style={{color: '#fff'}}>Pets criados/alterados</Text>
                     <Switch value={isMailOne} color={'#05386B'} onValueChange={onToggleMailOne} />
                 </View>
-                <View style={styles.containerToggle}>
-                    <Text>Atividade da agenda</Text>
+                <View style={styles.containerToggle} onTouchEnd={onToggleMailTwo}>
+                    <Text style={{color: '#fff'}}>Atividade da agenda</Text>
                     <Switch value={isMailTwo} color={'#05386B'} onValueChange={onToggleMailTwo} />
                 </View>
-                <View style={styles.containerToggle}>
-                    <Text>Vacinas criados/alteradas</Text>
+                <View style={styles.containerToggle} onTouchEnd={onToggleMailThree}>
+                    <Text style={{color: '#fff'}}>Vacinas criados/alteradas</Text>
                     <Switch value={isMailThree} color={'#05386B'} onValueChange={onToggleMailThree} />
                 </View>
             </View>

@@ -29,7 +29,7 @@ function MyDrawer() {
         console.log(401)
       })
     }) 
-  }, [])
+  }, [nome])
 
   useEffect(() => {
     const getToken = asyncStorage.get('token');
@@ -61,9 +61,7 @@ function MyDrawer() {
         }, {
           headers: { Authorization: `Bearer ${value.access_token}` }
         }).then((v) => {
-          setNome(v.data.name);
-          setDtInit(v.data.dtSignin);
-          setDtLastLogin(v.data.dtLastLogin);
+          console.log(v.status)
         }).catch((err) => {
           console.log(401)
         })

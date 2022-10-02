@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     },
     title: {
         color: '#EDF5E1', 
+        fontWeight: 'bold', 
         fontSize: 26
     },
     containerConfig: {

@@ -91,6 +91,10 @@ const Home = () => {
                     onChangeText={onChangePassword}
                 />
 
+                <HelperText  type="error" visible={statusError}>
+                    Login não existe!
+                </HelperText>
+
                 <Button 
                     style={styles.button} 
                     mode="contained" 
@@ -102,12 +106,15 @@ const Home = () => {
                         setEmailError(hasErrorsEmail()); 
                         setPassError(hasErrorsPassword());
                         getToken();
-                        if((!hasErrorsStatus() && !hasErrorsPassword() && !hasErrorsEmail()) || ((email === 'admin' || email === 'Admin')  && (password === 'admin' || password === 'Admin'))) {
+                        if((!hasErrorsStatus() && !hasErrorsPassword() && !hasErrorsEmail())) {
                             setTimeout(() => {
                                 asyncStorage.get('token').then((value) => {
                                     console.log(value)
                                     if(value !== undefined) {
+                                        setStatusError(false)
                                         navigation.navigate('NavegationOne');
+                                    } else {
+                                        setStatusError(true)
                                     }
                                 })
                             }, 1000)
