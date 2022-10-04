@@ -22,10 +22,16 @@ const Vaccine = () => {
     const navigation = useNavigation();
 
     const [vaccines, setVaccines] = useState<IVaccines[]>([])
+    const [token, setToken] = useState('');
+
+    useState(() => {
+        setVaccines([])
+    })
 
     useEffect(() => {
         const getToken = asyncStorage.get('token')
         getToken.then((value) => {
+            setToken(value.access_token)
             apiMain.get('vaccines', {
                 headers: { Authorization: `Bearer ${value.access_token}` }
             }).then((value) => {

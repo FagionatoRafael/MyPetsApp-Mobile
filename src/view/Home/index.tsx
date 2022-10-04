@@ -52,7 +52,9 @@ const Home = () => {
                 // console.log(ev)
                 setStatus(ev.status)
                 setToken(ev.data)
-                asyncStorage.set('token', ev.data)
+                asyncStorage.set('token', ev.data).then((value) => {
+                    console.log(value)
+                })
             }
         }).catch((err: string) => {
             console.log(401)

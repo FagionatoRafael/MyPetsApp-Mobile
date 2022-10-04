@@ -3,7 +3,7 @@ import styles from './styles';
 import { Button, HelperText } from 'react-native-paper';
 import React, { SetStateAction, useEffect, useState } from 'react';
 import { useFonts, Dosis_400Regular } from '@expo-google-fonts/dosis';
-import { useNavigation } from '@react-navigation/native';
+import { StackActions, useNavigation, NavigationAction, DrawerActions } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import moment from 'moment'
@@ -189,6 +189,7 @@ const AddAgenda = () => {
             }, {
                 headers: { Authorization: `Bearer ${value.access_token}` }
             }).then((value) => {
+                console.log(value.status)
                 setStatus(value.status);
             }).catch((err) => {
                 console.log(err)
@@ -428,10 +429,15 @@ const AddAgenda = () => {
                                 // console.log(idsCard)
                                 if(!hasErrorsDate() && !hasErrorsPet() && !hasErrorsTimeDas() && !hasErrorsTimeTill() && !hasCardSelectedErr()) {
                                     if(params) {
+                                        console.log('editei')
                                         editAgenda();
                                     } else {
                                         postNewAgenda();
                                     }
+                                    // navigation.navigate('Agenda', true)
+                                    // DrawerActions.jumpTo('Agenda', true)
+                                    // navigation.dispatch()
+                                    // navigation.setParams(true);
                                     navigation.goBack();
                                 }
                             }}
@@ -443,6 +449,7 @@ const AddAgenda = () => {
                             style={styles.deleteButtom} 
                             onPress={() => {
                                 deleteAgenda()
+                                // navigation.dispatch(StackActions.replace('Agenda', true))
                                 navigation.goBack();
                             }}>
                             <Feather name="trash-2" size={22} color="white" />

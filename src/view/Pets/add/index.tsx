@@ -4,7 +4,7 @@ import { Modal, Portal, Provider, Title, Button } from 'react-native-paper';
 import { TextInputMask } from 'react-native-masked-text'
 import React, { SetStateAction, useEffect, useState } from 'react';
 import { useFonts, Dosis_400Regular } from '@expo-google-fonts/dosis';
-import { useNavigation } from '@react-navigation/native';
+import { StackActions, useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -341,6 +341,7 @@ const AddPet = () => {
                                     } else {
                                         postNewPet();
                                     }
+                                    // navigation.dispatch(StackActions.replace('drawer', true))
                                     navigation.goBack();
                                 }
                             }}
@@ -353,6 +354,7 @@ const AddPet = () => {
                             style={styles.deleteButtom} 
                             onPress={() => {
                                 deletePet();
+                                // navigation.dispatch(StackActions.replace('drawer', true));
                                 navigation.goBack();
                             }
                         }>

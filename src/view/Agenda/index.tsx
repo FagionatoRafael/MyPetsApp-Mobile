@@ -23,14 +23,19 @@ const Agenda = () => {
     const navigation = useNavigation();
 
     const [agendas, setAgendas] = useState<IAgenda[]>([])
-    
+    const [token, setToken] = useState('');
+     
+    useEffect(() => {
+        setAgendas([]);
+    }, [])
+
     useEffect(() => {
         const getToken = asyncStorage.get('token')
         getToken.then((value) => {
+            setToken(value.access_token)
             apiMain.get('agenda', {
-                headers: { Authorization: `Bearer ${value.access_token}` }
+                headers: { Authorization: `Bearer ${value.access_token}` } 
             }).then((value) => {
-                // console.log(value)
                 if(value.data) {
                     value.data.forEach((v: any) => {
                         v.icon = v.iDSpeciesId === 1 ? 'dog' : 'cat';
@@ -39,7 +44,7 @@ const Agenda = () => {
                 setAgendas(value.data)
             }).catch((err) => {
                 console.log(401)
-            }) 
+            })  
         })
     }) 
 

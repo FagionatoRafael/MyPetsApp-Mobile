@@ -6,29 +6,22 @@ import CardHealth from "../../components/CardHealth";
 import asyncStorage from "../../../util/asyncStorage";
 import { apiCatsDogs, apiMain } from "../../../services/connction";
 
+interface IHealth {
+    id: number,
+    icon: string,
+    iDSpeciesId: number,
+    iDBreed: number,
+    name: string,
+    media: number,
+    weight: number,
+    description: string
+}
+
 const Health = () => {
     const navigation = useNavigation();
 
-    const [health, setHealth] = useState([{
-        id: 1,
-        icon: 'cat',
-        iDSpeciesId: 1,
-        iDBreed: 4,
-        name: 'link',
-        media: 4,
-        weight: 3.00,
-        description: 'Seu pet está um pouco acima do peso, tente caminhar ou bringa mais com ele  dar uma alimentação um puco mais saudavel.'
-    },
-    {
-        id: 2,
-        icon: 'dog',
-        iDSpeciesId: 2,
-        iDBreed: 3,
-        name: 'Frank',
-        media: 6,
-        weight: 13.00,
-        description: 'Seu pet está um pouco acima do peso, tente caminhar ou bringa mais com ele  dar uma alimentação um puco mais saudavel.'
-    }])
+    const [health, setHealth] = useState<IHealth[]>([])
+    const [token, setToken] = useState('');
 
     const makeDescriptionWeight = (pesoPet: number, pesoMedia: number) => {
         if(pesoPet < pesoMedia) {
@@ -41,8 +34,13 @@ const Health = () => {
     }
 
     useEffect(() => {
+        setHealth([])
+    }, [])
+
+    useEffect(() => {
         const getToken = asyncStorage.get('token')
         getToken.then((value) => {
+            setToken(value.access_token)
             apiMain.get('pet', {
                 headers: { Authorization: `Bearer ${value.access_token}` }
             }).then((value) => {
@@ -57,12 +55,11 @@ const Health = () => {
                     v.description = makeDescriptionWeight(v.weight, v.media)
                 })
                 setHealth(value.data)
-                console.log(value.data)
             }).catch((err) => {
                 console.log(401)
             })
         })  
-    }, [])
+    })
 
     return (
         <ContainerCards funcNavi={() => {} } text={"Saúde"} hasFAB={false}>

@@ -91,11 +91,11 @@ const EditUser = () => {
     }
 
     useEffect(() => {
-        if(navigation.getState().routes[3].params) {
-            setName(navigation.getState().routes[3].params.name)
-            setEmail(navigation.getState().routes[3].params.email)
-            setPassword(navigation.getState().routes[3].params.password)
-            setDateText(navigation.getState().routes[3].params.dtBirthDay)
+        if(navigation.getState().routes[navigation.getState().routes.length - 1].params) {
+            setName(navigation.getState().routes[navigation.getState().routes.length - 1].params.name)
+            setEmail(navigation.getState().routes[navigation.getState().routes.length - 1].params.email)
+            setPassword(navigation.getState().routes[navigation.getState().routes.length - 1].params.password)
+            setDateText(navigation.getState().routes[navigation.getState().routes.length - 1].params.dtBirthDay)
         }
     }, [])
 

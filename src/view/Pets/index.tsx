@@ -27,14 +27,21 @@ interface IPet {
 const Pets = () => {
     const navigation = useNavigation();
 
-    const [pets, setPets] = useState<IPet[]>()
+    const [pets, setPets] = useState<IPet[]>([])
+
+    const [token, setToken] = useState('')
+
+    useEffect(() => {
+        setPets([])
+    }, [])
 
     useEffect(() => {
         const getToken = asyncStorage.get('token')
         getToken.then((value) => {
+            setToken(value.access_token)
             apiMain.get('/pet', {
                 headers: { Authorization: `Bearer ${value.access_token}` }
-            }).then((value) => {  
+            }).then((value) => { 
                 if(value.data.length !== 0) {
                     value.data.forEach((v: any) => {
                         v.icon = v.iDSpeciesId === 1 ? 'dog' : 'cat'  

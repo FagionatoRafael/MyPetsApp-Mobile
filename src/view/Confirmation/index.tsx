@@ -1,5 +1,5 @@
 import { SafeAreaView, Text, View, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { StackActions, useNavigation } from '@react-navigation/native';
 import styles from './styles';
 import Container from '../../components/Container';
 import { AntDesign } from '@expo/vector-icons'; 
@@ -13,7 +13,8 @@ const Confirmation = () => {
 
     useEffect(() => {
         setTimeout(() => {
-            navigation.navigate('Home')
+            navigation.dispatch(StackActions.replace('Home'))
+            // navigation.navigate('Home')
         }, 4000)
     })
 

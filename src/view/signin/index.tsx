@@ -58,15 +58,15 @@ const Signin = () => {
 
     const [alreadyUser, setAlreadyUser] = useState(false)
 
-    const [token, setToken] = useState<object>()
     const getToken = () => {
-        apiMain.post("/auth/login", {
-            "email": email, 
-            "password": password
+        apiMain.post("email", {
+            "email": email
         }).then((ev) => {
-            if(ev) {
-                setToken(ev.data)
-                asyncStorage.set('token', ev.data)
+            console.log(ev.data)
+            if(ev.data) {
+                asyncStorage.set('exists', ev.data).then((value) => {
+                    console.log(value)
+                })
             }
         }).catch((err: string) => {
             console.log(401)
@@ -87,7 +87,6 @@ const Signin = () => {
     }
 
     useEffect(() => {
-        // console.log(email, password)
         if(!hasErrorsPassword() && !hasErrorsEmail()) {
             getToken();
         }
@@ -120,7 +119,7 @@ const Signin = () => {
                     editable={false}/>
 
                 <HelperText  type="error" visible={alreadyUser}>
-                    Usuário já existe!
+                    Email já cadastrado!
                 </HelperText>
 
                 <Button 
@@ -132,11 +131,11 @@ const Signin = () => {
                         setEmailErr(hasErrorsEmail())
                         setDateErr(hasErrorsDate()) 
                         if(!hasErrorsName() && !hasErrorsPassword() && !hasErrorsEmail() && !hasErrorsDate()) {
-                            asyncStorage.get('token').then((value) => {
+                            asyncStorage.get('exists').then((value) => {
                                 if(!value) {
                                     setAlreadyUser(false)
-                                    postUser();
-                                    navigation.navigate('Confirmation')
+                                    // postUser();
+                                    // navigation.navigate('Confirmation')
                                 } else {
                                     setAlreadyUser(true)
                                 }
