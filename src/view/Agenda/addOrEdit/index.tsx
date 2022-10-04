@@ -223,24 +223,17 @@ const AddAgenda = () => {
 
     useEffect(() => {
         setPetsItens()
-        setParams(navigation.getState().routes[3].params)
         setTitle('Adicione uma agenda')
         setButton('Adicionar')
-        if(navigation.getState().routes[3].params) {
-            setDateText(navigation.getState().routes[3].params.DtToDO)
-            setPet(navigation.getState().routes[3].params.name)
-            setTimeTextDas(navigation.getState().routes[3].params.TimeStart)
-            setTimeTextTill(navigation.getState().routes[3].params.TimeEnd)
-            setIdAgenda(navigation.getState().routes[3].params.id)
-            setId(navigation.getState().routes[3].params.iDPetId)
-            setIdsCard(JSON.parse(navigation.getState().routes[3].params.iDitems))
-            if(idsCard) {
-                // let paramsIds: any = navigation.getState().routes[3].params;
-                setTimeout(() => {
-                    // console.log(idsCard)
-                }, 1000)
-                
-            }
+        if(navigation.getState().routes[navigation.getState().routes.length - 1].params) {
+            setParams(navigation.getState().routes[navigation.getState().routes.length - 1].params)
+            setDateText(navigation.getState().routes[navigation.getState().routes.length - 1].params.DtToDO)
+            setPet(navigation.getState().routes[navigation.getState().routes.length - 1].params.name)
+            setTimeTextDas(navigation.getState().routes[navigation.getState().routes.length - 1].params.TimeStart)
+            setTimeTextTill(navigation.getState().routes[navigation.getState().routes.length - 1].params.TimeEnd)
+            setIdAgenda(navigation.getState().routes[navigation.getState().routes.length - 1].params.id)
+            setId(navigation.getState().routes[navigation.getState().routes.length - 1].params.iDPetId)
+            setIdsCard(JSON.parse(navigation.getState().routes[navigation.getState().routes.length - 1].params.iDitems))
             setTitle('Altere a agenda')
             setButton('Alterar')
             setDeleteBotton(true)
@@ -315,29 +308,6 @@ const AddAgenda = () => {
 
                     <View style={{display: 'flex', flexWrap: 'wrap',flexDirection: 'row', maxWidth: windowWidth -50}}>  
                         
-                        {/* {idsCard.map((value) => {
-                        <CardSelect 
-                            text={'Comer'} 
-                            id={value} 
-                            selected={value } 
-                            funcId={(id) => {
-                                console.log(idsCard)
-                                if(id === 0) { 
-                                    setSelected0(!selected0)
-                                    if(selected0 === true) {
-                                        idsCard.push(id)
-                                        idsCard.sort()
-                                    } else {
-                                        delete idsCard[idsCard.findIndex((value) => value === id)]
-                                    }
-                                    
-                                } 
-                            }}
-                        >
-                            <SVGBowl width={'80%'} height={'50%'}/> 
-                        </CardSelect>
-
-                        })} */}
                         <CardSelect 
                             text={'Comer'} 
                             id={0} 

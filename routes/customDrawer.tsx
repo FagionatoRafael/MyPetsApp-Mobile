@@ -3,7 +3,7 @@ import {
     DrawerItem,
     DrawerItemList,
   } from '@react-navigation/drawer';
-import { useNavigation } from '@react-navigation/native';
+import { StackActions, useNavigation } from '@react-navigation/native';
 import { SafeAreaView, Text, View, Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
@@ -81,7 +81,9 @@ function CustomDrawerContent(props: any) {
           asyncStorage.remove('token').then((value) => {
             console.log("limpando tudo: " + value)
           })
-          navigation.navigate('Home')
+          asyncStorage.clearAll();
+          navigation.dispatch(StackActions.replace('Home'));
+          // navigation.navigate('Home')
         }}
       />
     </DrawerContentScrollView>

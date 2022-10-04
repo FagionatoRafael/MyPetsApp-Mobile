@@ -2,7 +2,7 @@ import { SafeAreaView, Text, View, Image, TextInput } from 'react-native';
 import styles from './styles';
 import { Button } from 'react-native-paper';
 import React, { SetStateAction, useCallback, useEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { StackActions, useNavigation } from '@react-navigation/native';
 import InputCustom from '../../components/Input';
 import moment from 'moment'
 import { Feather } from '@expo/vector-icons';
@@ -22,6 +22,7 @@ const EditUser = () => {
     const [dateText, setDateText] = useState('')
     const [hasDate, setDate] = useState<DateTimePickerResult>();
     const [deleteBotton, setDeleteBotton] = useState(true)
+    const [secureTextEntry, setSecureTextEntry] = useState(true)
 
     const [nameErr, setNameErr] = useState(false);
     const [passwordErr, setPasswordErr] = useState(false);
@@ -106,7 +107,16 @@ const EditUser = () => {
             <View style={styles.form}>
                <InputCustom hasErros={nameErr} label={'Nome'} onChangeText={onChangeName} text={name} invalidText={'Nome deve ser maior de 2 letras!'}/>
                <InputCustom hasErros={emailErr} label={'Email'} onChangeText={onChangeEmail} text={email} invalidText={'Email Invalido!'}/>
-               <InputCustom secureTextEntry={true} hasErros={passwordErr} label={'Password'} onChangeText={onChangePassword} text={password} invalidText={'Senha deve ser maior que 6 letras ou numeros!'}/>
+               <InputCustom 
+                    secureTextEntry={secureTextEntry}
+                    isPassword={true}
+                    isSecure={() => setSecureTextEntry(!secureTextEntry)} 
+                    hasErros={passwordErr} 
+                    label={'Senha'} 
+                    onChangeText={onChangePassword} 
+                    text={password} 
+                    invalidText={'Senha deve ser maior que 6 letras ou numeros!'}
+                />
                
                {visible ? 
                 <DateTimePicker 
@@ -149,7 +159,9 @@ const EditUser = () => {
                             asyncStorage.remove('token').then((value) => {
                                 console.log("limpando tudo: " + value)
                             })
-                            navigation.navigate('Home')
+                            asyncStorage.clearAll();
+                            navigation.dispatch(StackActions.replace('Home'))
+                            // navigation.navigate('Home')
                         }}
                     >
                         <Feather name="trash-2" size={22} color="white" />

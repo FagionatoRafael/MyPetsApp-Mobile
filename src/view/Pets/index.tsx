@@ -46,7 +46,7 @@ const Pets = () => {
                 console.log(401)
             })
         })
-    }, [pets])
+    })
 
     return (
         <ContainerCards funcNavi={() => { navigation.navigate('AddPets'); } } text={"Pets"}>

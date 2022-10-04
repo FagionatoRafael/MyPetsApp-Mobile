@@ -61,7 +61,7 @@ const AddVaccine = () => {
     }
 
     const hasErrorsDate = () => {
-        return dateAgendaValidation(dateText)
+        return dateText === '';
     };
     const hasErrorsPet = () => {
         return nameValidation(pet)
@@ -239,9 +239,8 @@ const AddVaccine = () => {
 
         setTitle('Adicione uma vacina')
         setButton('Adicionar')
-        console.log(navigation.getState().routes[navigation.getState().routes.length - 1].params)
-        setParams(navigation.getState().routes[navigation.getState().routes.length - 1].params)
         if(navigation.getState().routes[navigation.getState().routes.length - 1].params) {
+            setParams(navigation.getState().routes[navigation.getState().routes.length - 1].params)
             setIdVaccinesData(navigation.getState().routes[navigation.getState().routes.length - 1].params.id)
             setDateText(navigation.getState().routes[navigation.getState().routes.length - 1].params.DtVac)
             setId(navigation.getState().routes[navigation.getState().routes.length - 1].params.iDPetId)
@@ -275,7 +274,7 @@ const AddVaccine = () => {
 
                     <InputCustom label='Escolha seu pet' text={pet} hasErros={petErr} onChangeText={onChangePet} hasTouch={showModal} invalidText={'Um Pet deve ser selecionado!'} editable={false}/>
                     <InputCustom label='Selecione a vacina' text={vaccines} hasErros={vaccineErr} onChangeText={onChangeVaccine} hasTouch={showModalVaccine} invalidText={'Uma vacina deve ser selecionado!'} editable={false}/>
-                    <InputCustom label='Data da atividade' text={dateText} hasErros={DateErr} onChangeText={() => {}} invalidText={'A data deve ser posterior a de hoje!'} hasTouch={() => setVisible(true)} editable={false}/>
+                    <InputCustom label='Data da atividade' text={dateText} hasErros={DateErr} onChangeText={() => {}} invalidText={'A data não pode ser vazia!'} hasTouch={() => setVisible(true)} editable={false}/>
                     <InputCustom label='Nota' text={description} hasErros={descriptionErr} onChangeText={onChangeDescription} multiline={true} invalidText={'A descrição não pode ser vazia e nem maior que 200 letras!'}/> 
                     
                     <View style={styles.groupButtons}>

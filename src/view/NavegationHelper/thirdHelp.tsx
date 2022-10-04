@@ -1,7 +1,7 @@
 import { Text, View } from 'react-native';
 import styles from './styles';
 import { useEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { StackActions, useNavigation } from '@react-navigation/native';
 import { ProgressBar, Button } from 'react-native-paper';
 
 import Container from '../../components/Container';
@@ -63,7 +63,7 @@ const NavegationThird = () => {
                     <Button 
                         mode="text" 
                         color='#EDF5E1' 
-                        onPress={() => navigation.navigate('drawer')}>
+                        onPress={() => {navigation.dispatch(StackActions.replace('drawer'))}}>
                         Começar
                     </Button>
                 </View>

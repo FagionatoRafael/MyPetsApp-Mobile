@@ -1,7 +1,7 @@
 import { SafeAreaView, Text, View, Image, TextInput } from 'react-native';
 import styles from './styles';
-import { Button } from 'react-native-paper';
-import React, { SetStateAction, useCallback, useState } from 'react';
+import { Button, HelperText } from 'react-native-paper';
+import React, { SetStateAction, useCallback, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import InputCustom from '../../components/Input';
 import moment from 'moment'
@@ -10,6 +10,7 @@ import DateTimePicker, { DateTimePickerResult } from '@react-native-community/da
 import Container from '../../components/Container';
 import { nameValidation, passwordValidation, emailValidation, dateValidation } from '../../../util/validations';
 import { apiMain } from '../../../services/connction';
+import asyncStorage from '../../../util/asyncStorage';
 
 const Signin = () => {
     const navigation = useNavigation();
@@ -55,15 +56,24 @@ const Signin = () => {
     const [visible, setVisible] = useState(false);
     const date = new Date();
 
+    const [alreadyUser, setAlreadyUser] = useState(false)
+
+    const [token, setToken] = useState<object>()
+    const getToken = () => {
+        apiMain.post("/auth/login", {
+            "email": email, 
+            "password": password
+        }).then((ev) => {
+            if(ev) {
+                setToken(ev.data)
+                asyncStorage.set('token', ev.data)
+            }
+        }).catch((err: string) => {
+            console.log(401)
+        })
+    }
+
     const postUser = () => {
-        // console.log({
-        //     "name": name,
-        //     "password": password,
-        //     "dtBirthDay": dateText,
-        //     "dtSignin": moment().format('DD/MM/YYYY'),
-        //     "dtLastLogin": moment().format('DD/MM/YYYY'),
-        //     "email": email
-        // })
         apiMain.post('user', {
             "name": name,
             "password": password,
@@ -75,6 +85,13 @@ const Signin = () => {
             console.log(ev.status)
         }).catch((err) => console.log(err))
     }
+
+    useEffect(() => {
+        // console.log(email, password)
+        if(!hasErrorsPassword() && !hasErrorsEmail()) {
+            getToken();
+        }
+    }, [email, password])
 
     return (
         <Container>
@@ -102,6 +119,10 @@ const Signin = () => {
                     onChangeText={() => console.log('alo')} 
                     editable={false}/>
 
+                <HelperText  type="error" visible={alreadyUser}>
+                    Usuário já existe!
+                </HelperText>
+
                 <Button 
                     style={styles.button} 
                     mode="contained" 
@@ -111,8 +132,15 @@ const Signin = () => {
                         setEmailErr(hasErrorsEmail())
                         setDateErr(hasErrorsDate()) 
                         if(!hasErrorsName() && !hasErrorsPassword() && !hasErrorsEmail() && !hasErrorsDate()) {
-                            postUser();
-                            navigation.navigate('Confirmation')
+                            asyncStorage.get('token').then((value) => {
+                                if(!value) {
+                                    setAlreadyUser(false)
+                                    postUser();
+                                    navigation.navigate('Confirmation')
+                                } else {
+                                    setAlreadyUser(true)
+                                }
+                            })
                         }
                     }}
                 >

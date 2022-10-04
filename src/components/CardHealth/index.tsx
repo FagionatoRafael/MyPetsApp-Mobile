@@ -26,7 +26,7 @@ const CardHealth: React.FC<ICardHealth> = ({icon, namePet, media, peso, descript
             </View>
             <Card.Content style={styles.description}>
                 <Entypo name="line-graph" size={24} color="#05386B" />  
-                <Paragraph>peso médio/porte: {media} kg </Paragraph>
+                <Paragraph>peso médio: {media} kg </Paragraph>
             </Card.Content>
             <Card.Content style={styles.description}>
                 <AntDesign name="staro" size={24} color="#05386B" />

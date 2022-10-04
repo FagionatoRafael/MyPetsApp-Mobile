@@ -32,7 +32,7 @@ const asyncStorage = {
     },
     clearAll: async () => {
         try {
-            await AsyncStorage.clear()
+            return await AsyncStorage.clear()
         } catch(e) {
             console.log(e)
         }

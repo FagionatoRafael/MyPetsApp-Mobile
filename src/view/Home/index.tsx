@@ -24,16 +24,17 @@ const Home = () => {
     const [password, setPassword] = useState('');
     const [status, setStatus] = useState<number>();
     const [statusError, setStatusError] = useState(false)
+    const [secureTextEntry, setSecureTextEntry] = useState(true)
 
     const onChangeEmail = (text: SetStateAction<string>) => setEmail(text);
     const onChangePassword = (text: SetStateAction<string>) => setPassword(text);
  
     const hasErrorsEmail = () => {
-        return emailValidation(email);
+        return emailValidation(email.trim());
         
     };
     const hasErrorsPassword = () => {
-        return passwordValidation(password)
+        return passwordValidation(password.trim());
     };
 
     const hasErrorsStatus = () => {
@@ -60,12 +61,19 @@ const Home = () => {
     }
 
     useEffect(() => {
+        // console.log(email, password)
+        if(!hasErrorsPassword() && !hasErrorsEmail()) {
+            getToken();
+        }
+    }, [email, password])
+
+    useEffect(() => {
         asyncStorage.remove('token').then((value) => {
             console.log("limpando tudo: " + value)
         })
 
-        setEmail('rafael@gmail.com');
-        setPassword('123456')
+        // setEmail('rafael@gmail.com');
+        // setPassword('123456')
     }, [])
 
     return (
@@ -83,29 +91,26 @@ const Home = () => {
                     onChangeText={onChangeEmail}
                 />
                 <InputCustom 
-                    label='Password'
+                    label='Senha'
                     invalidText='Senha invalida!' 
                     text={password} 
                     hasErros={passError} 
-                    secureTextEntry={true}
+                    secureTextEntry={secureTextEntry}
+                    isPassword={true}
+                    isSecure={() => setSecureTextEntry(!secureTextEntry)}
                     onChangeText={onChangePassword}
                 />
 
                 <HelperText  type="error" visible={statusError}>
-                    Login não existe!
+                    Usuário não existe!
                 </HelperText>
 
                 <Button 
                     style={styles.button} 
                     mode="contained" 
                     onPress={() => {
-                        if(hasErrorsStatus()) {
-                            setEmailError(true); 
-                            setPassError(true);
-                        }
                         setEmailError(hasErrorsEmail()); 
                         setPassError(hasErrorsPassword());
-                        getToken();
                         if((!hasErrorsStatus() && !hasErrorsPassword() && !hasErrorsEmail())) {
                             setTimeout(() => {
                                 asyncStorage.get('token').then((value) => {

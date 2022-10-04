@@ -9,6 +9,8 @@ const InputCustom: React.FC<IInputProp> = (
     label, 
     text, 
     onChangeText, 
+    isSecure=()=>{},
+    isPassword=false,
     hasErros, 
     invalidText, 
     hasMask=false, 
@@ -55,6 +57,7 @@ const InputCustom: React.FC<IInputProp> = (
                     mode='outlined' 
                     activeOutlineColor='#05386B'
                     secureTextEntry={secureTextEntry}
+                    right={isPassword ? <TextInput.Icon icon="eye" onPress={() => isSecure()}/> : null}
                     label={label} 
                     value={text} 
                     onChangeText={(value) => onChangeText(value)}
