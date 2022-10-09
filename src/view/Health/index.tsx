@@ -1,10 +1,11 @@
-import { View, ScrollView, Text} from "react-native"
+import { View, ScrollView, Text, Dimensions} from "react-native"
 import React, { useEffect, useState } from "react";
 import ContainerCards from "../../components/ContainerCards";
 import { useNavigation } from "@react-navigation/native";
 import CardHealth from "../../components/CardHealth";
 import asyncStorage from "../../../util/asyncStorage";
 import { apiCatsDogs, apiMain } from "../../../services/connction";
+import { FontAwesome5 } from '@expo/vector-icons';
 
 interface IHealth {
     id: number,
@@ -22,6 +23,7 @@ const Health = () => {
 
     const [health, setHealth] = useState<IHealth[]>([])
     const [token, setToken] = useState('');
+    const [loading, setLoading] = useState(true);
 
     const makeDescriptionWeight = (pesoPet: number, pesoMedia: number) => {
         if(pesoPet < pesoMedia) {
@@ -41,25 +43,48 @@ const Health = () => {
         const getToken = asyncStorage.get('token')
         getToken.then((value) => {
             setToken(value.access_token)
-            apiMain.get('pet', {
-                headers: { Authorization: `Bearer ${value.access_token}` }
-            }).then((value) => {
-                value.data.forEach((v: any) => {
-                    delete v.dtBirthDay;
-                    delete v.iDSpeciesId;
-                    delete v.iDUserId;
-                    delete v.nameBreed;
-                    delete v.nameSpecies;
-                    delete v.Description;
-                    v.icon = v.iDSpeciesId === 1 ? 'dog' : 'cat';
-                    v.description = makeDescriptionWeight(v.weight, v.media)
+            if(value.access_token !== undefined || token !== undefined) {
+                apiMain.get('pet', {
+                    headers: { Authorization: `Bearer ${value.access_token}` }
+                }).then((value) => {
+                    value.data.forEach((v: any) => {
+                        delete v.dtBirthDay;
+                        delete v.iDSpeciesId;
+                        delete v.iDUserId;
+                        delete v.nameBreed;
+                        delete v.nameSpecies;
+                        delete v.Description;
+                        v.icon = v.iDSpeciesId === 1 ? 'dog' : 'cat';
+                        v.description = makeDescriptionWeight(v.weight, v.media)
+                    })
+                    setHealth(value.data)
+                    setLoading(false)
+                }).catch((err) => {
+                    console.log(401)
                 })
-                setHealth(value.data)
-            }).catch((err) => {
-                console.log(401)
-            })
+            } else {
+                setLoading(true)
+            }
         })  
     })
+
+    if(loading) {
+        return (
+            <View style={
+                    {display: 'flex', 
+                    flexDirection: 'column',
+                    justifyContent: 'center', 
+                    alignContent: 'center', 
+                    width: Dimensions.get('window').width,
+                    height: Dimensions.get('window').height * 0.8,
+                    alignItems: 'center',
+                    alignSelf: 'center'
+                    
+                    }}>
+                <FontAwesome5 name="paw" size={100} color="#5CDB95" />
+            </View>
+        )
+    }
 
     return (
         <ContainerCards funcNavi={() => {} } text={"Saúde"} hasFAB={false}>
@@ -73,7 +98,15 @@ const Health = () => {
                         description={value.description}                
                     />
             }) : 
-            <View style={{display:'flex', justifyContent: 'center', alignSelf: 'center'}}>
+            <View style={{display: 'flex', 
+                    flexDirection: 'column',
+                    justifyContent: 'center', 
+                    alignContent: 'center', 
+                    width: Dimensions.get('window').width,
+                    height: Dimensions.get('window').height * 0.8,
+                    alignItems: 'center',
+                    alignSelf: 'center'
+                }}>
                 <Text>Adicione seu primeiro pet na aba de pets</Text>
             </View>}
         </ContainerCards>

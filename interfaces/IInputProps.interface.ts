@@ -13,7 +13,7 @@ export interface IInputProp {
     editable?: boolean
     smallInput?: boolean
     multiline?: boolean
-    keyboardType?: 'default' | 'email-address',
+    keyboardType?: 'default' | 'email-address' | 'numeric',
     secureTextEntry?: boolean
 }
 

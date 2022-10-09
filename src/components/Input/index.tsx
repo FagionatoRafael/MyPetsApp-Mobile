@@ -57,7 +57,11 @@ const InputCustom: React.FC<IInputProp> = (
                     mode='outlined' 
                     activeOutlineColor='#05386B'
                     secureTextEntry={secureTextEntry}
-                    right={isPassword ? <TextInput.Icon icon="eye" onPress={() => isSecure()}/> : null}
+                    right={keyboardType !== 'numeric' ? 
+                                isPassword ? 
+                                    <TextInput.Icon icon="eye" onPress={() => isSecure()}/> 
+                                    : null
+                                : <TextInput.Affix text="KG"/>}
                     label={label} 
                     value={text} 
                     onChangeText={(value) => onChangeText(value)}

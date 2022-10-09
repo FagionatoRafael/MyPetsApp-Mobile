@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { AppRegistry, Platform, AsyncStorageStatic } from 'react-native';
+import { AppRegistry, Platform } from 'react-native';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import React, { useEffect, useRef, useState } from 'react';
@@ -42,14 +42,13 @@ type RootStackParamList = {
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false,
-  }),
-});
-
+// Notifications.setNotificationHandler({
+//   handleNotification: async () => ({
+//     shouldShowAlert: true,
+//     shouldPlaySound: false,
+//     shouldSetBadge: false,
+//   }),
+// });
 
 export default function App() {
   const [message, setMessage] = useState({});
@@ -59,24 +58,24 @@ export default function App() {
   const notificationListener = useRef<any>();
   const responseListener = useRef<any>();
   
-  useEffect(() => {
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+  // useEffect(() => {
+  //   registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
-    // This listener is fired whenever a notification is received while the app is foregrounded
-    notificationListener.current = Notifications.addNotificationReceivedListener((notification: any) => {
-      setNotification(notification);
-    });
+  //   // This listener is fired whenever a notification is received while the app is foregrounded
+  //   notificationListener.current = Notifications.addNotificationReceivedListener((notification: any) => {
+  //     setNotification(notification);
+  //   });
 
-    // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response);
-    });
+  //   // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+  //   responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+  //     console.log(response);
+  //   });
 
-    return  () => {
-      Notifications.removeNotificationSubscription(notificationListener.current);
-      Notifications.removeNotificationSubscription(responseListener.current);
-    };
-  }, []);
+  //   return  () => {
+  //     Notifications.removeNotificationSubscription(notificationListener.current);
+  //     Notifications.removeNotificationSubscription(responseListener.current);
+  //   };
+  // }, []);
 
   return (
     <NavigationContainer>
@@ -174,6 +173,7 @@ export default function App() {
   );
 }
 
+
 async function registerForPushNotificationsAsync() {
   let token;
   if (Device.isDevice) {
@@ -189,6 +189,7 @@ async function registerForPushNotificationsAsync() {
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
     console.log(token);
+    asyncStorage.set('tokenSend', token);
   } else {
     alert('Must use physical device for Push Notifications');
   }
@@ -204,5 +205,6 @@ async function registerForPushNotificationsAsync() {
 
   return token;
 }
+
 
 AppRegistry.registerComponent(expo.name, () => App);

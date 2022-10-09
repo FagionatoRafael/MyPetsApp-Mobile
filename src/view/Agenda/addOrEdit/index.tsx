@@ -7,6 +7,7 @@ import { StackActions, useNavigation, NavigationAction, DrawerActions } from '@r
 import { Feather } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import moment from 'moment'
+import * as Notifications from 'expo-notifications';
 
 import InputCustom from '../../../components/Input';
 import Container from '../../../components/Container';
@@ -113,15 +114,7 @@ const AddAgenda = () => {
     const showModal = () => setVisibleModal(true);
     const hideModal = () => setVisibleModal(false);
 
-    const [itens, setItens] = useState<IItens[]>([{
-        id: 0,
-        nameIcon: 'dog',
-        name: 'Frank',
-    }, {
-        id: 1,
-        nameIcon: 'cat',
-        name: 'Link',
-    }])
+    const [itens, setItens] = useState<IItens[]>([])
 
     const [token, setToken] = useState();
     const [status, setStatus] = useState<number>();
@@ -176,7 +169,53 @@ const AddAgenda = () => {
                 console.log(401)
             })
         })
+
+        asyncStorage.get('tokenSend').then((value) => {
+            sendPushNotification(value);
+        })
     }
+
+    const sendNotiFication = () => {
+        const startdate = `${dateText} ${timeTextDas}`; 
+        const exp = moment(startdate, "DD/MM/YYYY HH:mm");
+        const seconds = Math.abs(moment().diff(exp, 'seconds'))
+        Notifications.scheduleNotificationAsync({
+            content: {
+              title: "Temos uma atividade para realizar! ",
+              body: 'Olhe as sua atividades no seu app dos pets!',
+            },
+            trigger: {
+              seconds: seconds
+            },
+        }); 
+    }
+
+    async function sendPushNotification(expoPushToken: any) {
+        const startdate = `${dateText} ${timeTextDas}`; 
+        const exp = moment(startdate, "DD/MM/YYYY HH:mm");
+        const seconds = Math.abs(moment().diff(exp, 'seconds'))
+        const message = {
+            to: expoPushToken,
+            sound: 'default',
+            title: 'Original Title',
+            body: 'And here is the body!' + seconds,
+            data: { someData: 'goes here' },
+            TTL: seconds
+        };
+
+        await fetch('https://exp.host/--/api/v2/push/send', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Accept-encoding': 'gzip, deflate',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(message),
+
+        });
+        console.log(message)
+        console.log(startdate)
+      }
 
     const editAgenda = () => {
         asyncStorage.get('token').then((value) => {
@@ -194,6 +233,10 @@ const AddAgenda = () => {
             }).catch((err) => {
                 console.log(err)
             })
+        })
+
+        asyncStorage.get('tokenSend').then((value) => {
+            sendPushNotification(value);
         })
     }
 
@@ -223,6 +266,9 @@ const AddAgenda = () => {
     const [params, setParams] = useState<IParams>();
 
     useEffect(() => {
+        // asyncStorage.get('tokenSend').then((value) => {
+        //     sendPushNotification(value);
+        // })
         setPetsItens()
         setTitle('Adicione uma agenda')
         setButton('Adicionar')
@@ -434,10 +480,6 @@ const AddAgenda = () => {
                                     } else {
                                         postNewAgenda();
                                     }
-                                    // navigation.navigate('Agenda', true)
-                                    // DrawerActions.jumpTo('Agenda', true)
-                                    // navigation.dispatch()
-                                    // navigation.setParams(true);
                                     navigation.goBack();
                                 }
                             }}

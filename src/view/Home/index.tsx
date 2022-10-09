@@ -11,6 +11,8 @@ import Container from '../../components/Container';
 import { emailValidation, passwordValidation, statusValidation } from '../../../util/validations';
 import asyncStorage from '../../../util/asyncStorage';
 import { apiMain } from '../../../services/connction';
+import moment from 'moment';
+import React from 'react';
 
 const Home = () => {
     const navigation = useNavigation();
@@ -42,11 +44,11 @@ const Home = () => {
             return statusValidation(status)
     };
 
-    const [token, setToken] = useState<object>()
+    const [token, setToken] = useState(undefined)
     const getToken = () => {
         apiMain.post("/auth/login", {
-            "email": email, 
-            "password": password
+            "email": email.trim(), 
+            "password": password.trim()
         }).then((ev) => {
             if(ev) {
                 // console.log(ev)
@@ -63,7 +65,6 @@ const Home = () => {
     }
 
     useEffect(() => {
-        // console.log(email, password)
         if(!hasErrorsPassword() && !hasErrorsEmail()) {
             getToken();
         }
@@ -73,9 +74,12 @@ const Home = () => {
         asyncStorage.remove('token').then((value) => {
             console.log("limpando tudo: " + value)
         })
-
+        // const startdate = '08/10/2022 22:20'; 
+        // console.log(moment('09/10/2022 21:40', "DD/MM/YYYY HH:mm").fromNow().length) 
+        // const exp = moment(startdate, "DD/MM/YYYY HH:mm");
+        // console.log(Math.abs(moment().diff(exp, 'seconds')));
         // setEmail('rafael@gmail.com');
-        // setPassword('123456')
+        // setPassword('123456') 
     }, [])
 
     return (
@@ -114,10 +118,11 @@ const Home = () => {
                         setEmailError(hasErrorsEmail()); 
                         setPassError(hasErrorsPassword());
                         if((!hasErrorsStatus() && !hasErrorsPassword() && !hasErrorsEmail())) {
+                            // getToken();
                             setTimeout(() => {
                                 asyncStorage.get('token').then((value) => {
                                     console.log(value)
-                                    if(value !== undefined) {
+                                    if(value !== undefined || token !== undefined) {
                                         setStatusError(false)
                                         navigation.navigate('NavegationOne');
                                     } else {
@@ -135,7 +140,7 @@ const Home = () => {
                     style={styles.buttonText} 
                     color='#05386B' 
                     mode="text" 
-                    onPress={() => navigation.navigate('Signin')}
+                    onPress={() => navigation.navigate('Signin', true)}
                 >
                     cadastre-se
                 </Button>

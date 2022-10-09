@@ -3,6 +3,7 @@ import styles from './styles';
 import { useEffect, useState } from 'react';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { ProgressBar, Button } from 'react-native-paper';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 import Container from '../../components/Container';
 
@@ -48,10 +49,13 @@ const NavegationThird = () => {
     return (
         <Container>
             <View style={styles.logoContainer}>
-                <Text style={styles.logoText}>Vamos começar</Text>
+                <Text style={styles.logoText}>Vamos começar?</Text>
             </View>
             <View style={styles.navigationContainer}>
-                <Text style={styles.navegationText}>Espero que te ajude a cuidar :)</Text>
+                <Text style={styles.navegationText}>
+                    Espero que este app te ajude a cuidar de quem você mais ama!
+                    <FontAwesome5 name="smile-beam" size={24} color="#379683" />
+                </Text>
                 <View style={styles.groupButton}>
                     <Button 
                         mode="text" 

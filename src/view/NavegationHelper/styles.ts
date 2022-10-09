@@ -23,13 +23,13 @@ const styles = StyleSheet.create({
         fontSize: 18
     },
     groupButton: {
-        marginTop: 300,
+        marginTop: Dimensions.get('window').height * 0.4,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
     },
     progress: {
-        marginTop: 40
+        marginTop: Dimensions.get('window').height * 0.01,
     }
 });
 

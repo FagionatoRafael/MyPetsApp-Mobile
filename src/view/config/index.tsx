@@ -87,7 +87,7 @@ const Config = () => {
                     <Switch value={isNoteThree} color={'#05386B'} onValueChange={onToggleNoteThree} />
                 </View>
             </View>
-            <View style={styles.containerConfig}>
+            {/* <View style={styles.containerConfig}>
                 <Text style={{color: '#fff', fontWeight: 'bold' , fontSize: 18}}>E-Mail</Text>
                 <Divider style={{height: 5}}/>
                 <View style={styles.containerToggle} onTouchEnd={onToggleMailOne}>
@@ -102,7 +102,7 @@ const Config = () => {
                     <Text style={{color: '#fff'}}>Vacinas criados/alteradas</Text>
                     <Switch value={isMailThree} color={'#05386B'} onValueChange={onToggleMailThree} />
                 </View>
-            </View>
+            </View> */}
         </Container>
     )
 }

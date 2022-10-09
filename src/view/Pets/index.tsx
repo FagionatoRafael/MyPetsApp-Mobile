@@ -1,4 +1,4 @@
-import { View, ScrollView, Text } from "react-native"
+import { View, ScrollView, Text, Dimensions } from "react-native"
 import styles from "./styles"
 import CardPet from "../../components/CardPet";
 import { FAB } from 'react-native-paper';
@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import ContainerCards from "../../components/ContainerCards";
 import { apiCatsDogs, apiMain } from "../../../services/connction";
 import asyncStorage from '../../../util/asyncStorage';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 
 interface IPet {
@@ -29,7 +30,8 @@ const Pets = () => {
 
     const [pets, setPets] = useState<IPet[]>([])
 
-    const [token, setToken] = useState('')
+    const [token, setToken] = useState(undefined)
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         setPets([])
@@ -39,21 +41,43 @@ const Pets = () => {
         const getToken = asyncStorage.get('token')
         getToken.then((value) => {
             setToken(value.access_token)
-            apiMain.get('/pet', {
-                headers: { Authorization: `Bearer ${value.access_token}` }
-            }).then((value) => { 
-                if(value.data.length !== 0) {
-                    value.data.forEach((v: any) => {
-                        v.icon = v.iDSpeciesId === 1 ? 'dog' : 'cat'  
-                    })
-                    
+            if(value.access_token !== undefined || token !== undefined) {
+                apiMain.get('pet', {
+                    headers: { Authorization: `Bearer ${value.access_token}` }
+                }).then((value) => { 
+                    if(value.data) {
+                        value.data.forEach((v: any) => {
+                            v.icon = v.iDSpeciesId === 1 ? 'dog' : 'cat'  
+                        })                    
+                    }
                     setPets(value.data)
-                }
-            }).catch((err) => {
-                console.log(401)
-            })
+                    setLoading(false)
+                }).catch((err) => {
+                    console.log(401)
+                })
+            } else {
+                setLoading(true)
+            }
         })
     })
+
+    if(loading) {
+        return (
+            <View style={
+                    {display: 'flex', 
+                    flexDirection: 'column',
+                    justifyContent: 'center', 
+                    alignContent: 'center', 
+                    width: Dimensions.get('window').width,
+                    height: Dimensions.get('window').height * 0.8,
+                    alignItems: 'center',
+                    alignSelf: 'center'
+                    
+                    }}>
+                <FontAwesome5 name="paw" size={100} color="#5CDB95" />
+            </View>
+        )
+    }
 
     return (
         <ContainerCards funcNavi={() => { navigation.navigate('AddPets'); } } text={"Pets"}>
@@ -68,7 +92,15 @@ const Pets = () => {
                         navigation.navigate('AddPets', value)
                     }}
                 />
-            }) : <View>
+            }) : <View style={{display: 'flex', 
+                    flexDirection: 'column',
+                    justifyContent: 'center', 
+                    alignContent: 'center', 
+                    width: Dimensions.get('window').width,
+                    height: Dimensions.get('window').height * 0.8,
+                    alignItems: 'center',
+                    alignSelf: 'center'
+                }}>
                     <Text>Adicione seu primeiro Pet no icone de mais</Text>
                 </View>}
             

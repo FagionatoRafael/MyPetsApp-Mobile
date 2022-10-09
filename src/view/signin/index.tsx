@@ -20,6 +20,7 @@ const Signin = () => {
     const [email, setEmail] = useState('');
     const [dateText, setDateText] = useState('')
     const [hasDate, setDate] = useState<DateTimePickerResult>();
+    const [secureTextEntry, setSecureTextEntry] = useState(true)
 
     const [nameErr, setNameErr] = useState(false);
     const [passwordErr, setPasswordErr] = useState(false);
@@ -58,15 +59,13 @@ const Signin = () => {
 
     const [alreadyUser, setAlreadyUser] = useState(false)
 
-    const getToken = () => {
+    const getExistUser = () => {
         apiMain.post("email", {
-            "email": email
+            "email": email.trim()
         }).then((ev) => {
             console.log(ev.data)
             if(ev.data) {
-                asyncStorage.set('exists', ev.data).then((value) => {
-                    console.log(value)
-                })
+                asyncStorage.set('exists', ev.data)
             }
         }).catch((err: string) => {
             console.log(401)
@@ -75,22 +74,30 @@ const Signin = () => {
 
     const postUser = () => {
         apiMain.post('user', {
-            "name": name,
-            "password": password,
-            "dtBirthDay": dateText,
+            "name": name.trim(),
+            "password": password.trim(),
+            "dtBirthDay": dateText.trim(),
             "dtSignin": moment().format('DD/MM/YYYY'),
             "dtLastLogin": moment().format('DD/MM/YYYY'),
-            "email": email
+            "email": email.trim()
         }).then((ev) => {
             console.log(ev.status)
         }).catch((err) => console.log(err))
     }
 
     useEffect(() => {
-        if(!hasErrorsPassword() && !hasErrorsEmail()) {
-            getToken();
+        setName('');
+        setEmail('');
+        setPassword('');
+        setDateText('');
+    }, [navigation.getState().routes[navigation.getState().routes.length - 1].params])
+
+    useEffect(() => {
+        asyncStorage.remove('exists')
+        if(!hasErrorsEmail()) {
+            getExistUser();
         }
-    }, [email, password])
+    }, [name, email, password, dateText])
 
     return (
         <Container>
@@ -100,7 +107,16 @@ const Signin = () => {
             <View style={styles.form}>
                <InputCustom hasErros={nameErr} label={'Nome'} onChangeText={onChangeName} text={name} invalidText={'Nome deve ser maior de 2 letras!'}/>
                <InputCustom hasErros={emailErr} label={'Email'} onChangeText={onChangeEmail} text={email} invalidText={'Email Invalido!'} keyboardType={'email-address'}/>
-               <InputCustom hasErros={passwordErr} label={'Password'} onChangeText={onChangePassword} text={password} invalidText={'Senha deve ser maior que 6 letras ou numeros!'} secureTextEntry={true}/>
+               <InputCustom 
+                    hasErros={passwordErr} 
+                    label={'Password'} 
+                    onChangeText={onChangePassword} 
+                    text={password} 
+                    invalidText={'Senha deve ser maior que 6 letras ou numeros!'} 
+                    secureTextEntry={secureTextEntry}
+                    isPassword={true}
+                    isSecure={() => setSecureTextEntry(!secureTextEntry)}
+                />
                
                {visible ? 
                 <DateTimePicker 
@@ -130,12 +146,13 @@ const Signin = () => {
                         setPasswordErr(hasErrorsPassword())
                         setEmailErr(hasErrorsEmail())
                         setDateErr(hasErrorsDate()) 
+                        getExistUser();
                         if(!hasErrorsName() && !hasErrorsPassword() && !hasErrorsEmail() && !hasErrorsDate()) {
                             asyncStorage.get('exists').then((value) => {
                                 if(!value) {
                                     setAlreadyUser(false)
-                                    // postUser();
-                                    // navigation.navigate('Confirmation')
+                                    postUser();
+                                    navigation.navigate('Confirmation')
                                 } else {
                                     setAlreadyUser(true)
                                 }

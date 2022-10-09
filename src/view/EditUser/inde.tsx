@@ -58,10 +58,12 @@ const EditUser = () => {
 
     const [visible, setVisible] = useState(false);
     const date = new Date();
+    const [token, setToken] = useState('');
 
     const editUser = () => {
         const getToken = asyncStorage.get('token')
         getToken.then((value) => {
+            setToken(token)
             apiMain.patch('user', {
                 name: name,
                 password: password,

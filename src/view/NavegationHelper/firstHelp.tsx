@@ -16,7 +16,11 @@ const NavegationOne = () => {
                 <Text style={styles.logoText}>Como usar?</Text>
             </View>
             <View style={styles.navigationContainer}>
-                <Text style={styles.navegationText}>Aqui entra o como usar o app de maneira correta. Use o + para adicionar mais um pet</Text>
+                <Text style={styles.navegationText}>
+                    O App é bem simples e pratico para utilizar, 
+                    primeiro use o icone de + para adicionar os seus pets, tarefas e vacinas desejadas. 
+                    Para editar ou excluir um pet basta que clique em editar no card do pet. 
+                </Text>
                 <View style={styles.groupButton}>
                     <Button 
                         mode="text" 

@@ -15,6 +15,7 @@ function MyDrawer() {
   const [nome, setNome] = useState<string>();
   const [dtInit, setDtInit] = useState<string>();
   const [dtLastLogin, setDtLastLogin] = useState<string>();
+  const [isFirstTime, setIsFirstTime] = useState(true)
 
   useEffect(() => {
     const getToken = asyncStorage.get('token');
@@ -25,6 +26,7 @@ function MyDrawer() {
         setNome(v.data.name);
         setDtInit(v.data.dtSignin);
         setDtLastLogin(v.data.dtLastLogin);
+        setIsFirstTime(v.data.isFirstTime)
       }).catch((err) => {
         console.log(401)
       })
@@ -34,7 +36,7 @@ function MyDrawer() {
   useEffect(() => {
     const getToken = asyncStorage.get('token');
    
-    if(moment(dtInit).isSame(moment())) {
+    if(isFirstTime) {
       getToken.then((value) => {
         apiMain.post('config', {
           isNoteOne: true,
@@ -50,10 +52,21 @@ function MyDrawer() {
         }).catch((err) => {
           console.log(401)
         })
+      
+        apiMain.patch('user', {
+          isFirstTime: false
+        }, {
+          headers: { Authorization: `Bearer ${value.access_token}` }
+        }).then((v) => {
+          console.log(v.status)
+        }).catch((err) => {
+          console.log(401)
+        })
+        setIsFirstTime(false);
       })
     }
 
-    if(!moment(dtLastLogin).isSame(moment())) {
+    if(!moment(dtLastLogin).isSame(moment().format('l'))) {
       const getToken = asyncStorage.get('token')
       getToken.then((value) => {
         apiMain.patch('user', {
@@ -67,7 +80,7 @@ function MyDrawer() {
         })
       })
     }
-  }, [dtInit, dtLastLogin])
+  }, [isFirstTime, dtLastLogin])
 
   return (
     <Drawer.Navigator 

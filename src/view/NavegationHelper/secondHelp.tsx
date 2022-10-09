@@ -15,7 +15,9 @@ const NavegationSecond = () => {
                 <Text style={styles.logoText}>Descrição</Text>
             </View>
             <View style={styles.navigationContainer}>
-                <Text style={styles.navegationText}>Este App foi feito para organizar e ajudar na criação de seus pets</Text>
+                <Text style={styles.navegationText}>
+                Aqui você pode gerenciar as tarefas, vacinas e peso do seu pet, tudo em um único app.
+                </Text>
                 <View style={styles.groupButton}>
                     <Button 
                         mode="text" 
