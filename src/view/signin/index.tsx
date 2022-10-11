@@ -74,12 +74,12 @@ const Signin = () => {
 
     const postUser = () => {
         apiMain.post('user', {
-            "name": name.trim(),
-            "password": password.trim(),
-            "dtBirthDay": dateText.trim(),
-            "dtSignin": moment().format('DD/MM/YYYY'),
-            "dtLastLogin": moment().format('DD/MM/YYYY'),
-            "email": email.trim()
+            name: name.trim(),
+            password: password.trim(),
+            dtBirthDay: dateText.trim(),
+            dtSignin: moment().format('DD/MM/YYYY'),
+            dtLastLogin: moment().format('DD/MM/YYYY'),
+            email: email.toLowerCase().trim()
         }).then((ev) => {
             console.log(ev.status)
         }).catch((err) => console.log(err))
@@ -97,7 +97,7 @@ const Signin = () => {
         if(!hasErrorsEmail()) {
             getExistUser();
         }
-    }, [name, email, password, dateText])
+    }, [email])
 
     return (
         <Container>

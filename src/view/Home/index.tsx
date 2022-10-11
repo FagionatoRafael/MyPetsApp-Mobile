@@ -46,21 +46,18 @@ const Home = () => {
 
     const [token, setToken] = useState(undefined)
     const getToken = () => {
-        apiMain.post("/auth/login", {
-            "email": email.trim(), 
-            "password": password.trim()
+        apiMain.post("auth/login", {
+            email: email.toLowerCase().trim(), 
+            password: password.trim()
         }).then((ev) => {
-            if(ev) {
-                // console.log(ev)
-                setStatus(ev.status)
+            if(ev.data) {
                 setToken(ev.data)
-                asyncStorage.set('token', ev.data).then((value) => {
-                    console.log(value)
-                })
+                asyncStorage.set('token', ev.data)
             }
         }).catch((err: string) => {
             console.log(401)
-            setStatus(401)
+            setToken(undefined)
+            asyncStorage.clearAll();
         })
     }
 
@@ -74,12 +71,6 @@ const Home = () => {
         asyncStorage.remove('token').then((value) => {
             console.log("limpando tudo: " + value)
         })
-        // const startdate = '08/10/2022 22:20'; 
-        // console.log(moment('09/10/2022 21:40', "DD/MM/YYYY HH:mm").fromNow().length) 
-        // const exp = moment(startdate, "DD/MM/YYYY HH:mm");
-        // console.log(Math.abs(moment().diff(exp, 'seconds')));
-        // setEmail('rafael@gmail.com');
-        // setPassword('123456') 
     }, [])
 
     return (
@@ -117,19 +108,20 @@ const Home = () => {
                     onPress={() => {
                         setEmailError(hasErrorsEmail()); 
                         setPassError(hasErrorsPassword());
-                        if((!hasErrorsStatus() && !hasErrorsPassword() && !hasErrorsEmail())) {
-                            // getToken();
-                            setTimeout(() => {
-                                asyncStorage.get('token').then((value) => {
-                                    console.log(value)
-                                    if(value !== undefined || token !== undefined) {
-                                        setStatusError(false)
-                                        navigation.navigate('NavegationOne');
-                                    } else {
-                                        setStatusError(true)
-                                    }
-                                })
-                            }, 1000)
+                        if((!hasErrorsPassword() && !hasErrorsEmail())) {
+                            getToken();
+                            console.log(token)
+
+                            asyncStorage.get('token').then((value) => {
+                                console.log(value)
+                                if(value !== undefined || token !== undefined) {
+                                    setStatusError(false)
+                                    navigation.navigate('NavegationOne');
+                                } else {
+                                    setStatusError(true)
+                                    asyncStorage.clearAll();
+                                }
+                            })
                         }
                     }}
                 >
