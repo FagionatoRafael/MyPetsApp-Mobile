@@ -61,11 +61,11 @@ const Home = () => {
         })
     }
 
-    useEffect(() => {
-        if(!hasErrorsPassword() && !hasErrorsEmail()) {
-            getToken();
-        }
-    }, [email, password])
+    // useEffect(() => {
+    //     if(!hasErrorsPassword() && !hasErrorsEmail()) {
+    //         getToken();
+    //     }
+    // }, [email, password])
 
     useEffect(() => {
         asyncStorage.remove('token').then((value) => {
@@ -110,18 +110,18 @@ const Home = () => {
                         setPassError(hasErrorsPassword());
                         if((!hasErrorsPassword() && !hasErrorsEmail())) {
                             getToken();
-                            console.log(token)
+                            setTimeout(() => {
+                                asyncStorage.get('token').then((value) => {
+                                    if(value !== undefined || token !== undefined) {
+                                        setStatusError(false)
+                                        navigation.navigate('NavegationOne');
+                                    } else {
+                                        setStatusError(true)
+                                        asyncStorage.clearAll();
+                                    }
+                                });
+                            }, 2000)
 
-                            asyncStorage.get('token').then((value) => {
-                                console.log(value)
-                                if(value !== undefined || token !== undefined) {
-                                    setStatusError(false)
-                                    navigation.navigate('NavegationOne');
-                                } else {
-                                    setStatusError(true)
-                                    asyncStorage.clearAll();
-                                }
-                            })
                         }
                     }}
                 >
