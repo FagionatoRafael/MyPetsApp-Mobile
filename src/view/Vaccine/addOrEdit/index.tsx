@@ -274,6 +274,7 @@ const AddVaccine = () => {
                                 setVisible(false);
                             }
                         }}
+                        minimumDate={new Date(1980, 0, 1)}
                         value={date}
                     />: <></>}
 

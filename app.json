@@ -37,12 +37,16 @@
     },
     "plugins": [
       [
-        "@react-native-firebase/app",
+        "expo-notifications",
         {
           "icon": "./assets/logo-icon.png",
-          "color": "#ffffff"
+          "color": "#5CDB95"
         }
       ]
-    ]
+    ],
+    "notification": {
+      "icon":"./assets/logo-icon.png",
+      "color": "#5CDB95"
+    }
   }
 }

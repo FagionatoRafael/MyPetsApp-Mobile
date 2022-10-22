@@ -170,9 +170,7 @@ const AddAgenda = () => {
             })
         })
 
-        asyncStorage.get('tokenSend').then((value) => {
-            sendPushNotification(value);
-        })
+        sendNotiFication();
     }
 
     const sendNotiFication = () => {
@@ -189,33 +187,6 @@ const AddAgenda = () => {
             },
         }); 
     }
-
-    async function sendPushNotification(expoPushToken: any) {
-        const startdate = `${dateText} ${timeTextDas}`; 
-        const exp = moment(startdate, "DD/MM/YYYY HH:mm");
-        const seconds = Math.abs(moment().diff(exp, 'seconds'))
-        const message = {
-            to: expoPushToken,
-            sound: 'default',
-            title: 'Original Title',
-            body: 'And here is the body!' + seconds,
-            data: { someData: 'goes here' },
-            TTL: seconds
-        };
-
-        await fetch('https://exp.host/--/api/v2/push/send', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Accept-encoding': 'gzip, deflate',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(message),
-
-        });
-        console.log(message)
-        console.log(startdate)
-      }
 
     const editAgenda = () => {
         asyncStorage.get('token').then((value) => {
@@ -235,9 +206,7 @@ const AddAgenda = () => {
             })
         })
 
-        asyncStorage.get('tokenSend').then((value) => {
-            sendPushNotification(value);
-        })
+        sendNotiFication();
     }
 
     const deleteAgenda = () => {
@@ -330,6 +299,7 @@ const AddAgenda = () => {
                                 setVisible(false);
                             }
                         }}
+                        minimumDate={new Date()}
                         value={date}
                     />: <></>}
 
