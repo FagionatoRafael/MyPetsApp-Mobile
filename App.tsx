@@ -24,6 +24,8 @@ import AddVaccine from './src/view/Vaccine/addOrEdit';
 import EditUser from './src/view/EditUser/inde';
 import { apiMain } from './services/connction';
 
+global.Buffer = global.Buffer || require('buffer').Buffer
+
 type RootStackParamList = {
   Home: object;
   Signin: object;

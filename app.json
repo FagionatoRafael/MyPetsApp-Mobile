@@ -37,7 +37,7 @@
     },
     "plugins": [
       [
-        "@react-native-firebase/app",
+        "expo-notifications",
         {
           "icon": "./assets/logo-icon.png",
           "color": "#ffffff"

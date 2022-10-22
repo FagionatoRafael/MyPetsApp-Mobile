@@ -45,7 +45,15 @@ const Home = () => {
     };
 
     const [token, setToken] = useState(undefined)
-    const getToken = () => {
+    const getToken = async () => {
+        // const user = {
+        //     email: email.toLowerCase().trim(), 
+        //     password: password.trim()
+        // }
+        // const hash = Buffer.from(JSON.stringify(user), 'binary').toString('base64');
+        // console.log(hash);
+        // const decodep = Buffer.from(hash, 'base64').toString();
+        // console.log(JSON.parse(decodep));
         apiMain.post("auth/login", {
             email: email.toLowerCase().trim(), 
             password: password.trim()
@@ -108,7 +116,7 @@ const Home = () => {
                                 const t = await asyncStorage.get('token');
                                 if(t !== undefined || token !== undefined) {
                                     setStatusError(false)
-                                    navigation.navigate('NavegationOne');
+                                    // navigation.navigate('NavegationOne');
                                 } else {
                                     setStatusError(true)
                                     asyncStorage.clearAll();
