@@ -268,13 +268,18 @@ const AddVaccine = () => {
                     <DateTimePicker 
                         onTouchEnd={() => console.log('alooo')}
                         onTouchCancel={(event) => {setVisible(false); console.log(event)}}
-                        onChange={(value: any) => onChangeDate(value)}
+                        onChange={(value: any) => {
+                            onChangeDate(value)
+                            if(value.type !== 'set') {
+                                setVisible(false);
+                            }
+                        }}
                         value={date}
                     />: <></>}
 
                     <InputCustom label='Escolha seu pet' text={pet} hasErros={petErr} onChangeText={onChangePet} hasTouch={showModal} invalidText={'Um Pet deve ser selecionado!'} editable={false}/>
                     <InputCustom label='Selecione a vacina' text={vaccines} hasErros={vaccineErr} onChangeText={onChangeVaccine} hasTouch={showModalVaccine} invalidText={'Uma vacina deve ser selecionado!'} editable={false}/>
-                    <InputCustom label='Data da atividade' text={dateText} hasErros={DateErr} onChangeText={() => {}} invalidText={'A data não pode ser vazia!'} hasTouch={() => setVisible(true)} editable={false}/>
+                    <InputCustom label='Data da vacina' text={dateText} hasErros={DateErr} onChangeText={() => {}} invalidText={'A data não pode ser vazia!'} hasTouch={() => setVisible(true)} editable={false}/>
                     <InputCustom label='Nota' text={description} hasErros={descriptionErr} onChangeText={onChangeDescription} multiline={true} invalidText={'A descrição não pode ser vazia e nem maior que 200 letras!'}/> 
                     
                     <View style={styles.groupButtons}>

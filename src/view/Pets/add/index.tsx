@@ -309,10 +309,16 @@ const AddPet = () => {
                 </View>
                 <View style={styles.form}>
                     {visible ? 
-                    <DateTimePicker 
-                    onTouchEnd={() => console.log('alooo')}
+                    <DateTimePicker                         
                         onTouchCancel={(event) => {setVisible(false); console.log(event)}}
-                        onChange={(value: any) => onChangeBirthday(value)}
+                        onChange={(value: any) => {
+                            onChangeBirthday(value); 
+                            if(value.type !== 'set') {
+                                setVisible(false);
+                            }
+                        }}
+                        minimumDate={new Date(1980, 0, 1)}
+                        maximumDate={new Date()}
                         value={date}
                     />: <></>}
 

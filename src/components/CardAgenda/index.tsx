@@ -6,6 +6,7 @@ import { Button, Card, Title, Paragraph } from 'react-native-paper';
 import styles from "./styles"
 import { AntDesign } from '@expo/vector-icons';
 import { ICardAgenda } from '../../../interfaces/_interface.interface'
+import React from "react";
 
 // import SVGBowl from '../../../../assets/dog-dish-icon.svg';
 // import SVGCollar from '../../../../assets/dog-collar-icon.svg';
@@ -32,7 +33,7 @@ const CardAgenda: React.FC<ICardAgenda> = ({icon, namePet, day, hoursOf, hoursTi
             <Card.Content style={styles.description}>
                 <AntDesign name="menu-fold" size={24} color="#05386B" />
                 <View style={styles.itensTodo}>
-                    {JSON.parse(itens).map((value) => {
+                    {JSON.parse(itens).map((value: any) => {
                         if(value === 0) {
                             return <Image key={value} source={require('../../../assets/dog-dish-icon.png')} style={{width: 30, height: 30}}/>
                         }

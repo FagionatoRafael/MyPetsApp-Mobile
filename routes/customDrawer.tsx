@@ -9,6 +9,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import asyncStorage from '../util/asyncStorage';
 import { apiMain } from '../services/connction';
+import React from 'react';
 
 interface IData {
 	id: string,
@@ -36,9 +37,7 @@ function CustomDrawerContent(props: any) {
         setData(value.data)
       })
     })
-  }, [])
-
-  // const [token, setToken] = useState({validation: 'jdsnvasndjvdfinjdfnjvdfnkmksd'});
+  })
 
   return (
     <DrawerContentScrollView {...props} style={{backgroundColor: '#5CDB95', height: '100%'}}>

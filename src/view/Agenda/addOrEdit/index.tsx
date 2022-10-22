@@ -5,7 +5,7 @@ import React, { SetStateAction, useEffect, useState } from 'react';
 import { useFonts, Dosis_400Regular } from '@expo-google-fonts/dosis';
 import { StackActions, useNavigation, NavigationAction, DrawerActions } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import DateTimePicker, { DateTimePickerResult } from '@react-native-community/datetimepicker';
 import moment from 'moment'
 import * as Notifications from 'expo-notifications';
 
@@ -50,9 +50,9 @@ const AddAgenda = () => {
     const [dateText, setDateText] = useState('')
     const [timeTextDas, setTimeTextDas] = useState('')
     const [timeTextTill, setTimeTextTill] = useState('')
-    const [dateTime, setDate] = useState<DateTimePickerEvent>();
-    const [timeDas, setTimeDas] = useState<DateTimePickerEvent>();
-    const [timeTill, setTimeTill] = useState<DateTimePickerEvent>();
+    const [dateTime, setDate] = useState<DateTimePickerResult>();
+    const [timeDas, setTimeDas] = useState<DateTimePickerResult>();
+    const [timeTill, setTimeTill] = useState<DateTimePickerResult>();
     const [pet, setPet] = useState('');
     const [deleteBotton, setDeleteBotton] = useState(false)
 
@@ -63,7 +63,7 @@ const AddAgenda = () => {
     const [cardErr, setCardErr] = useState(false);
 
     const onChangePet = (text: SetStateAction<string>) => setPet(text);
-    const onChangeDate = (value: DateTimePickerEvent) => {
+    const onChangeDate = (value: DateTimePickerResult) => {
         if(value.nativeEvent.timestamp) {
             let novo = moment(new Date(value.nativeEvent.timestamp || 1 * 1000)).format('DD/MM/YYYY');
             setDate(value)
@@ -72,7 +72,7 @@ const AddAgenda = () => {
         }
     }
 
-    const onChangeDas = (value: DateTimePickerEvent) => {
+    const onChangeDas = (value: DateTimePickerResult) => {
         if(value.nativeEvent.timestamp) {
             let novo = moment(new Date(value.nativeEvent.timestamp || 1 * 1000)).format('HH:mm');
             setTimeDas(value)
@@ -81,7 +81,7 @@ const AddAgenda = () => {
         }
     }
 
-    const onChangeTill = (value: DateTimePickerEvent) => {
+    const onChangeTill = (value: DateTimePickerResult) => {
         if(value.nativeEvent.timestamp) {
             let novo = moment(new Date(value.nativeEvent.timestamp || 1 * 1000)).format('HH:mm');
             setTimeTill(value)
@@ -324,36 +324,53 @@ const AddAgenda = () => {
                     <DateTimePicker 
                         onTouchEnd={() => console.log('alooo')}
                         onTouchCancel={(event) => {setVisible(false); console.log(event)}}
-                        onChange={(value: any) => onChangeDate(value)}
+                        onChange={(value: any) => {
+                            onChangeDate(value)
+                            if(value.type !== 'set') {
+                                setVisible(false);
+                            }
+                        }}
                         value={date}
                     />: <></>}
 
                     {visibleDas ? 
                     <DateTimePicker 
                         onTouchEnd={() => console.log('alooo')}
-                        onTouchCancel={(event) => {setVisible(false); console.log(event)}}
-                        onChange={(value: any) => onChangeDas(value)}
+                        onTouchCancel={(event) => {setVisibleDas(false); console.log(event)}}
+                        onChange={(value: any) => {
+                            onChangeDas(value)
+                            if(value.type !== 'set') {
+                                setVisibleDas(false);
+                            }
+                        }}
                         value={date}
+                        is24Hour={true}
                         mode={'time'}
                     />: <></>}
 
                     {visibleTill ? 
                     <DateTimePicker 
                         onTouchEnd={() => console.log('alooo')}
-                        onTouchCancel={(event) => {setVisible(false); console.log(event)}}
-                        onChange={(value: any) => onChangeTill(value)}
+                        onTouchCancel={(event) => {setVisibleTill(false); console.log(event)}}
+                        onChange={(value: any) => {
+                            onChangeTill(value)
+                            if(value.type !== 'set') {
+                                onChangeTill(false);
+                            }
+                        }}
+                        is24Hour={true}
                         value={date}
                         mode={'time'}
                     />: <></>}
 
                     <InputCustom label='Escolha seu pet' text={pet} hasErros={petErr} onChangeText={onChangePet} hasTouch={showModal} invalidText={'Um Pet deve ser selecionado!'} editable={false}/>
                     <InputCustom label='Data da atividade' text={dateText} hasErros={DateErr} onChangeText={() => {}} invalidText={'A data deve ser posterior a de hoje!'} hasTouch={() => setVisible(true)} editable={false}/>
-                    <View style={{display: 'flex', flexDirection: 'row', width: 200}}>
+                    <View style={{display: 'flex', flexDirection: 'row', width: windowWidth * 0.5}}>
                         <InputCustom  label='Das' text={timeTextDas} hasErros={timeDasErr} onChangeText={() => {}} invalidText={'Tempo deve ser anterior o tempo até!'} hasTouch={() => setVisibleDas(true)} editable={false} smallInput={true}/>
                         <InputCustom label='Até' text={timeTextTill} hasErros={timeTillErr} onChangeText={() => {}} invalidText={'Tempo deve ser Posterior o tempo Das!'} hasTouch={() => setVisibleTill(true)} editable={false} smallInput={true}/>
                     </View>
 
-                    <View style={{display: 'flex', flexWrap: 'wrap',flexDirection: 'row', maxWidth: windowWidth -50}}>  
+                    <View style={{display: 'flex', flexWrap: 'wrap',flexDirection: 'row', maxWidth: windowWidth * 0.9}}>  
                         
                         <CardSelect 
                             text={'Comer'} 

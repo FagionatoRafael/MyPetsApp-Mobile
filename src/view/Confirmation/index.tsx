@@ -4,6 +4,7 @@ import styles from './styles';
 import Container from '../../components/Container';
 import { AntDesign } from '@expo/vector-icons'; 
 import { useEffect, useState } from 'react';
+import React from 'react';
 
 const Confirmation = () => {
     const navigation = useNavigation();

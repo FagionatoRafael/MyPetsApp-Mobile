@@ -122,6 +122,8 @@ const Signin = () => {
                 <DateTimePicker 
                     onChange={(value: any) => onChangeDateTime(value)}
                     value={date}
+                    minimumDate={new Date(1910, 0, 1)}
+                    maximumDate={new Date()}
                     // onTouchCancel={(value: any) => setVisible(false)}
                 />: <></>}
 
@@ -148,15 +150,16 @@ const Signin = () => {
                         setDateErr(hasErrorsDate()) 
                         getExistUser();
                         if(!hasErrorsName() && !hasErrorsPassword() && !hasErrorsEmail() && !hasErrorsDate()) {
-                            asyncStorage.get('exists').then((value) => {
-                                if(!value) {
+                            setTimeout(async() => {
+                                const e = await asyncStorage.get('exists')
+                                if(!e) {
                                     setAlreadyUser(false)
                                     postUser();
                                     navigation.navigate('Confirmation')
                                 } else {
                                     setAlreadyUser(true)
                                 }
-                            })
+                            }, 1000)
                         }
                     }}
                 >

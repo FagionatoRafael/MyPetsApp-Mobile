@@ -6,6 +6,7 @@ import { Button, Card, Title, Paragraph } from 'react-native-paper';
 import styles from "./styles"
 import { AntDesign } from '@expo/vector-icons';
 import { ICardVaccine } from '../../../interfaces/_interface.interface'
+import React from "react";
 
 const CardVaccine: React.FC<ICardVaccine> = ({icon, namePet, day, vaccine, description, editFunc}) => {
     const windowWidth = Dimensions.get('window').width;

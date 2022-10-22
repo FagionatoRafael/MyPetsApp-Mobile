@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Button, Card, Title, Paragraph } from 'react-native-paper';
 import styles from "./styles"
 import { ICardPet } from '../../../interfaces/_interface.interface';
+import React from "react";
 
 const CardPet: React.FC<ICardPet> = ({icon, namePet, birthDay, description, funcUpdate}) => {
     const windowWidth = Dimensions.get('window').width;

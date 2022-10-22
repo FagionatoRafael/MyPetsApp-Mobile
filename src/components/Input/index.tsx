@@ -3,6 +3,7 @@ import styles from './styles';
 import { Button, HelperText, TextInput } from 'react-native-paper';
 import { TextInputMask } from 'react-native-masked-text'
 import { IInputProp } from '../../../interfaces/_interface.interface';
+import React from 'react';
 
 const InputCustom: React.FC<IInputProp> = (
     {hasTouch, 

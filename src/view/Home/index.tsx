@@ -61,12 +61,6 @@ const Home = () => {
         })
     }
 
-    // useEffect(() => {
-    //     if(!hasErrorsPassword() && !hasErrorsEmail()) {
-    //         getToken();
-    //     }
-    // }, [email, password])
-
     useEffect(() => {
         asyncStorage.remove('token').then((value) => {
             console.log("limpando tudo: " + value)
@@ -110,17 +104,16 @@ const Home = () => {
                         setPassError(hasErrorsPassword());
                         if((!hasErrorsPassword() && !hasErrorsEmail())) {
                             getToken();
-                            setTimeout(() => {
-                                asyncStorage.get('token').then((value) => {
-                                    if(value !== undefined || token !== undefined) {
-                                        setStatusError(false)
-                                        navigation.navigate('NavegationOne');
-                                    } else {
-                                        setStatusError(true)
-                                        asyncStorage.clearAll();
-                                    }
-                                });
-                            }, 2000)
+                            setTimeout(async() => {
+                                const t = await asyncStorage.get('token');
+                                if(t !== undefined || token !== undefined) {
+                                    setStatusError(false)
+                                    navigation.navigate('NavegationOne');
+                                } else {
+                                    setStatusError(true)
+                                    asyncStorage.clearAll();
+                                }
+                            }, 1000)
 
                         }
                     }}

@@ -8,6 +8,7 @@ import { ICardHealth, ICardPet } from '../../../interfaces/_interface.interface'
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons'; 
+import React from "react";
 
 const CardHealth: React.FC<ICardHealth> = ({icon, namePet, media, peso, description}) => {
     return (
