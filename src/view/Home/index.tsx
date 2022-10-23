@@ -1,9 +1,10 @@
 import { SafeAreaView, Text, View, Image } from 'react-native';
 import styles from './styles';
-import { HelperText, TextInput, Button } from 'react-native-paper';
-import { SetStateAction, useEffect, useState } from 'react';
+import { HelperText, TextInput, Button, ActivityIndicator, Colors } from 'react-native-paper';
+import { SetStateAction, useEffect, useRef, useState } from 'react';
 import { useFonts, Dosis_400Regular } from '@expo-google-fonts/dosis';
 import { useNavigation } from '@react-navigation/native';
+import * as Notifications from 'expo-notifications';
 
 import InputCustom from '../../components/Input';
 import Container from '../../components/Container';
@@ -27,6 +28,10 @@ const Home = () => {
     const [status, setStatus] = useState<number>();
     const [statusError, setStatusError] = useState(false)
     const [secureTextEntry, setSecureTextEntry] = useState(true)
+    const responseListener = useRef<any>();
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [disabled, setDisable] = useState(false);
 
     const onChangeEmail = (text: SetStateAction<string>) => setEmail(text);
     const onChangePassword = (text: SetStateAction<string>) => setPassword(text);
@@ -65,10 +70,32 @@ const Home = () => {
         asyncStorage.remove('token').then((value) => {
             console.log("limpando tudo: " + value)
         })
+        // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+        responseListener.current = Notifications.addNotificationResponseReceivedListener((response: any) => {
+            if(response.notification.request.content.data.token.access_token) {
+                apiMain.get('profile', {
+                    headers: { Authorization: `Bearer ${response.notification.request.content.data.token.access_token}` }
+                }).then((value) => {
+                    if(value.data) {
+                        setEmail(value.data.email);
+                    }
+                    console.log(value.data);
+                })
+            }
+            // console.log(response);
+        });
+
+        return  () => {
+            Notifications.removeNotificationSubscription(responseListener.current);
+        };
     }, [])
 
     return (
         <Container>
+            {isLoading ?
+                <ActivityIndicator animating={true} color={Colors.white} />
+                : null
+            }
             <View style={styles.logoContainer}>
                 <Text style={styles.logoText}>IPetsApp</Text>
             </View>
@@ -99,21 +126,28 @@ const Home = () => {
                 <Button 
                     style={styles.button} 
                     mode="contained" 
+                    disabled={disabled}
                     onPress={() => {
                         setEmailError(hasErrorsEmail()); 
                         setPassError(hasErrorsPassword());
                         if((!hasErrorsPassword() && !hasErrorsEmail())) {
                             getToken();
+                            setIsLoading(true);
+                            setDisable(true);
                             setTimeout(async() => {
                                 const t = await asyncStorage.get('token');
                                 if(t !== undefined || token !== undefined) {
+                                    setIsLoading(false);
+                                    setDisable(false);
                                     setStatusError(false)
                                     navigation.navigate('NavegationOne');
                                 } else {
                                     setStatusError(true)
+                                    setIsLoading(false);
+                                    setDisable(false);
                                     asyncStorage.clearAll();
                                 }
-                            }, 1000)
+                            }, 2000)
 
                         }
                     }}
