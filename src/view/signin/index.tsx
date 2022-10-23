@@ -21,6 +21,7 @@ const Signin = () => {
     const [dateText, setDateText] = useState('')
     const [hasDate, setDate] = useState<DateTimePickerResult>();
     const [secureTextEntry, setSecureTextEntry] = useState(true)
+    const [disabled, setDisable] = useState(false);
 
     const [nameErr, setNameErr] = useState(false);
     const [passwordErr, setPasswordErr] = useState(false);
@@ -143,6 +144,7 @@ const Signin = () => {
                 <Button 
                     style={styles.button} 
                     mode="contained" 
+                    disabled={disabled}
                     onPress={() => {
                         setNameErr(hasErrorsName())
                         setPasswordErr(hasErrorsPassword())
@@ -150,14 +152,17 @@ const Signin = () => {
                         setDateErr(hasErrorsDate()) 
                         getExistUser();
                         if(!hasErrorsName() && !hasErrorsPassword() && !hasErrorsEmail() && !hasErrorsDate()) {
+                            setDisable(true);
                             setTimeout(async() => {
                                 const e = await asyncStorage.get('exists')
                                 if(!e) {
                                     setAlreadyUser(false)
                                     postUser();
+                                    setDisable(false);
                                     navigation.navigate('Confirmation')
                                 } else {
                                     setAlreadyUser(true)
+                                    setDisable(false);
                                 }
                             }, 1000)
                         }

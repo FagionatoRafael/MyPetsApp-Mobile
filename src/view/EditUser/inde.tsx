@@ -122,8 +122,15 @@ const EditUser = () => {
                
                {visible ? 
                 <DateTimePicker 
-                    onChange={(value: any) => onChangeDateTime(value)}
+                    onChange={(value: any) => {
+                        onChangeDateTime(value)
+                        if(value.type !== 'set') {
+                            setVisible(false);
+                        }
+                    }}
                     value={date}
+                    minimumDate={new Date(1910, 0, 1)}
+                    maximumDate={new Date()}
                     // onTouchCancel={(value: any) => setVisible(false)}
                 />: <></>}
 

@@ -21,7 +21,7 @@ export const dateValidation = (date: string) => {
 }
 
 export const dateAgendaValidation = (date: string) => {
-    return date === '' || (moment(date, 'DD/MM/YYYY').fromNow().split(' ')[2] == 'ago' && moment(date, 'DD/MM/YYYY').fromNow().split(' ')[0] !== 'a')
+    return date === '' || (moment(date, 'DD/MM/YYYY').fromNow().split(' ')[2] == 'ago' && moment(date, 'DD/MM/YYYY').fromNow().split(' ')[0] == 'a')
 }
 
 export const timeValidation = (beginningTime: string, endTime: string) => {

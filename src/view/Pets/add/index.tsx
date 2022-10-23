@@ -9,6 +9,7 @@ import { Feather } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import moment from 'moment'
+import * as Notifications from 'expo-notifications';
 
 import InputCustom from '../../../components/Input';
 import Container from '../../../components/Container';
@@ -241,6 +242,16 @@ const AddPet = () => {
     useEffect(() => {
         getMediaPet();
     }, [idBreed])
+
+    const sendNotiFication = () => {
+        Notifications.scheduleNotificationAsync({
+            content: {
+                title: "Pet cadastrado!",
+                body: 'Agora vc pode agendar suas atividades e cadastrar suas vacinas!',
+            },
+            trigger: 10
+        });
+    }
     
     const editPet = () => {
         asyncStorage.get('token').then((value) => {
@@ -284,6 +295,8 @@ const AddPet = () => {
                 setStatus(401)
             })
         })
+
+        sendNotiFication();
     }
 
     const deletePet = () => {

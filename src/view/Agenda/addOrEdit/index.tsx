@@ -91,7 +91,7 @@ const AddAgenda = () => {
     }
  
     const hasErrorsDate = () => {
-        return dateAgendaValidation(dateText)
+        return dateText === '';
     };
     const hasErrorsTimeDas = () => {
         return timeValidation(timeTextDas, timeTextTill)
@@ -170,52 +170,27 @@ const AddAgenda = () => {
             })
         })
 
-        asyncStorage.get('tokenSend').then((value) => {
-            sendPushNotification(value);
-        })
+        sendNotiFication();
     }
 
-    const sendNotiFication = () => {
+    const sendNotiFication = async() => {
+        const token = await asyncStorage.get('token');
         const startdate = `${dateText} ${timeTextDas}`; 
         const exp = moment(startdate, "DD/MM/YYYY HH:mm");
         const seconds = Math.abs(moment().diff(exp, 'seconds'))
         Notifications.scheduleNotificationAsync({
             content: {
-              title: "Temos uma atividade para realizar! ",
-              body: 'Olhe as sua atividades no seu app dos pets!',
+                data: {
+                    token: token
+                },
+                title: "Temos uma atividade para realizar! ",
+                body: 'Olhe as sua atividades no seu app dos pets!',
             },
             trigger: {
-              seconds: seconds
+                seconds: seconds
             },
         }); 
     }
-
-    async function sendPushNotification(expoPushToken: any) {
-        const startdate = `${dateText} ${timeTextDas}`; 
-        const exp = moment(startdate, "DD/MM/YYYY HH:mm");
-        const seconds = Math.abs(moment().diff(exp, 'seconds'))
-        const message = {
-            to: expoPushToken,
-            sound: 'default',
-            title: 'Original Title',
-            body: 'And here is the body!' + seconds,
-            data: { someData: 'goes here' },
-            TTL: seconds
-        };
-
-        await fetch('https://exp.host/--/api/v2/push/send', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Accept-encoding': 'gzip, deflate',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(message),
-
-        });
-        console.log(message)
-        console.log(startdate)
-      }
 
     const editAgenda = () => {
         asyncStorage.get('token').then((value) => {
@@ -235,9 +210,7 @@ const AddAgenda = () => {
             })
         })
 
-        asyncStorage.get('tokenSend').then((value) => {
-            sendPushNotification(value);
-        })
+        sendNotiFication();
     }
 
     const deleteAgenda = () => {
@@ -266,9 +239,6 @@ const AddAgenda = () => {
     const [params, setParams] = useState<IParams>();
 
     useEffect(() => {
-        // asyncStorage.get('tokenSend').then((value) => {
-        //     sendPushNotification(value);
-        // })
         setPetsItens()
         setTitle('Adicione uma agenda')
         setButton('Adicionar')
@@ -330,6 +300,7 @@ const AddAgenda = () => {
                                 setVisible(false);
                             }
                         }}
+                        minimumDate={new Date()}
                         value={date}
                     />: <></>}
 
