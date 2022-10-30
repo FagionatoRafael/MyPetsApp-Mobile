@@ -12,37 +12,37 @@ const Config = () => {
     const [isNoteTwo, setIsNoteTwo] = useState<boolean>();
     const [isNoteThree, setIsNoteThree] = useState<boolean>();
 
-    const [isMailOne, setIsMailOne] = useState<boolean>();
-    const [isMailTwo, setIsMailTwo] = useState<boolean>();
-    const [isMailThree, setIsMailThree] = useState<boolean>();
+    // const [isMailOne, setIsMailOne] = useState<boolean>();
+    // const [isMailTwo, setIsMailTwo] = useState<boolean>();
+    // const [isMailThree, setIsMailThree] = useState<boolean>();
 
     const onToggleNoteOne = () => setIsNoteOne(!isNoteOne);
     const onToggleNoteTwo = () => setIsNoteTwo(!isNoteTwo);
     const onToggleNoteThree = () => setIsNoteThree(!isNoteThree);
 
-    const onToggleMailOne = () => setIsMailOne(!isMailOne);
-    const onToggleMailTwo = () => setIsMailTwo(!isMailTwo);
-    const onToggleMailThree = () => setIsMailThree(!isMailThree);
+    // const onToggleMailOne = () => setIsMailOne(!isMailOne);
+    // const onToggleMailTwo = () => setIsMailTwo(!isMailTwo);
+    // const onToggleMailThree = () => setIsMailThree(!isMailThree);
 
     useEffect(() => {
-        const getToken = asyncStorage.get('token')
+        const getToken = asyncStorage.get('token') 
         getToken.then((value) => {
             apiMain.get('config', {
                 headers: { Authorization: `Bearer ${value.access_token}` }
             }).then((v) => {
                 setIsNoteOne(v.data.config_isNoteOne == 1 ? true : false);
                 setIsNoteTwo(v.data.config_isNoteTwo == 1 ? true : false);
-                setIsNoteThree(v.data.config_isNoteThree == 1 ? true : false);
-                setIsMailOne(v.data.config_isMailOne == 1 ? true : false);
-                setIsMailTwo(v.data.config_isMailTwo == 1 ? true : false);
-                setIsMailThree(v.data.config_isMailThree == 1 ? true : false);
-                console.log(v.status)
+                // setIsNoteThree(v.data.config_isNoteThree == 1 ? true : false);
+                // setIsMailOne(v.data.config_isMailOne == 1 ? true : false);
+                // setIsMailTwo(v.data.config_isMailTwo == 1 ? true : false);
+                // setIsMailThree(v.data.config_isMailThree == 1 ? true : false);
+                console.log(v.data)
             }).catch((err) => {
                 console.log(401);
             })
         
         })
-    }, [])
+    })
 
     useEffect(() => {
         const getToken = asyncStorage.get('token')
@@ -51,9 +51,9 @@ const Config = () => {
                 isNoteOne: isNoteOne,
                 isNoteTwo: isNoteTwo,
                 isNoteThree: isNoteThree,
-                isMailOne: isMailOne,
-                isMailTwo: isMailTwo,
-                isMailThree: isMailThree
+                // isMailOne: isMailOne,
+                // isMailTwo: isMailTwo,
+                // isMailThree: isMailThree
             }, {
                 headers: { Authorization: `Bearer ${value.access_token}` }
             }).then((v) => {
@@ -63,7 +63,7 @@ const Config = () => {
             })
         
         })
-    }, [isNoteOne, isNoteTwo, isNoteThree, isMailOne, isMailTwo, isMailThree])
+    }, [isNoteOne, isNoteTwo, isNoteThree])
     
     return (
         <Container margin={false}>
@@ -75,17 +75,17 @@ const Config = () => {
                 <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 18}}>Notificações</Text>
                 <Divider style={{height: 5}}/>
                 <View style={styles.containerToggle} onTouchEnd={onToggleNoteOne}>
-                    <Text style={{color: '#fff'}}>Pets criados/alterados</Text>
+                    <Text style={{color: '#fff'}}>Celular</Text>
                     <Switch value={isNoteOne} color={'#05386B'} onValueChange={onToggleNoteOne} />
                 </View>
                 <View style={styles.containerToggle} onTouchEnd={onToggleNoteTwo}>
-                    <Text style={{color: '#fff'}}>Atividade da agenda</Text>
+                    <Text style={{color: '#fff'}}>E-mail</Text>
                     <Switch value={isNoteTwo} color={'#05386B'} onValueChange={onToggleNoteTwo} />
                 </View>
-                <View style={styles.containerToggle} onTouchEnd={onToggleNoteThree}>
+                {/* <View style={styles.containerToggle} onTouchEnd={onToggleNoteThree}>
                     <Text style={{color: '#fff'}}>Vacinas criados/alteradas</Text>
                     <Switch value={isNoteThree} color={'#05386B'} onValueChange={onToggleNoteThree} />
-                </View>
+                </View> */}
             </View>
             {/* <View style={styles.containerConfig}>
                 <Text style={{color: '#fff', fontWeight: 'bold' , fontSize: 18}}>E-Mail</Text>

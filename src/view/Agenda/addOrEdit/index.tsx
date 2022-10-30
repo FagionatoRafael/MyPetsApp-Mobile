@@ -175,21 +175,27 @@ const AddAgenda = () => {
 
     const sendNotiFication = async() => {
         const token = await asyncStorage.get('token');
-        const startdate = `${dateText} ${timeTextDas}`; 
-        const exp = moment(startdate, "DD/MM/YYYY HH:mm");
-        const seconds = Math.abs(moment().diff(exp, 'seconds'))
-        Notifications.scheduleNotificationAsync({
-            content: {
-                data: {
-                    token: token
+        const result = await apiMain.get('config', {
+            headers: { Authorization: `Bearer ${token.access_token}` }
+        });
+
+        if(result.data.config_isNoteOne == 1) {
+            const startdate = `${dateText} ${timeTextDas}`; 
+            const exp = moment(startdate, "DD/MM/YYYY HH:mm");
+            const seconds = Math.abs(moment().diff(exp, 'seconds'))
+            Notifications.scheduleNotificationAsync({
+                content: {
+                    data: {
+                        token: token
+                    },
+                    title: "Temos uma atividade para realizar! ",
+                    body: 'Olhe as sua atividades no seu app dos pets!',
                 },
-                title: "Temos uma atividade para realizar! ",
-                body: 'Olhe as sua atividades no seu app dos pets!',
-            },
-            trigger: {
-                seconds: seconds
-            },
-        }); 
+                trigger: {
+                    seconds: seconds
+                },
+            }); 
+        }
     }
 
     const editAgenda = () => {
