@@ -88,7 +88,7 @@ const AddPet = () => {
         return weigthValidadtion(weight);
     };
     const hasErrorsDescription = () => {
-        return descriptionValidation(description);
+        return false;
     };
 
     const [text, setText] = useState('')

@@ -2,12 +2,13 @@ import { View, Text, Dimensions } from "react-native"
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 import { Button, Card, Title, Paragraph } from 'react-native-paper';
 import styles from "./styles"
 import { ICardPet } from '../../../interfaces/_interface.interface';
 import React from "react";
 
-const CardPet: React.FC<ICardPet> = ({icon, namePet, birthDay, description, funcUpdate}) => {
+const CardPet: React.FC<ICardPet> = ({icon, namePet, birthDay, description, breed, funcUpdate}) => {
     const windowWidth = Dimensions.get('window').width;
     
     return (
@@ -23,9 +24,13 @@ const CardPet: React.FC<ICardPet> = ({icon, namePet, birthDay, description, func
                 </Card.Content>
             </View>
             <Card.Content style={styles.description}>
+            <FontAwesome name="asterisk" size={24} color="#05386B" />
+                <Paragraph style={{width: windowWidth * 0.8}}>{breed}</Paragraph>
+            </Card.Content>
+            {description ? <Card.Content style={styles.description}>
                 <Ionicons name="document-text" size={24} color="#05386B" />
                 <Paragraph style={{width: windowWidth * 0.8}}>{description}</Paragraph>
-            </Card.Content>
+            </Card.Content> : <></>}
             <Card.Actions style={styles.buttonCard} onTouchEnd={funcUpdate}>
                 <Button color="#EDF5E1">Editar</Button>
             </Card.Actions>

@@ -1,7 +1,7 @@
 import { View, ScrollView, Text, Dimensions } from "react-native"
 import styles from "./styles"
 import CardPet from "../../components/CardPet";
-import { FAB } from 'react-native-paper';
+import { ActivityIndicator, Colors, FAB } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from "react";
 import ContainerCards from "../../components/ContainerCards";
@@ -74,7 +74,7 @@ const Pets = () => {
                     alignSelf: 'center'
                     
                     }}>
-                <FontAwesome5 name="paw" size={100} color="#5CDB95" />
+                <ActivityIndicator animating={true} color="#5CDB95"/>
             </View>
         )
     }
@@ -88,6 +88,7 @@ const Pets = () => {
                     namePet={value.name} 
                     birthDay={value.dtBirthDay} 
                     description={value.Description} 
+                    breed={value.nameBreed}
                     funcUpdate={() => {
                         navigation.navigate('AddPets', value)
                     }}

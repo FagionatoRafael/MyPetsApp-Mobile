@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import asyncStorage from "../../../util/asyncStorage";
 import { apiMain } from "../../../services/connction";
 import { FontAwesome5 } from '@expo/vector-icons';
+import { ActivityIndicator } from "react-native-paper";
 
 interface IAgenda {
     id: number,
@@ -68,7 +69,7 @@ const Agenda = () => {
                     alignSelf: 'center'
                     
                     }}>
-                <FontAwesome5 name="paw" size={100} color="#5CDB95" />
+                <ActivityIndicator animating={true} color="#5CDB95"/>
             </View>
         )
     }

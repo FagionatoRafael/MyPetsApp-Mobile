@@ -26,7 +26,7 @@ function MyDrawer() {
         setNome(v.data.name);
         setDtInit(v.data.dtSignin);
         setDtLastLogin(v.data.dtLastLogin);
-        setIsFirstTime(v.data.isFirstTime)
+        setIsFirstTime(v.data.isFirstTime);
       }).catch((err) => {
         console.log(401)
       })
@@ -87,7 +87,7 @@ function MyDrawer() {
       useLegacyImplementation 
       initialRouteName="PetsDraw"
       drawerContent={(props) => <CustomDrawerContent {...props} />}
-      screenOptions={{title: nome}}
+      screenOptions={{title: 'MyPetsApp'}}
     >
       <Drawer.Screen
         name="PetsDraw"
@@ -95,7 +95,7 @@ function MyDrawer() {
         options={{ 
           drawerLabel: 'Pets', 
           headerRight: () => (
-            <Image source={require('../assets/logo-icon.png')} style={{width: '10%', height: '50%', marginRight: '5%'}}/>
+            <Image source={require('../assets/logo-icon.png')} style={{width: '15%', height: '55%', marginRight: '15%'}}/>
           ),
           headerStyle: {
             backgroundColor: '#5CDB95'
@@ -108,7 +108,7 @@ function MyDrawer() {
         options={{ 
           drawerLabel: 'Configurações',
           headerRight: () => (
-            <Image source={require('../assets/logo-icon.png')} style={{width: '10%', height: '50%', marginRight: '5%'}}/>
+            <Image source={require('../assets/logo-icon.png')} style={{width: '15%', height: '55%', marginRight: '15%'}}/>
           ),
           headerStyle: {
             backgroundColor: '#5CDB95'

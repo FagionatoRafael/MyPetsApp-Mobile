@@ -29,10 +29,10 @@ const CardVaccine: React.FC<ICardVaccine> = ({icon, namePet, day, vaccine, descr
                 <FontAwesome5 name="syringe" size={24} color="#05386B" />
                 <Paragraph style={{width: windowWidth * 0.8}}>{vaccine}</Paragraph>
             </Card.Content>
-            <Card.Content style={styles.description}>
+            {description ? <Card.Content style={styles.description}>
                 <Ionicons name="document-text" size={24} color="#05386B" />
                 <Paragraph style={{width: windowWidth * 0.8}}>{description}</Paragraph>
-            </Card.Content>
+            </Card.Content>: <></>}            
             <Card.Actions style={styles.buttonCard} onTouchEnd={editFunc}>
                 <Button color="#EDF5E1">Editar</Button>
             </Card.Actions>
