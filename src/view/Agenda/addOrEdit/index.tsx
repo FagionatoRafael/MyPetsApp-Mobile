@@ -182,19 +182,21 @@ const AddAgenda = () => {
         if(result.data.config_isNoteOne == 1) {
             const startdate = `${dateText} ${timeTextDas}`; 
             const exp = moment(startdate, "DD/MM/YYYY HH:mm");
-            const seconds = Math.abs(moment().diff(exp, 'seconds'))
-            Notifications.scheduleNotificationAsync({
-                content: {
-                    data: {
-                        token: token
+            const seconds = Math.abs(moment().diff(exp, 'seconds'));
+            if(seconds >= 0) {
+                Notifications.scheduleNotificationAsync({
+                    content: {
+                        data: {
+                            token: token
+                        },
+                        title: "Temos uma atividade para realizar! ",
+                        body: 'Olhe as sua atividades no seu app dos pets!',
                     },
-                    title: "Temos uma atividade para realizar! ",
-                    body: 'Olhe as sua atividades no seu app dos pets!',
-                },
-                trigger: {
-                    seconds: seconds
-                },
-            }); 
+                    trigger: {
+                        seconds: seconds
+                    },
+                }); 
+            }
         }
     }
 
@@ -347,7 +349,7 @@ const AddAgenda = () => {
                         <InputCustom label='Até' text={timeTextTill} hasErros={timeTillErr} onChangeText={() => {}} invalidText={'Tempo deve ser Posterior o tempo Das!'} hasTouch={() => setVisibleTill(true)} editable={false} smallInput={true}/>
                     </View>
 
-                    <View style={{display: 'flex', flexWrap: 'wrap',flexDirection: 'row', maxWidth: windowWidth * 0.9}}>  
+                    <View style={{display: 'flex', flexWrap: 'wrap',flexDirection: 'row',justifyContent: 'center', alignContent: 'center', maxWidth: windowWidth * 0.9}}>  
                         
                         <CardSelect 
                             text={'Comer'} 
@@ -357,7 +359,7 @@ const AddAgenda = () => {
                                 console.log(idsCard)
                                 if(id === 0) { 
                                     setSelected0(!selected0)
-                                    if(selected0 === true) {
+                                    if(!selected0) {
                                         idsCard.push(id)
                                         idsCard.sort()
                                     } else {
@@ -367,7 +369,7 @@ const AddAgenda = () => {
                                 } 
                             }}
                         >
-                            <SVGBowl width={'80%'} height={'50%'}/> 
+                            <SVGBowl width={windowWidth * 0.15} height={windowWidth * 0.15}/> 
                         </CardSelect>
 
                         <CardSelect 
@@ -387,7 +389,7 @@ const AddAgenda = () => {
                                 } 
                             }}
                         >
-                            <SVGCollar width={'80%'} height={'50%'}/> 
+                            <SVGCollar width={windowWidth * 0.15} height={windowWidth * 0.15}/> 
                         </CardSelect>
 
                         <CardSelect 
@@ -407,7 +409,7 @@ const AddAgenda = () => {
                                 } 
                             }}
                         >
-                            <SVGShower width={'80%'} height={'50%'}/>
+                            <SVGShower width={windowWidth * 0.15} height={windowWidth * 0.15}/>
                         </CardSelect>
 
                         <CardSelect 
@@ -427,7 +429,7 @@ const AddAgenda = () => {
                                 } 
                             }}
                         >
-                            <SVGMedication width={'80%'} height={'50%'}/> 
+                            <SVGMedication width={windowWidth * 0.15} height={windowWidth * 0.15}/> 
                         </CardSelect>
 
                         <CardSelect 
@@ -447,7 +449,7 @@ const AddAgenda = () => {
                                 } 
                             }}
                         >
-                            <SVGBall width={'80%'} height={'50%'}/>
+                            <SVGBall width={windowWidth * 0.15} height={windowWidth * 0.15}/>
                         </CardSelect>  
                         <HelperText type="error" visible={cardErr}>
                             Selecione pelo menos um card!
@@ -470,6 +472,7 @@ const AddAgenda = () => {
                                 if(!hasErrorsDate() && !hasErrorsPet() && !hasErrorsTimeDas() && !hasErrorsTimeTill() && !hasCardSelectedErr()) {
                                     if(params) {
                                         console.log('editei')
+                                        console.log(idsCard)
                                         editAgenda();
                                     } else {
                                         postNewAgenda();

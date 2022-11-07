@@ -6,6 +6,7 @@ import CardHealth from "../../components/CardHealth";
 import asyncStorage from "../../../util/asyncStorage";
 import { apiCatsDogs, apiMain } from "../../../services/connction";
 import { FontAwesome5 } from '@expo/vector-icons';
+import { ActivityIndicator } from "react-native-paper";
 
 interface IHealth {
     id: number,
@@ -26,9 +27,9 @@ const Health = () => {
     const [loading, setLoading] = useState(true);
 
     const makeDescriptionWeight = (pesoPet: number, pesoMedia: number) => {
-        if(pesoPet < pesoMedia) {
+        if((pesoPet + (pesoPet * 0.8)) < pesoMedia) {
             return 'O peso do seu pet esta a baixo do peso ideal da raça.'
-        } else if(pesoPet == pesoMedia) {
+        } else if(pesoPet == pesoMedia || ((pesoPet - (pesoPet * 0.8)) <= pesoMedia)) {
             return 'O peso do seu pet esta dentro da media ideal da raça.'
         } else {
             return 'O peso do seu pet esta a cima da media ideal da raça.'
@@ -81,7 +82,7 @@ const Health = () => {
                     alignSelf: 'center'
                     
                     }}>
-                <FontAwesome5 name="paw" size={100} color="#5CDB95" />
+                <ActivityIndicator animating={true} color="#5CDB95"/>
             </View>
         )
     }

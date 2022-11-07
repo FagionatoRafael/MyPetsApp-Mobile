@@ -3,5 +3,6 @@ export interface ICardPet {
     namePet: string
     birthDay: string
     description: string
+    breed: string
     funcUpdate: () => void
 }

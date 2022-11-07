@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons'; 
 import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
+import React from 'react';
 import Pets from '../src/view/Pets';
 import Agenda from '../src/view/Agenda';
 import Health from '../src/view/Health';
