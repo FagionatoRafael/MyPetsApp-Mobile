@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "542778001352",
+    "firebase_url": "https://fanote-5b6d6-default-rtdb.firebaseio.com",
+    "project_id": "fanote-5b6d6",
+    "storage_bucket": "fanote-5b6d6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:542778001352:android:846b7c899ea62ab704a2fd",
+        "android_client_info": {
+          "package_name": "br.com.myPetsApp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "542778001352-j9fcv326c80uh0nnrq3tv0vbo1rrec4o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAO9pHDFV7V5fBhVq-80O0GQkHbwpnnVkk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "542778001352-j9fcv326c80uh0nnrq3tv0vbo1rrec4o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -24,7 +24,7 @@ const InputCustom: React.FC<IInputProp> = (
         <View onTouchEnd={hasTouch} style={{zIndex: 9999}}>
             {hasMask ?
                 <TextInput 
-                    autoComplete={false}
+                    autoComplete='off'
                     style={styles.input}
                     mode='outlined' 
                     activeOutlineColor='#05386B'
@@ -53,7 +53,7 @@ const InputCustom: React.FC<IInputProp> = (
                 <TextInput 
                     onPressIn={() => hasTouch}
                     onPressOut={() => hasTouch}
-                    autoComplete={false}
+                    autoComplete='off'
                     style={[styles.input, {zIndex: 1, maxWidth: smallInput ? 160 : undefined}]}
                     mode='outlined' 
                     activeOutlineColor='#05386B'
