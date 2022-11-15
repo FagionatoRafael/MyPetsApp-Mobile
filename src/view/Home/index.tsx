@@ -50,21 +50,29 @@ const Home = () => {
     };
 
     const [token, setToken] = useState(undefined)
-    const getToken = () => {
-        apiMain.post("auth/login", {
-            email: email.toLowerCase().trim(), 
-            password: password.trim()
-        }).then((ev) => {
-            if(ev.data) {
-                setToken(ev.data)
-                asyncStorage.set('token', ev.data)
-            }
-        }).catch((err: string) => {
-            console.log(401)
-            setToken(undefined)
-            asyncStorage.clearAll();
-        })
+    const getToken = async () => {
+        const t = await asyncStorage.get('token');
+        if(t === undefined && (!hasErrorsPassword() && !hasErrorsEmail())) {
+            apiMain.post("auth/login", {
+                email: email.toLowerCase().trim(), 
+                password: password.trim()
+            }).then((ev) => {
+                if(ev.data) {
+                    setToken(ev.data)
+                    asyncStorage.set('token', ev.data)
+                }
+            }).catch((err: string) => {
+                console.log(401)
+                setToken(undefined)
+                asyncStorage.clearAll();
+            })
+        }
+        
     }
+
+    useEffect(() => {
+        getToken()
+    })
 
     useEffect(() => {
         asyncStorage.remove('token').then((value) => {
@@ -97,7 +105,7 @@ const Home = () => {
                 : null
             }
             <View style={styles.logoContainer}>
-                <Text style={styles.logoText}>IPetsApp</Text>
+                <Text style={styles.logoText}>MyPetsApp</Text>
             </View>
             <View style={styles.form}>
                 <InputCustom 
@@ -131,7 +139,7 @@ const Home = () => {
                         setEmailError(hasErrorsEmail()); 
                         setPassError(hasErrorsPassword());
                         if((!hasErrorsPassword() && !hasErrorsEmail())) {
-                            getToken();
+                            // getToken();
                             setIsLoading(true);
                             setDisable(true);
                             setTimeout(async() => {

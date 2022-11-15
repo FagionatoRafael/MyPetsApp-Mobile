@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
       marginBottom: 70
     },
     logoText: {
-      fontSize: 50,
+      fontSize: Dimensions.get('window').width * 0.12,
       color: '#05386B',
       fontWeight: 'bold',
       // fontFamily: 'Dosis_400Regular'
