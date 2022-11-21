@@ -1,6 +1,6 @@
 {
   "name": "my-pets-app",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "scripts": {
     "start": "expo start --dev-client",
     "android": "expo run:android",
@@ -23,6 +23,7 @@
     "@formatjs/intl-relativetimeformat": "^10.0.0",
     "@react-native-async-storage/async-storage": "~1.17.3",
     "@react-native-community/datetimepicker": "6.2.0",
+    "@react-native-community/netinfo": "9.3.0",
     "@react-navigation/bottom-tabs": "^6.3.1",
     "@react-navigation/drawer": "^6.4.1",
     "@react-navigation/native": "^6.0.8",

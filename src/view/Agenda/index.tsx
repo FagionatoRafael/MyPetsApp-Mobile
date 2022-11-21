@@ -5,7 +5,7 @@ import ContainerCards from "../../components/ContainerCards";
 import CardAgenda from "../../components/CardAgenda";
 import { useNavigation } from "@react-navigation/native";
 import asyncStorage from "../../../util/asyncStorage";
-import { apiMain } from "../../../services/connction";
+import { apiCatsDogs, apiMain } from "../../../services/connction";
 import { FontAwesome5 } from '@expo/vector-icons';
 import { ActivityIndicator } from "react-native-paper";
 
@@ -27,12 +27,30 @@ const Agenda = () => {
     const [agendas, setAgendas] = useState<IAgenda[]>([])
     const [token, setToken] = useState('');
     const [loading, setLoading] = useState(true);
+    const [isConect, setIsConect] = useState(true);
      
     useEffect(() => {
         setAgendas([]);
     }, [])
 
+    const hasConect = () => {
+        apiCatsDogs.get('/').then(ev => {
+            if(ev.data) {
+                console.log(ev.status)
+                setIsConect(false)
+            }
+        })
+        apiMain.get('/').then(ev => {
+            if(ev.data) {
+                console.log(ev.status)
+                setIsConect(false)
+            }
+        })
+    }
+
     useEffect(() => {
+        hasConect();
+        
         const getToken = asyncStorage.get('token')
         getToken.then((value) => {
             setToken(value.access_token)
@@ -56,7 +74,7 @@ const Agenda = () => {
         })
     }) 
 
-    if(loading) {
+    if(loading && isConect) {
         return (
             <View style={
                     {display: 'flex', 

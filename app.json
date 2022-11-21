@@ -2,7 +2,7 @@
   "expo": {
     "name": "my-pets-app",
     "slug": "my-pets-app",
-    "version": "2.0.0",
+    "version": "2.2.0",
     "orientation": "portrait",
     "icon": "./assets/logo-icon.png",
     "splash": {
@@ -11,7 +11,7 @@
       "backgroundColor": "#5CDB95"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0 
     },
     "assetBundlePatterns": [
       "**/*"
@@ -20,7 +20,7 @@
       "supportsTablet": true
     },
     "android": {  
-      "versionCode": 2,
+      "versionCode": 4,
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo-icon.png",
         "backgroundColor": "#5CDB95"

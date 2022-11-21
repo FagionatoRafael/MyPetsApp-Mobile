@@ -1,10 +1,11 @@
-import { SafeAreaView, Text, View, Image } from 'react-native';
+import { SafeAreaView, Text, View, Image, Dimensions } from 'react-native';
 import styles from './styles';
 import { HelperText, TextInput, Button, ActivityIndicator, Colors } from 'react-native-paper';
 import { SetStateAction, useEffect, useRef, useState } from 'react';
 import { useFonts, Dosis_400Regular } from '@expo-google-fonts/dosis';
 import { useNavigation } from '@react-navigation/native';
 import * as Notifications from 'expo-notifications';
+import NetInfo from "@react-native-community/netinfo";
 
 import InputCustom from '../../components/Input';
 import Container from '../../components/Container';
@@ -30,6 +31,8 @@ const Home = () => {
     const [secureTextEntry, setSecureTextEntry] = useState(true)
     const responseListener = useRef<any>();
 
+    const [hasNotInternet, setHasNotInternet] = useState(true);
+    const [isConect, setIsConect] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [disabled, setDisable] = useState(false);
 
@@ -70,7 +73,23 @@ const Home = () => {
         
     }
 
+    const hasConect = () => {
+        NetInfo.fetch().then(state => {
+            setHasNotInternet(state.isConnected == null ? false : true);
+            console.log("Está conectado?", state.isConnected);
+        });
+        if(hasNotInternet) {
+            apiMain.get('/').then(ev => { 
+                if(ev.data) {
+                    console.log(ev.status)
+                    setIsConect(false)
+                }
+            })
+        }
+    }
+
     useEffect(() => {
+        hasConect()
         getToken()
     })
 
@@ -97,6 +116,26 @@ const Home = () => {
             Notifications.removeNotificationSubscription(responseListener.current);
         };
     }, [])
+
+    if(isConect) {
+        return <Container>
+                    <ActivityIndicator animating={true} color={Colors.white} />
+                </Container> 
+    }
+
+    if(!hasNotInternet) {
+        return <View style={{display: 'flex', 
+                        flexDirection: 'column',
+                        justifyContent: 'center', 
+                        alignContent: 'center', 
+                        width: Dimensions.get('window').width,
+                        height: Dimensions.get('window').height * 0.8,
+                        alignItems: 'center',
+                        alignSelf: 'center'
+                    }}>
+                    <Text>Verifique sua conexão com a internet!</Text>
+                </View>
+    }
 
     return (
         <Container>

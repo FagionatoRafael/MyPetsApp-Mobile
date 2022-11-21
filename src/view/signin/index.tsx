@@ -1,6 +1,6 @@
 import { SafeAreaView, Text, View, Image, TextInput } from 'react-native';
 import styles from './styles';
-import { Button, HelperText } from 'react-native-paper';
+import { ActivityIndicator, Button, Colors, HelperText } from 'react-native-paper';
 import React, { SetStateAction, useCallback, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import InputCustom from '../../components/Input';
@@ -27,6 +27,8 @@ const Signin = () => {
     const [passwordErr, setPasswordErr] = useState(false);
     const [emailErr, setEmailErr] = useState(false);
     const [dateErr, setDateErr] = useState(false);
+
+    const [isConect, setIsConect] = useState(true);
 
     const onChangeName = (text: SetStateAction<string>) => setName(text);
     const onChangePassword = (text: SetStateAction<string>) => setPassword(text);
@@ -86,6 +88,19 @@ const Signin = () => {
         }).catch((err) => console.log(err))
     }
 
+    const hasConect = () => {
+        apiMain.get('/').then(ev => {
+            if(ev.data) {
+                console.log(ev.status)
+                setIsConect(false)
+            }
+        })
+    }
+
+    useEffect(() => {
+        hasConect();
+    }) 
+
     useEffect(() => {
         setName('');
         setEmail('');
@@ -99,6 +114,12 @@ const Signin = () => {
             getExistUser();
         }
     }, [email])
+
+    if(isConect) {
+        return <Container>
+            <ActivityIndicator animating={true} color={Colors.white} />
+        </Container> 
+    }
 
     return (
         <Container>

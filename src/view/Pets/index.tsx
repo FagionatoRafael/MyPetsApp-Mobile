@@ -32,12 +32,30 @@ const Pets = () => {
 
     const [token, setToken] = useState(undefined)
     const [loading, setLoading] = useState(true);
+    const [isConect, setIsConect] = useState(true);
 
     useEffect(() => {
         setPets([])
     }, [])
 
+    const hasConect = () => {
+        apiCatsDogs.get('/').then(ev => {
+            if(ev.data) {
+                console.log(ev.status)
+                setIsConect(false)
+            }
+        })
+        apiMain.get('/').then(ev => {
+            if(ev.data) {
+                console.log(ev.status)
+                setIsConect(false)
+            }
+        })
+    }
+
     useEffect(() => {
+        hasConect();
+        
         const getToken = asyncStorage.get('token')
         getToken.then((value) => {
             setToken(value.access_token)
@@ -61,7 +79,7 @@ const Pets = () => {
         })
     })
 
-    if(loading) {
+    if(loading && isConect) {
         return (
             <View style={
                     {display: 'flex', 

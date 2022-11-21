@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native';
 import styles from './styles';
-import { Button, HelperText } from 'react-native-paper';
+import { ActivityIndicator, Button, Colors, HelperText } from 'react-native-paper';
 import React, { SetStateAction, useEffect, useState } from 'react';
 import { useFonts, Dosis_400Regular } from '@expo-google-fonts/dosis';
 import { useNavigation } from '@react-navigation/native';
@@ -21,6 +21,7 @@ const ForgetPass = () => {
     const [emailErr, setEmailErr] = useState(false);
     const [alreadyUser, setAlreadyUser] = useState(false);
     const [data, setData] = useState({});
+    const [isConect, setIsConect] = useState(true);
 
     const onChangeEmail = (text: SetStateAction<string>) => setEmail(text);
  
@@ -37,6 +38,25 @@ const ForgetPass = () => {
         }).catch((err) => {
             console.log(401)
         })
+    }
+
+    const hasConect = () => {
+        apiMain.get('/').then(ev => {
+            if(ev.data) {
+                console.log(ev.status)
+                setIsConect(false)
+            }
+        })
+    }
+
+    useEffect(() => {
+        hasConect();
+    }) 
+
+    if(isConect) {
+        return <Container>
+            <ActivityIndicator animating={true} color={Colors.white} />
+        </Container> 
     }
 
     return (
