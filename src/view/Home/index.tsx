@@ -63,6 +63,18 @@ const Home = () => {
                 if(ev.data) {
                     setToken(ev.data)
                     asyncStorage.set('token', ev.data)
+                    asyncStorage.set('email-user', email)
+                    asyncStorage.set('pass-user', password)
+                    setIsLoading(false);
+                    setDisable(false);
+                    setStatusError(false)
+                    navigation.navigate('NavegationOne');
+                    
+                } else {
+                    setStatusError(true) 
+                    setIsLoading(false);
+                    setDisable(false);
+                    asyncStorage.clearAll();
                 }
             }).catch((err: string) => {
                 console.log(401)
@@ -75,7 +87,7 @@ const Home = () => {
 
     const hasConect = () => {
         NetInfo.fetch().then(state => {
-            setHasNotInternet(state.isConnected == null ? false : true);
+            setHasNotInternet(state.isConnected == null || false ? false : true);
             console.log("Está conectado?", state.isConnected);
         });
         if(hasNotInternet) {
@@ -83,17 +95,32 @@ const Home = () => {
                 if(ev.data) {
                     console.log(ev.status)
                     setIsConect(false)
+                    setIsLoading(false);
+                    setDisable(false);
                 }
             })
         }
     }
 
+    const getUser = async () => {
+        const e = await asyncStorage.get('email-user')
+        const p = await asyncStorage.get('pass-user')
+        if(e != undefined && p !== undefined) {
+            setEmail(e);
+            setPassword(p);
+        }
+    } 
+
     useEffect(() => {
         hasConect()
-        getToken()
+        // getToken()
     })
 
     useEffect(() => {
+        getUser();
+        
+        setIsLoading(true);
+        setDisable(true);
         asyncStorage.remove('token').then((value) => {
             console.log("limpando tudo: " + value)
         })
@@ -117,25 +144,15 @@ const Home = () => {
         };
     }, [])
 
-    if(isConect) {
-        return <Container>
-                    <ActivityIndicator animating={true} color={Colors.white} />
-                </Container> 
-    }
-
-    if(!hasNotInternet) {
-        return <View style={{display: 'flex', 
-                        flexDirection: 'column',
-                        justifyContent: 'center', 
-                        alignContent: 'center', 
-                        width: Dimensions.get('window').width,
-                        height: Dimensions.get('window').height * 0.8,
-                        alignItems: 'center',
-                        alignSelf: 'center'
-                    }}>
-                    <Text>Verifique sua conexão com a internet!</Text>
-                </View>
-    }
+    // if(!hasNotInternet) {
+    //     return <Container>
+    //             <Text>Verifique sua conexão com a internet!</Text>
+    //         </Container> 
+    // } else if(isConect) {
+    //     return <Container>
+    //              <ActivityIndicator animating={true} color={Colors.white} />
+    //         </Container> 
+    // }
 
     return (
         <Container>
@@ -178,24 +195,9 @@ const Home = () => {
                         setEmailError(hasErrorsEmail()); 
                         setPassError(hasErrorsPassword());
                         if((!hasErrorsPassword() && !hasErrorsEmail())) {
-                            // getToken();
+                            getToken();
                             setIsLoading(true);
                             setDisable(true);
-                            setTimeout(async() => {
-                                const t = await asyncStorage.get('token');
-                                if(t !== undefined || token !== undefined) {
-                                    setIsLoading(false);
-                                    setDisable(false);
-                                    setStatusError(false)
-                                    navigation.navigate('NavegationOne');
-                                } else {
-                                    setStatusError(true)
-                                    setIsLoading(false);
-                                    setDisable(false);
-                                    asyncStorage.clearAll();
-                                }
-                            }, 2000)
-
                         }
                     }}
                 >
@@ -220,6 +222,10 @@ const Home = () => {
                     esqueci a senha
                 </Button>
 
+
+                <HelperText type="error" visible={!hasNotInternet}>
+                    Verifique sua conxão com a internet!
+                </HelperText>
             </View>
         </Container>
     );

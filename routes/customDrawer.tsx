@@ -80,7 +80,7 @@ function CustomDrawerContent(props: any) {
           asyncStorage.remove('token').then((value) => {
             console.log("limpando tudo: " + value)
           })
-          asyncStorage.clearAll();
+          // asyncStorage.clearAll();
           navigation.dispatch(StackActions.replace('Home'));
           // navigation.navigate('Home')
         }}
