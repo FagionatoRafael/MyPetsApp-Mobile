@@ -14,10 +14,11 @@ const styles = StyleSheet.create({
         fontSize: 26
     },
     containerConfig: {
-        marginTop: 20, 
+        marginTop: 25, 
         margin: '5%'
     },
     containerToggle: {
+        marginBottom: 20,
         display: 'flex', 
         flexDirection: 'row', 
         alignItems: 'center', 

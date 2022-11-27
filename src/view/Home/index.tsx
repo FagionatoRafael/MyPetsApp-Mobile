@@ -71,13 +71,14 @@ const Home = () => {
                     navigation.navigate('NavegationOne');
                     
                 } else {
-                    setStatusError(true) 
+                    
                     setIsLoading(false);
                     setDisable(false);
                     asyncStorage.clearAll();
                 }
             }).catch((err: string) => {
                 console.log(401)
+                setStatusError(true) 
                 setToken(undefined)
                 asyncStorage.clearAll();
             })
@@ -144,15 +145,14 @@ const Home = () => {
         };
     }, [])
 
-    // if(!hasNotInternet) {
-    //     return <Container>
-    //             <Text>Verifique sua conexão com a internet!</Text>
-    //         </Container> 
-    // } else if(isConect) {
-    //     return <Container>
-    //              <ActivityIndicator animating={true} color={Colors.white} />
-    //         </Container> 
-    // }
+    if(isConect) {
+        return <Container>
+                    <View style={styles.loadingContainer}>
+                        <ActivityIndicator animating={true} color={Colors.white} />
+                        <Text style={styles.loadingText}>Aguarde alguns instanstes ...</Text>
+                    </View>
+                </Container> 
+    }
 
     return (
         <Container>

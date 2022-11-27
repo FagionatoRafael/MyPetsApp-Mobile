@@ -20,13 +20,31 @@ const styles = StyleSheet.create({
       paddingTop: 10
     },
     logoContainer: {
-      // flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
+      display: 'flex', 
+      alignContent: 'center', 
+      alignSelf: 'center',
       marginBottom: 70
     },
+    loadingContainer: {
+      display: 'flex', 
+      flexDirection: 'column',
+      justifyContent: 'center', 
+      alignContent: 'center', 
+      width: Dimensions.get('window').width,
+      height: Dimensions.get('window').height * 0.8,
+      alignItems: 'center',
+      alignSelf: 'center'
+    },
     logoText: {
-      fontSize: Dimensions.get('window').width * 0.12,
+      fontSize: Dimensions.get('window').width * 0.09,
+      color: '#05386B',
+      fontWeight: 'bold',
+      // fontFamily: 'Dosis_400Regular'
+    },
+    loadingText: {
+      fontSize: Dimensions.get('window').width * 0.05,
       color: '#05386B',
       fontWeight: 'bold',
       // fontFamily: 'Dosis_400Regular'

@@ -131,7 +131,7 @@ const Signin = () => {
                <InputCustom hasErros={emailErr} label={'Email'} onChangeText={onChangeEmail} text={email} invalidText={'Email Invalido!'} keyboardType={'email-address'}/>
                <InputCustom 
                     hasErros={passwordErr} 
-                    label={'Password'} 
+                    label={'Senha'} 
                     onChangeText={onChangePassword} 
                     text={password} 
                     invalidText={'Senha deve ser maior que 6 letras ou numeros!'} 

@@ -26,17 +26,18 @@ function MyDrawer() {
         setNome(v.data.name);
         setDtInit(v.data.dtSignin);
         setDtLastLogin(v.data.dtLastLogin);
-        setIsFirstTime(v.data.isFirstTime);
+        setIsFirstTime(v.data.isFirstTime == 1 ? true : false);
       }).catch((err) => {
         console.log(401)
       })
     }) 
-  }, [nome])
+  }, [])
 
   useEffect(() => {
     const getToken = asyncStorage.get('token');
-   
+    console.log('entrei aqui sempre')
     if(isFirstTime) {
+      console.log('entrei aqui na primeira vez')
       getToken.then((value) => {
         apiMain.post('config', {
           isNoteOne: true,
@@ -48,7 +49,7 @@ function MyDrawer() {
         }, {
           headers: { Authorization: `Bearer ${value.access_token}` }
         }).then((v) => {
-          console.log(v.status)
+          // console.log(v.status)
         }).catch((err) => {
           console.log(401)
         })
@@ -58,7 +59,7 @@ function MyDrawer() {
         }, {
           headers: { Authorization: `Bearer ${value.access_token}` }
         }).then((v) => {
-          console.log(v.status)
+          // console.log(v.status)
         }).catch((err) => {
           console.log(401)
         })
@@ -74,7 +75,7 @@ function MyDrawer() {
         }, {
           headers: { Authorization: `Bearer ${value.access_token}` }
         }).then((v) => {
-          console.log(v.status)
+          // console.log(v.status)
         }).catch((err) => {
           console.log(401)
         })

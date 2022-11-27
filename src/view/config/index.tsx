@@ -1,8 +1,8 @@
-import { View, ScrollView, Text } from "react-native"
+import { View, ScrollView, Text, Dimensions } from "react-native"
 import CardPet from "../../components/CardPet";
 import React, { useEffect, useState } from "react";
 import Container from "../../components/Container";
-import { Divider,Switch } from "react-native-paper";
+import { ActivityIndicator, Divider,Switch } from "react-native-paper";
 import styles from "./styles";
 import { apiMain } from "../../../services/connction";
 import asyncStorage from "../../../util/asyncStorage";
@@ -12,19 +12,48 @@ const Config = () => {
     const [isNoteTwo, setIsNoteTwo] = useState<boolean>();
     const [isNoteThree, setIsNoteThree] = useState<boolean>();
 
+    const [loading, setLoading] = useState<boolean>();
+
     // const [isMailOne, setIsMailOne] = useState<boolean>();
     // const [isMailTwo, setIsMailTwo] = useState<boolean>();
     // const [isMailThree, setIsMailThree] = useState<boolean>();
 
-    const onToggleNoteOne = () => setIsNoteOne(!isNoteOne);
-    const onToggleNoteTwo = () => setIsNoteTwo(!isNoteTwo);
+    const onToggleNoteOne = () => {
+        setIsNoteOne(!isNoteOne)
+        updateConfig();
+    }
+    const onToggleNoteTwo = () => {
+        setIsNoteTwo(!isNoteTwo);
+        updateConfig();
+    }
     const onToggleNoteThree = () => setIsNoteThree(!isNoteThree);
 
     // const onToggleMailOne = () => setIsMailOne(!isMailOne);
     // const onToggleMailTwo = () => setIsMailTwo(!isMailTwo);
     // const onToggleMailThree = () => setIsMailThree(!isMailThree);
 
+    const updateConfig = async () => {
+        setLoading(true)
+        const getToken = await asyncStorage.get('token')
+        apiMain.patch('config', {
+            isNoteOne: isNoteOne,
+            isNoteTwo: isNoteTwo,
+            // isNoteThree: isNoteThree,
+            // isMailOne: isMailOne,
+            // isMailTwo: isMailTwo,
+            // isMailThree: isMailThree
+        }, {
+            headers: { Authorization: `Bearer ${getToken.access_token}` }
+        }).then((v) => {
+            console.log(v.status + "alooo")
+            setLoading(false)
+        }).catch((err) => {
+            console.log(401);
+        })
+    }
+
     useEffect(() => {
+        setLoading(true)
         const getToken = asyncStorage.get('token') 
         getToken.then((value) => {
             apiMain.get('config', {
@@ -36,34 +65,30 @@ const Config = () => {
                 // setIsMailOne(v.data.config_isMailOne == 1 ? true : false);
                 // setIsMailTwo(v.data.config_isMailTwo == 1 ? true : false);
                 // setIsMailThree(v.data.config_isMailThree == 1 ? true : false);
+                setLoading(false)
                 console.log(v.data)
             }).catch((err) => {
                 console.log(401);
             })
         
         })
-    })
+    }, [])
 
-    useEffect(() => {
-        const getToken = asyncStorage.get('token')
-        getToken.then((value) => {
-            apiMain.patch('config', {
-                isNoteOne: isNoteOne,
-                isNoteTwo: isNoteTwo,
-                isNoteThree: isNoteThree,
-                // isMailOne: isMailOne,
-                // isMailTwo: isMailTwo,
-                // isMailThree: isMailThree
-            }, {
-                headers: { Authorization: `Bearer ${value.access_token}` }
-            }).then((v) => {
-                console.log(v.status + "alooo")
-            }).catch((err) => {
-                console.log(401);
-            })
-        
-        })
-    }, [isNoteOne, isNoteTwo, isNoteThree])
+    if(loading) {
+        return <View style={
+                    {display: 'flex', 
+                    flexDirection: 'column',
+                    justifyContent: 'center', 
+                    alignContent: 'center', 
+                    width: Dimensions.get('window').width,
+                    height: Dimensions.get('window').height,
+                    alignItems: 'center',
+                    alignSelf: 'center',
+                    backgroundColor: '#5CDB95',
+                    }}> 
+                <ActivityIndicator animating={true} color="#fff"/>
+            </View> 
+    }
     
     return (
         <Container margin={false}>
@@ -75,11 +100,11 @@ const Config = () => {
                 <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 18}}>Notificações</Text>
                 <Divider style={{height: 5}}/>
                 <View style={styles.containerToggle} onTouchEnd={onToggleNoteOne}>
-                    <Text style={{color: '#fff'}}>Celular</Text>
+                    <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 15}}>Celular</Text>
                     <Switch value={isNoteOne} color={'#05386B'} onValueChange={onToggleNoteOne} />
                 </View>
                 <View style={styles.containerToggle} onTouchEnd={onToggleNoteTwo}>
-                    <Text style={{color: '#fff'}}>E-mail</Text>
+                    <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 15}}>E-mail</Text>
                     <Switch value={isNoteTwo} color={'#05386B'} onValueChange={onToggleNoteTwo} />
                 </View>
                 {/* <View style={styles.containerToggle} onTouchEnd={onToggleNoteThree}>
