@@ -149,7 +149,7 @@ const Home = () => {
         return <Container>
                     <View style={styles.loadingContainer}>
                         <ActivityIndicator animating={true} color={Colors.white} />
-                        <Text style={styles.loadingText}>Aguarde alguns instanstes ...</Text>
+                        <Text style={styles.loadingText}>Aguarde alguns instantes ...</Text>
                     </View>
                 </Container> 
     }
